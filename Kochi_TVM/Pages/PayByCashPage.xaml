@@ -1,0 +1,188 @@
+﻿<Page x:Class="Kochi_TVM.Pages.PayByCashPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Kochi_TVM.Pages"
+      mc:Ignorable="d" 
+       d:DesignHeight="758"
+      d:DesignWidth="1024"
+      Background="{StaticResource pageColor}"      
+      Loaded="Page_Loaded" 
+      Unloaded="Page_Unloaded"
+      Title="PayByCashPage">
+    <Grid>
+        <Grid x:Name="mainGrid" Background="Transparent">
+            <Grid.RowDefinitions>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Header -->
+                <RowDefinition Height="3*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Operation Area -->
+                <RowDefinition Height="24*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Navigate -->
+                <RowDefinition Height="3*"/>
+                <!--Bottom space -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!--Left space -->
+                <ColumnDefinition Width="2*"/>
+                <!--Operation -->
+                <ColumnDefinition Width="20*"/>
+                <!--Right space -->
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Label Name="lblHeader" Content="" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader2}"/>
+            <Label x:Name="lblRemain" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"  Grid.ColumnSpan="2" Content="1" FontSize="30" Style="{StaticResource styleTimerLbl}" HorizontalAlignment="Right" Margin="0,0,5,0"  VerticalAlignment="Center"/>
+
+            <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <MediaElement x:Name="myGif" Grid.Column="0" Grid.Row="1" Grid.RowSpan="18" Grid.ColumnSpan="10" MediaEnded="myGif_MediaEnded" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="None"/>
+
+                <Label  Name="lblTotalAmountKey"  Content="Total Price" Grid.Row="1" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="5" HorizontalAlignment="Left" VerticalAlignment="Stretch" Style="{StaticResource styleLabelCash}"  />
+                <Label  Name="lblTotalAmountKeyColon"  Content=":" Grid.Row="1" Grid.Column="16" Grid.RowSpan="2" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Style="{StaticResource styleLabelCash}"  />
+                <Label Name="lblTotalAmountValue" Content="300 Rs." Grid.Row="1" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Stretch" Style="{StaticResource styleLabelCash}"/>
+
+                <Label Name="lblPaidAmountKey" Content="Inserted Amount" Grid.Row="3" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
+                <Label Name="lblPaidAmountKeyColon" Content=":" Grid.Row="3" Grid.Column="16" Grid.RowSpan="2" Grid.ColumnSpan="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
+                <Label Name="lblPaidAmountValue" Content=" 400 Rs." Grid.Row="3" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
+
+                <Label Name="lblChangeAmountKey" Content="Deficit Amount" Grid.Row="5" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="5" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
+                <Label Name="lblChangeAmountKeyColon" Content=":" Grid.Row="5" Grid.Column="16" Grid.RowSpan="2" Grid.ColumnSpan="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
+                <Label Name="lblChangeAmountValue" Content=" 100 Rs." Grid.Row="5" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
+
+                <Border x:Name="customerMsgGrid" Grid.Row="7" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="5" Height="40" Background="#ee1a24" HorizontalAlignment="Center" Margin="0,0,20,0" Visibility="Hidden">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblCusomerMsg" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" FontFamily="Helvetica" FontSize="20px" FontWeight="SemiBold" />
+                    </Grid>
+                </Border>
+
+                <Label Name="lblNotes" Content="Acceptable Notes : " Grid.Row="11" Grid.Column="11" Grid.RowSpan="3" Grid.ColumnSpan="9" HorizontalAlignment="Left" VerticalAlignment="Stretch"  Style="{StaticResource styleLabelAcceptableNotes}"/>
+
+
+                <Grid Name="banknoteGrid" Grid.Row="13" Grid.Column="11" Grid.RowSpan="7" Grid.ColumnSpan="8" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="8*"/>
+
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="6*"/>
+
+
+                    </Grid.ColumnDefinitions>
+
+
+                    <Image Name="lblMoney5" Grid.Column="0" Grid.Row="0"    HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_5.jpg" />
+                    <Image Name="lblMoney10" Grid.Column="2" Grid.Row="0"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_10.jpg" />
+                    <Image Name="lblMoney20" Grid.Column="4" Grid.Row="0"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_20.jpg" />
+                    <Image Name="lblMoney50" Grid.Column="6" Grid.Row="0"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_50.jpg" />
+
+                    <Image Name="lblMoney100" Grid.Column="0" Grid.Row="2"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_100.jpg" />
+                    <Image Name="lblMoney200" Grid.Column="2" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_200.jpg" />
+                    <Image Name="lblMoney500" Grid.Column="4" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_500.jpg" />
+                    <!--<Image Name="lblMoney2000" Grid.Column="6" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/TVM_UI;component/images/Rupi_2000.jpg" />-->
+
+
+                </Grid>
+
+            </Grid>
+
+
+            <Button x:Name="btnBack" Grid.Row="5" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" Width="150" HorizontalAlignment="Left" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="5" Grid.Column="1" Content="Cancel"  Style="{StaticResource styleFinishBtn}" Width="150" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+
+        </Grid>
+        <Grid Name="cashGrid" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.70*"/>
+                <RowDefinition Height="0.10*"/>
+                <RowDefinition Height="0.10*"/>
+                <RowDefinition Height="0.10*"/>
+            </Grid.RowDefinitions>
+            <MediaElement x:Name="returnCashImageGif" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" MediaEnded="returnCashImageGif_MediaEnded" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="None"/>
+            
+            <TextBlock Grid.Row="1" Style="{StaticResource MainInstructionTextblock}"
+                   Text="PLEASE COLLECT CASH/COINS"/>
+            <TextBlock Grid.Row="2" Style="{StaticResource ShowBalanceTextblock}" x:Name="returnAmountTxt"/>
+            <Grid Grid.Row="3">
+
+            </Grid>
+        </Grid>
+        <Grid Name="waitGrid" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.50*"/>
+                <RowDefinition Height="0.10*"/>
+                <RowDefinition Height="0.05*"/>
+            </Grid.RowDefinitions>
+
+            <MediaElement x:Name="loadingImageGif" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" MediaEnded="loadingImageGif_MediaEnded" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="None"/>
+
+            <TextBlock Grid.Row="1" Style="{StaticResource MainInstructionTextblock}"
+                   Text="Processing, please wait"/>
+            <TextBlock Name="txtBNRStatus" Grid.Row="2" FontSize="25" Style="{StaticResource MainInstructionTextblock}"
+                   Text="BNR Status"/>
+        </Grid>
+    </Grid>    
+</Page>
