@@ -2,7 +2,10 @@
 using Kochi_TVM.Business;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,11 +18,16 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class MainPage : Page
     {
+        private static Timer checkDeviceTimer;
+        private static TimerCallback checkDeviceTimerDelegate;
+        bool Check_Receiptprinter = false;
         public MainPage()
         {
             InitializeComponent();
             MultiLanguage.Init("EN");
             Message();
+            checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
+            checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, 30000);
         }
         
         void Message()
@@ -37,11 +45,55 @@ namespace Kochi_TVM.Pages
                 Utility.PlayVoice(1, Stations.currentStation.name, null, "IN");
             }
         }
-
+        private void CheckDeviceAction(object o)
+        {
+            try
+            {
+                PRINTER_STATE ReceiptPRINTER_STATE = CustomTL60Printer.Instance.getStatusWithUsb();
+                if (ReceiptPRINTER_STATE == PRINTER_STATE.OK)
+                {
+                    Check_Receiptprinter = true;
+                }
+                else
+                {
+                    Check_Receiptprinter = false;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private void btnSelectTicket_Click(object sender, RoutedEventArgs e)
         {
             Utility.PlayClick();
-            NavigationService.Navigate(new Pages.JourneyTypePage());
+            try
+            {
+                if (StockOperations.coin1 <= Constants.NoChangeAvailable || StockOperations.coin2 <= Constants.NoChangeAvailable || StockOperations.coin1 <= Constants.NoChangeAvailable)
+                {
+                    if (StockOperations.coin5 <= Constants.NoChangeAvailable)
+                        lbl5RS.Visibility = Visibility.Collapsed;
+
+                    if (StockOperations.coin2 <= Constants.NoChangeAvailable)
+                        lbl2RS.Visibility = Visibility.Collapsed;
+
+                    if (StockOperations.coin1 <= Constants.NoChangeAvailable)
+                        lbl1RS.Visibility = Visibility.Collapsed;
+
+                    grdNoChangeMode.Visibility = Visibility.Visible;
+                }
+                else if (!Check_Receiptprinter)
+                {
+                    grdNoReceiptPrinterMode.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    NavigationService.Navigate(new Pages.JourneyTypePage());
+                }
+            }
+            catch (Exception ex)
+            {
+                //log.Error("Error OptionPage -> BrdQRInfo_MouseLeftButtonDown() : " + ex.ToString());
+            }
         }
 
         private void btnSelectCard_Click(object sender, RoutedEventArgs e)
@@ -130,6 +182,53 @@ namespace Kochi_TVM.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             BNRManager.Instance.PollingAction();
+            new Thread(() => AsyncDBCal()).Start();
+        }
+        private void AsyncDBCal()
+        {
+            try
+            {
+                StockOperations.SelStockStatus();
+            }
+            catch (Exception)
+            { }
+        }
+        private void btnReceiptOK_Click(object sender, RoutedEventArgs e)
+        {
+            Utility.PlayClick();
+            NavigationService.Navigate(new Pages.JourneyTypePage());
+        }
+
+        private void btnReceiptCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Utility.PlayClick();
+            grdNoReceiptPrinterMode.Visibility = Visibility.Hidden;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (checkDeviceTimer != null)
+                checkDeviceTimer.Dispose();
+        }
+
+        private void btnNoChangeExit_Click(object sender, RoutedEventArgs e)
+        {
+            Utility.PlayClick();
+            grdNoChangeMode.Visibility = Visibility.Hidden;
+        }
+
+        private void btnNoChangeYes_Click(object sender, RoutedEventArgs e)
+        {
+            Utility.PlayClick();
+            grdNoChangeMode.Visibility = Visibility.Hidden;
+            if (!Check_Receiptprinter)
+            {
+                grdNoReceiptPrinterMode.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                NavigationService.Navigate(new Pages.JourneyTypePage());
+            }
         }
     }
 }

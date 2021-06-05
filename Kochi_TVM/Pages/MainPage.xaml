@@ -9,6 +9,7 @@
       d:DesignWidth="1024"
       Background="{StaticResource pageColor}"      
       Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"
       Title="MainPage">
 
     <Grid x:Name="mainGrid" Background="Transparent">
@@ -102,5 +103,66 @@
             <Button x:Name="btnLang2" Grid.Row="1" Grid.Column="5" Content="മലയാളം"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang2_Click"/>
         </Grid>
 
+        <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoChangeMode" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.6*"/>
+                    <RowDefinition Height="0.2*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Source="..\Images\NoCoin.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="300"></Image>
+                <TextBlock Grid.Row="1" Text="NO CHANGE MODE" FontFamily="Helvetica" HorizontalAlignment="Center"  VerticalAlignment="Center"  FontSize="25" FontWeight="UltraBold" 
+                       Tag="lbl_NoChangeMode"/>
+                <Button x:Name="btnNoChangeExit" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnNoChangeExit_Click" />
+                <Button x:Name="btnNoChangeYes" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" Content="OK"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnNoChangeYes_Click" />
+                <StackPanel Name="stackCoin" Orientation="Horizontal" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                    <Label  Content="Available Coins : " VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+                   
+                    <Border Name="lbl5RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
+                        <Label  Content="₹5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    </Border>
+                    <Border Name="lbl2RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
+                        <Label  Content="₹2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    </Border>
+                    <Border Name="lbl1RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
+                        <Label  Content="₹1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoReceiptPrinterMode" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.6*"/>
+                    <RowDefinition Height="0.2*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Source="..\Images\NoReceipt.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="300" Width="300"></Image>
+                <TextBlock Grid.Row="1" FontFamily="Helvetica" HorizontalAlignment="Center" Text="NO RECEIPT MODE" VerticalAlignment="Center"  FontSize="25" FontWeight="UltraBold" 
+                       Tag="lbl_NoReceiptPrinter"/>
+                <Button x:Name="btnReceiptCancel" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnReceiptCancel_Click" />
+                <Button x:Name="btnReceiptOK" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" Content="OK"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnReceiptOK_Click" />
+                
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

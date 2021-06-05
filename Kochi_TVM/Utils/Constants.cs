@@ -25,6 +25,7 @@ namespace Kochi_TVM.Utils
         public static int HopperAddress3Coin = 5;
         public static int HopperAddress2Coin = 2;
         public static int HopperAddress1Coin = 1;
+        public static int NoChangeAvailable = 5;
 
         public static string CurrencySymbol = "₹";
     }

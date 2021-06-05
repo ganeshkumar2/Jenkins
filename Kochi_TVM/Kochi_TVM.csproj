@@ -408,6 +408,12 @@
     <Content Include="Images\kmrl_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\NoCoin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NoReceipt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Spinner.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

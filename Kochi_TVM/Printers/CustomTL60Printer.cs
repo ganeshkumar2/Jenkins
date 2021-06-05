@@ -76,6 +76,9 @@ namespace Kochi_TVM.Printers
                 if (queue.IsOffline)
                     return Enums.PRINTER_STATE.ERROR;
 
+                if (queue.IsPaused)
+                    return Enums.PRINTER_STATE.ERROR;
+
                 if (queue.IsOutOfPaper)
                     return Enums.PRINTER_STATE.NO_PAPER;
 
