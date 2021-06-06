@@ -1,6 +1,7 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.Business;
 using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
 using log4net;
 using System;
@@ -30,6 +31,7 @@ namespace Kochi_TVM.Pages.Maintenance
         private static ILog log = LogManager.GetLogger(typeof(BNROperationPage).Name);
         List<BillTable> billTable = new List<BillTable>();
         List<Cassette> cassettes = new List<Cassette>();
+        List<StackedNotes> stackedNotesListReceived = new List<StackedNotes>();
         int noteincasset1 = 0, noteincasset2 = 0, noteincasset3 = 0;
         int notevalincasset1 = 0, notevalincasset2 = 0, notevalincasset3 = 0;
         int Casette1Billtype = 0, Casette2Billtype = 0, Casette3Billtype = 0;
@@ -51,6 +53,7 @@ namespace Kochi_TVM.Pages.Maintenance
             BNRManager.Instance.GetCassetteStatus();
             BNRManager.BNRCassetteStatusInputEvent += new BNRManager.BNRCassetteStatusEventHandler(BNRManager_BNRCassetteStatusInputEvent);
             lblBNR.Content = Constants.BNRStatus;
+            UpdValOnScr();
         }
 
         private void BNRManager_BNRBillTableInputEvent(List<BillTable> billTables)
@@ -83,7 +86,14 @@ namespace Kochi_TVM.Pages.Maintenance
                         if (cassetteset.cassetteId == 1)
                         {
                             noteincasset1 = cassetteset.billNumber;
-                            notevalincasset1 = bill;
+                            if (cassetteset.cassetteStatus == CassetteStatus.ESCROW)
+                            {
+                                notevalincasset1 = Constants.EscrowAmount;
+                            }
+                            else
+                            {
+                                notevalincasset1 = bill;
+                            }
                             lblCassette1.Content = "₹ " + bill;
                             Casette1Billtype = cassetteset.billType;
                             lblCassette1Info.Content = "₹ " + bill + " ₹ " + (noteincasset1 * notevalincasset1);
@@ -91,7 +101,14 @@ namespace Kochi_TVM.Pages.Maintenance
                         if (cassetteset.cassetteId == 2)
                         {
                             noteincasset2 = cassetteset.billNumber;
-                            notevalincasset2 = bill;
+                            if (cassetteset.cassetteStatus == CassetteStatus.ESCROW)
+                            {
+                                noteincasset2 = Constants.EscrowAmount;
+                            }
+                            else
+                            {
+                                noteincasset2 = bill;
+                            }
                             lblCassette2.Content = "₹ " + bill;
                             Casette2Billtype = cassetteset.billType;
                             lblCassette2Info.Content = "₹ " + bill + " ₹ " + (noteincasset2 * notevalincasset2);
@@ -99,7 +116,14 @@ namespace Kochi_TVM.Pages.Maintenance
                         if (cassetteset.cassetteId == 3)
                         {
                             noteincasset3 = cassetteset.billNumber;
-                            notevalincasset3 = Constants.EscrowAmount;
+                            if (cassetteset.cassetteStatus == CassetteStatus.ESCROW)
+                            {
+                                notevalincasset3 = Constants.EscrowAmount;
+                            }
+                            else
+                            {
+                                notevalincasset3 = bill;
+                            }
                             lblCassette3.Content = "₹ " + Constants.EscrowAmount.ToString();
                             Casette3Billtype = cassetteset.billType;
                             lblCassette3Info.Content = "₹ " + notevalincasset3 + " ₹ " + (noteincasset3 * notevalincasset3);
@@ -119,6 +143,7 @@ namespace Kochi_TVM.Pages.Maintenance
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    stackedNotesListReceived = new List<StackedNotes>();
                     int bill = 0;
                     int billCount = 0;
                     int total = 0;
@@ -131,6 +156,7 @@ namespace Kochi_TVM.Pages.Maintenance
                             total += bill * billCount;
                         }
                     }
+                    stackedNotesListReceived = stackedNotesListBox;
                     lblBNRAmount.Content = Convert.ToString(total);
                 }), DispatcherPriority.Background);
             }
@@ -262,6 +288,21 @@ namespace Kochi_TVM.Pages.Maintenance
                     if (noteincasset1 != 0)
                     {
                         UnloadCassette(1, noteincasset1);
+
+                        long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + notevalincasset1)));
+                        if (StockOperations.InsStock(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset1), (int)DeviceType.Cassette1, (int)UpdateType.Decrease, noteincasset1))
+                            if (MoneyOperations.InsMoney(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset1), (int)DeviceType.Cassette1, (int)UpdateType.Decrease, notevalincasset1 * noteincasset1))
+                            {
+                                long trxId2 = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_BOX));
+                                if (StockOperations.InsStock(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset1), (int)DeviceType.Box, (int)UpdateType.Increase, noteincasset1))
+                                    if (MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset1), (int)DeviceType.Box, (int)UpdateType.Increase, notevalincasset1 * noteincasset1))
+                                        if (MoneyOperations.SelMoneyStatus())
+                                        {
+                                            CustomTL60Printer.Instance.SendBoxNotes(noteincasset1, notevalincasset1);
+                                            MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. "+notevalincasset1+""+ "\nSent Count : " + noteincasset1.ToString() +
+                                                                                    "\nSent Amount : Rs. " + noteincasset1 * notevalincasset1, MessageBoxButtonSet.OK);
+                                        }
+                            }
                     }
                 }
             }
@@ -275,13 +316,40 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             if (isAccepting)
             {
-                Utility.PlayClick();
-                grdMoneyAccept.Visibility = Visibility.Hidden;
-                BNRManager.Instance.StopProcess();
-                await Task.Delay(300);
-                BNRManager.Instance.GetCassetteStatus();
-                await Task.Delay(1000);
-                isAccepting = false;
+                try
+                {
+                    Utility.PlayClick();
+                    grdMoneyAccept.Visibility = Visibility.Hidden;
+                    BNRManager.Instance.StopProcess();
+                    await Task.Delay(300);
+                    BNRManager.Instance.GetCassetteStatus();
+                    await Task.Delay(1000);
+                    isAccepting = false;
+                    foreach (var data in stackedNotesListReceived)
+                    {
+                        int bill = 0;
+                        bill = billTable.Where(x => x.BillType == data.BillType).Select(x => x.DigitBillType).FirstOrDefault();
+                        if (notevalincasset1 == bill)
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, data.BillNumber))
+                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, bill);
+                        }
+                        else if (notevalincasset2 == bill)
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, data.BillNumber))
+                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, bill);
+                        }
+                        else if (notevalincasset3 == bill)
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, data.BillNumber))
+                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, bill);
+                        }
+                    }
+                }
+                catch { }
             }
         }
 
@@ -295,6 +363,21 @@ namespace Kochi_TVM.Pages.Maintenance
                     if (noteincasset2 != 0)
                     {
                         UnloadCassette(2, noteincasset2);
+
+                        long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + notevalincasset2)));
+                        if (StockOperations.InsStock(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset2), (int)DeviceType.Cassette2, (int)UpdateType.Decrease, noteincasset2))
+                            if (MoneyOperations.InsMoney(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset2), (int)DeviceType.Cassette2, (int)UpdateType.Decrease, notevalincasset2 * noteincasset2))
+                            {
+                                long trxId2 = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_BOX));
+                                if (StockOperations.InsStock(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset2), (int)DeviceType.Box, (int)UpdateType.Increase, noteincasset2))
+                                    if (MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset2), (int)DeviceType.Box, (int)UpdateType.Increase, notevalincasset2 * noteincasset2))
+                                        if (MoneyOperations.SelMoneyStatus())
+                                        {
+                                            CustomTL60Printer.Instance.SendBoxNotes(noteincasset2, notevalincasset2);
+                                            MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset2 + "" + "\nSent Count : " + noteincasset2.ToString() +
+                                                                                    "\nSent Amount : Rs. " + noteincasset2 * notevalincasset2, MessageBoxButtonSet.OK);
+                                        }
+                            }
                     }
                 }
             }
@@ -314,6 +397,21 @@ namespace Kochi_TVM.Pages.Maintenance
                     if (noteincasset3 != 0)
                     {
                         UnloadCassette(3, noteincasset3);
+
+                        long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + notevalincasset3)));
+                        if (StockOperations.InsStock(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote"+ notevalincasset3), (int)DeviceType.Cassette3, (int)UpdateType.Decrease, noteincasset3))
+                            if (MoneyOperations.InsMoney(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset3), (int)DeviceType.Cassette3, (int)UpdateType.Decrease, notevalincasset3 * noteincasset3))
+                            {
+                                long trxId2 = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_BOX));
+                                if (StockOperations.InsStock(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset3), (int)DeviceType.Box, (int)UpdateType.Increase, noteincasset3))
+                                    if (MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset3), (int)DeviceType.Box, (int)UpdateType.Increase, notevalincasset3 * noteincasset3))
+                                        if (MoneyOperations.SelMoneyStatus())
+                                        {
+                                            CustomTL60Printer.Instance.SendBoxNotes(noteincasset3, notevalincasset3);
+                                            MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset3 + "" + "\nSent Count : " + noteincasset3.ToString() +
+                                                                                    "\nSent Amount : Rs. " + noteincasset3 * notevalincasset3, MessageBoxButtonSet.OK);
+                                        }
+                            }
                     }
                 }
             }
@@ -325,7 +423,45 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnClearBox_Click(object sender, RoutedEventArgs e)
         {
+            int moneyStock = 0;
+            int countStock = 0;
+            if (MoneyOperations.SelMoneyStatus())
+            {
+                Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("Clear Box", "Money Amount : " + MoneyOperations.box, MessageBoxButtonSet.OKCancel);
+                if (messageBoxResult == Custom.MessageBoxResult.OK)
+                {
+                    moneyStock = (int)MoneyOperations.box;
+                    countStock = StockOperations.box;
+                    if (moneyStock == 0)
+                    {
+                        MessageBoxOperations.ShowMessage("ATTENTION!!", "Box is empty!", MessageBoxButtonSet.OKCancel);
+                        return;
+                    }
+                    else
+                    {
+                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_BOX));
+                        if (StockOperations.InsStock(trxId, (int)StockType.Unknown, (int)DeviceType.Box, (int)UpdateType.Empty, 0))
+                            MoneyOperations.InsMoney(trxId, (int)StockType.Unknown, (int)DeviceType.Box, (int)UpdateType.Empty, 0);
+                        if (MoneyOperations.SelMoneyStatus())
+                        {
+                            UpdValOnScr();
+                        }
+                    }
+                }
+                CustomTL60Printer.Instance.RemoveCashBoxNotes(moneyStock, countStock);
+            }
+        }
 
+        private void UpdValOnScr()
+        {
+            MoneyOperations.SelMoneyStatus();
+            StockOperations.SelStockStatus();
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate
+            {
+                lblBoxInfo.Content = String.Format("Box Amount : {0}", Conversion.MoneyFormat(MoneyOperations.box));
+                lblBoxCount.Content = String.Format("Box Count : {0}", StockOperations.box);               
+
+            }));
         }
 
         private void UnloadCassette(int cassetteNumber, int count)

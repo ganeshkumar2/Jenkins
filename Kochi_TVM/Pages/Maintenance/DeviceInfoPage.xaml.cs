@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.CCTalk;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
@@ -77,7 +78,7 @@ namespace Kochi_TVM.Pages.Maintenance
             //BNA
             try
             {
-                DeviceInfoControl BNA = new DeviceInfoControl("Banknote Acceptor", Constants.BNRStatus);
+                DeviceInfoControl BNA = new DeviceInfoControl("Banknote Acceptor", Constants.BNRStatus == "DISABLED" ? "OK" : "ERROR");
                 Grid.SetRow(BNA, 4);
                 Grid.SetColumn(BNA, 0);
                 operationGrid.Children.Add(BNA);
@@ -125,7 +126,7 @@ namespace Kochi_TVM.Pages.Maintenance
             //Hopper 1
             try
             {
-                DeviceInfoControl hopper1 = new DeviceInfoControl("Hopper 1 Rs.", Parameters.TVMStatic.GetParameter("hopper1Status"));
+                DeviceInfoControl hopper1 = new DeviceInfoControl("Hopper 1 Rs.", CCTalkManager.Instance.coinHopperEV4000_1.Manufacture != null ? "OK" : "ERROR");
                 Grid.SetRow(hopper1, 2);
                 Grid.SetColumn(hopper1, 2);
                 operationGrid.Children.Add(hopper1);
@@ -137,7 +138,7 @@ namespace Kochi_TVM.Pages.Maintenance
             //Hopper 2
             try
             {
-                DeviceInfoControl hopper2 = new DeviceInfoControl("Hopper 2 Rs.", Parameters.TVMStatic.GetParameter("hopper2Status"));
+                DeviceInfoControl hopper2 = new DeviceInfoControl("Hopper 2 Rs.", CCTalkManager.Instance.coinHopperEV4000_2.Manufacture != null ? "OK" : "ERROR");
                 Grid.SetRow(hopper2, 4);
                 Grid.SetColumn(hopper2, 2);
                 operationGrid.Children.Add(hopper2);
@@ -149,7 +150,7 @@ namespace Kochi_TVM.Pages.Maintenance
             //Hopper 5
             try
             {
-                DeviceInfoControl hopper5 = new DeviceInfoControl("Hopper 5 Rs.", Parameters.TVMStatic.GetParameter("hopper5Status"));
+                DeviceInfoControl hopper5 = new DeviceInfoControl("Hopper 5 Rs.", CCTalkManager.Instance.coinHopperEV4000_3.Manufacture != null ? "OK" : "ERROR");
                 Grid.SetRow(hopper5, 6);
                 Grid.SetColumn(hopper5, 2);
                 operationGrid.Children.Add(hopper5);

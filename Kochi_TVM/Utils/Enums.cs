@@ -159,7 +159,21 @@ namespace Kochi_TVM.Utils
             TT_ADD_QR,
             TT_REMOVE_QR,
             TT_EMPTY_QR,
-
+            TT_ADD_BANKNOTE50,
+            TT_ADD_BANKNOTE100,
+            TT_ADD_BANKNOTE200,
+            TT_ADD_BANKNOTE500,
+            TT_ADD_BANKNOTE2000,
+            TT_REMOVE_BANKNOTE50,
+            TT_REMOVE_BANKNOTE100,
+            TT_REMOVE_BANKNOTE200,
+            TT_REMOVE_BANKNOTE500,
+            TT_REMOVE_BANKNOTE2000,
+            TT_PAYOUT_BANKNOTE50,
+            TT_PAYOUT_BANKNOTE100,
+            TT_PAYOUT_BANKNOTE200,
+            TT_PAYOUT_BANKNOTE500,
+            TT_PAYOUT_BANKNOTE2000
         }
         public enum EmvTypeId
         {

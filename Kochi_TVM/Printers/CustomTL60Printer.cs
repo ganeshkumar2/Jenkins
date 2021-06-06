@@ -878,6 +878,62 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
+
+        public void SendBoxNotes(int count, int billType)
+        {
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            AddText("--Send Box--");
+            AddText("------------------------------------------------------------------------------");
+            AddText("Sent Bill", billType + " Rs.", 110);
+            AddText("Sent Count", count.ToString(), 110);
+            AddText("Sent Amount", count * billType + " Rs.", 110);
+            AddText("------------------------------------------------------------------------------");
+            AddText("");
+
+            PrintDocument Document1 = new PrintDocument();
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
+        public void RemoveCashBoxNotes(int amount, int count)
+        {
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            AddText("--Cash Box Clear--");
+            AddText("------------------------------------------------------------------------------");
+            AddText("Removed Count", count + " Rs.", 110);
+            AddText("Removed Amount", amount + " Rs.", 110);
+            AddText("------------------------------------------------------------------------------");
+            AddText("");
+
+            PrintDocument Document1 = new PrintDocument();
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
         void printDocumentPrintPage(object sender, PrintPageEventArgs e)
         {
             printGraphics = e.Graphics;
