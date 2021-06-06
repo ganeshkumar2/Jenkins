@@ -35,7 +35,7 @@ namespace Kochi_TVM.Pages.Maintenance
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             Utility.PlayClick();
-            NavigationService.Navigate(new Pages.Maintenance.AdminSettingPage());
+            NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)

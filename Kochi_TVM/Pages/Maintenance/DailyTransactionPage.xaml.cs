@@ -1,4 +1,7 @@
-﻿using Kochi_TVM.Utils;
+﻿using Kochi_TVM.Business;
+using Kochi_TVM.Models;
+using Kochi_TVM.Printers;
+using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +24,18 @@ namespace Kochi_TVM.Pages.Maintenance
     /// </summary>
     public partial class DailyTransactionPage : Page
     {
+        int QRSJTCashCount = 0;
+        int QRSJTCashAmount = 0;
+        int QRSJTNonCashCount = 0;
+        int QRSJTNonCashAmount = 0;
+        int QRRJTCashCount = 0;
+        int QRRJTCashAmount = 0;
+        int QRRJTNonCashCount = 0;
+        int QRRJTNonCashAmount = 0;
+        int RPTSJTCashCount = 0;
+        int RPTSJTCashAmount = 0;
+        int RPTSJTNonCashCount = 0;
+        int RPTSJTNonCashAmount = 0;
         public DailyTransactionPage()
         {
             InitializeComponent();
@@ -28,7 +43,62 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                using (var context = new TVM_Entities())
+                {
+                    DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
+                    DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
 
+                    var trxData = context.sp_SelShiftPaymentReport(Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), Stations.currentStation.id, 0, 0, startDate, endDate).ToList();
+                    foreach (var data in trxData)
+                    {
+                        if (Convert.ToString(data.Transaction) == "QR SJT-CASH")
+                        {
+                            QRSJTCashCount = Convert.ToInt32(data.Count);
+                            QRSJTCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "QR SJT-NonCASH")
+                        {
+                            QRSJTNonCashCount = Convert.ToInt32(data.Count);
+                            QRSJTNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        if (Convert.ToString(data.Transaction) == "QR RJT-CASH")
+                        {
+                            QRRJTCashCount = Convert.ToInt32(data.Count);
+                            QRRJTCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "QR RJT-NonCASH")
+                        {
+                            QRRJTNonCashCount = Convert.ToInt32(data.Count);
+                            QRRJTNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT SJT-CASH")
+                        {
+                            RPTSJTCashCount = Convert.ToInt32(data.Count);
+                            RPTSJTCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT SJT-NonCASH")
+                        {
+                            RPTSJTNonCashCount = Convert.ToInt32(data.Count);
+                            RPTSJTNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }            
+
+            lblQRSJTCashCount.Content = QRSJTCashCount;
+            lblQRSJTCashAmount.Content = QRSJTCashAmount;
+            lblQRSJTNonCashCount.Content = QRSJTNonCashCount;
+            lblQRSJTNonCashAmount.Content = QRSJTNonCashAmount;
+            lblQRRJTCashCount.Content = QRRJTCashCount;
+            lblQRRJTCashAmount.Content = QRRJTCashAmount;
+            lblQRRJTNonCashCount.Content = QRRJTNonCashCount;
+            lblQRRJTNonCashAmount.Content = QRRJTNonCashAmount;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -38,9 +108,8 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-
+            CustomTL60Printer.Instance.StandAloneReceipt();
         }
-
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             Utility.PlayClick();

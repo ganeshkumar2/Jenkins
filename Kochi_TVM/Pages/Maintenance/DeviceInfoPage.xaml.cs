@@ -1,5 +1,6 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
@@ -44,13 +45,35 @@ namespace Kochi_TVM.Pages.Maintenance
             //receipt printer
             var printerReceipt = string.Empty;
 
-           
+            try
+            {
+                printerReceipt = CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK ? "OK" : "ERROR";
+            }
+            catch (Exception ex)
+            {
+                printerReceipt = "NOT READED..";
+                //log.Write("Receipt Printer: " + ex.ToString());
+            }
 
             DeviceInfoControl receiptPrinter = new DeviceInfoControl("Receipt Printer", printerReceipt);
             Grid.SetRow(receiptPrinter, 0);
             Grid.SetColumn(receiptPrinter, 0);
             operationGrid.Children.Add(receiptPrinter);
-                     
+
+            //QR printer
+            try
+            {
+                string status = "";
+                status = CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK ? "OK" : "ERROR";
+                DeviceInfoControl qrPrinter = new DeviceInfoControl("QR Printer", status);
+                Grid.SetRow(qrPrinter, 2);
+                Grid.SetColumn(qrPrinter, 0);
+                operationGrid.Children.Add(qrPrinter);
+            }
+            catch (Exception ex)
+            {
+            }
+
             //BNA
             try
             {
@@ -144,7 +167,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-
+            CustomTL60Printer.Instance.TVMDeviceInfoReceipt();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

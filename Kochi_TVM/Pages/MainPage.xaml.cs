@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
 using static Kochi_TVM.Utils.Enums;
 
 namespace Kochi_TVM.Pages
@@ -27,7 +29,7 @@ namespace Kochi_TVM.Pages
             MultiLanguage.Init("EN");
             Message();
             checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
-            checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, 30000);
+            checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
         }
         
         void Message()
@@ -47,21 +49,37 @@ namespace Kochi_TVM.Pages
         }
         private void CheckDeviceAction(object o)
         {
-            try
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                PRINTER_STATE ReceiptPRINTER_STATE = CustomTL60Printer.Instance.getStatusWithUsb();
-                if (ReceiptPRINTER_STATE == PRINTER_STATE.OK)
+                try
                 {
-                    Check_Receiptprinter = true;
+                    PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
+                    if (QRPrinter == PRINTER_STATE.OK)
+                    {
+                        btnSelectTicket.IsEnabled = true;
+                        btnSelectTicket.Opacity = 1;
+                    }
+                    else
+                    {
+                        btnSelectTicket.IsEnabled = false;
+                        btnSelectTicket.Opacity = 0.2;
+                    }
+
+
+                    PRINTER_STATE ReceiptPrinter = CustomTL60Printer.Instance.getStatusWithUsb();
+                    if (ReceiptPrinter == PRINTER_STATE.OK)
+                    {
+                        Check_Receiptprinter = true;
+                    }
+                    else
+                    {
+                        Check_Receiptprinter = false;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Check_Receiptprinter = false;
                 }
-            }
-            catch (Exception ex)
-            {
-            }
+            }), DispatcherPriority.Background);
         }
         private void btnSelectTicket_Click(object sender, RoutedEventArgs e)
         {

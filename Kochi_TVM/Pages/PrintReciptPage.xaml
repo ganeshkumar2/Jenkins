@@ -7,7 +7,9 @@
       mc:Ignorable="d" 
        d:DesignHeight="758"
       d:DesignWidth="1024"
-      Background="{StaticResource pageColor}" 
+      Background="{StaticResource pageColor}"
+      Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded"
       Title="PrintReciptPage">
     <Grid>
         <Grid>

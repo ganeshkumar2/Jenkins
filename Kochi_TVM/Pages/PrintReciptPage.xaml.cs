@@ -2,10 +2,12 @@
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +26,11 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class PrintReciptPage : Page
     {
+        private static ILog log = LogManager.GetLogger(typeof(PrintReciptPage).Name);
+
+        private static Timer idleTimer;
+        private static TimerCallback idleTimerDelegate;
+
         string RecAmt;
         string ChaAmt;
         public PrintReciptPage(string NumberOfTicket, string ReceivedAmt, string ChangeAmt)
@@ -74,11 +81,11 @@ namespace Kochi_TVM.Pages
             //    var qr = Utility.PrepareQRImage(selectedTickets.TicketGUID);
             //    CustomTL60Printer.Instance.PrintQRTicket(selectedTickets, qr);
             //}
-            //if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
-            //{
-            //    var qr = Utility.PrepareQRImage(Ticket.startStation.description);
-            //    //CustomTL60Printer.Instance.(qr);
-            //}
+            if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+            {
+                var qr = Utility.PrepareQRImage(Ticket.startStation.description);
+                CustomKPM150HPrinter.Instance.PrintQRTicket(qr);
+            }
             await Task.Delay(4000);
             NavigationService.Navigate(new Pages.MainPage());
         }
@@ -112,6 +119,45 @@ namespace Kochi_TVM.Pages
         private void btnPrintRecipt_Click(object sender, RoutedEventArgs e)
         {
             PrintReceipt();            
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            initialTimer();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void initialTimer()
+        {
+            try
+            {
+                idleTimerDelegate = new TimerCallback(NavigateAction);
+                idleTimer = new Timer(idleTimerDelegate, null, 60000, 0);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error PrintReciptPage -> initialTimer() : " + ex.ToString());
+            }
+        }
+        private void NavigateAction(object obj)
+        {
+            try
+            {
+                idleTimer.Dispose();
+                this.Dispatcher.Invoke(async () =>
+                {
+                    PrintQR();
+                    await Task.Delay(1000);
+                    NavigationService.Navigate(new Pages.MainPage());
+                });
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error PrintReciptPage -> DateTimeTimerAction() : " + ex.ToString());
+            }
         }
     }
 }

@@ -335,6 +335,9 @@
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Maintenance\AddCardAndQRPage.xaml.cs">
+      <DependentUpon>AddCardAndQRPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Maintenance\AdminInfoPage.xaml.cs">
       <DependentUpon>AdminInfoPage.xaml</DependentUpon>
     </Compile>
@@ -364,6 +367,9 @@
     </Compile>
     <Compile Include="Pages\Maintenance\DeviceInfoPage.xaml.cs">
       <DependentUpon>DeviceInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Maintenance\DeviceTestsPage.xaml.cs">
+      <DependentUpon>DeviceTestsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Maintenance\MaintancePage.xaml.cs">
       <DependentUpon>MaintancePage.xaml</DependentUpon>
@@ -544,6 +550,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Maintenance\AddCardAndQRPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Maintenance\AdminInfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -581,6 +591,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Maintenance\DeviceInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Maintenance\DeviceTestsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

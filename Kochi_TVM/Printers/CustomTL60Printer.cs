@@ -13,6 +13,7 @@ using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using static Kochi_TVM.Utils.Enums;
+using TransactionType = Kochi_TVM.Utils.Enums.TransactionType;
 
 namespace Kochi_TVM.Printers
 {
@@ -464,7 +465,7 @@ namespace Kochi_TVM.Printers
 
                 using (var context = new TVM_Entities())
                 {
-                   var trxData = context.sp_SelShiftPaymentReport(0,Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")),0, startDate, endDate).ToList();
+                   var trxData = context.sp_SelShiftPaymentReport(Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), Stations.currentStation.id, 0,0, startDate, endDate).ToList();
                     foreach(var data in trxData)
                     {
                         if (Convert.ToString(data.Transaction) == "QR SJT-CASH")
@@ -689,6 +690,188 @@ namespace Kochi_TVM.Printers
             //AddText("Removed Count", count2.ToString(), 100);
             AddText("------------------------------------------------------------------------------");
             AddText("");
+
+            PrintDocument Document1 = new PrintDocument();
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
+        public void StockStatusReport(int coin1, int coin2, int coin5, int qr, int rpt, int receipt,
+            int banknote10, int banknote20, int box)
+        {
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            AddText("--STOCKS--");
+            AddText("------------------------------------------------------------------------------");
+            AddText("QR Slip Count", qr.ToString(), 120);
+            //PrinterFunctions.AddText("Receipt Slip Count", receipt.ToString(), 120);
+            //PrinterFunctions.AddText("RPT Count", rpt.ToString(), 120);
+
+            AddText("1 Rs. Coin Count", coin1.ToString(), 120);
+            AddText("2 Rs. Coin Count", coin2.ToString(), 120);
+            AddText("5 Rs. Coin Count", coin5.ToString(), 120);
+            AddText("Hoppers Amount", (coin1 * 1 + coin2 * 2 + coin5 * 5).ToString() + " Rs.", 120);
+
+            AddText("10 Rs. Banknote Count", banknote10.ToString(), 130);
+            AddText("20 Rs. Banknote Count", banknote20.ToString(), 130);
+            AddText("Box Amount", box.ToString() + " Rs.", 130);
+            AddText("Banknotes Amount", (banknote10 * 10 + banknote20 * 20 + box).ToString() + " Rs.", 130);
+
+
+            AddText("Grand Total", (coin1 * 1 + coin2 * 2 + coin5 * 5 + banknote10 * 10 + banknote20 * 20
+                                    + box).ToString() + " Rs.", 130);
+
+            AddText("------------------------------------------------------------------------------");
+
+            PrintDocument Document1 = new PrintDocument();
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
+        public void AddPrintQRRPT(int count, TransactionType type, int stock)
+        {
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            switch (type)
+            {
+                case TransactionType.TT_QR:
+
+                    AddText("--QR Slip Replenish--");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    AddText("Added Type", "QR Slip", 100);
+                    AddText("Added Count", count.ToString(), 100);
+                    AddText("Total Count", stock.ToString(), 100);
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    break;
+                case TransactionType.TT_RPT:
+
+                    AddText("--RPT Replenish--");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("Added Type", "RPT", 100);
+                    AddText("Added Count", count.ToString(), 100);
+                    AddText("Total Count", stock.ToString(), 100);
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    break;
+                default:
+                    break;
+            }
+
+            PrintDocument Document1 = new PrintDocument();
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
+
+        public void DispatchQRRPT(int count, TransactionType type, int stock)
+        {
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            switch (type)
+            {
+                case TransactionType.TT_QR:
+
+                    AddText("--QR Slip Removing--");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("Removed Type", "QR Slip", 100);
+                    AddText("Removed Count", count.ToString(), 100);
+                    AddText("Total Count", stock.ToString(), 100);
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    break;
+                case TransactionType.TT_RPT:
+
+                    AddText("--RPT Removing--");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("Removed Type", "RPT", 100);
+                    AddText("Removed Count", count.ToString(), 100);
+                    AddText("Total Count", stock.ToString(), 100);
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    break;
+                default:
+                    break;
+            }
+
+            PrintDocument Document1 = new PrintDocument();
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
+        public void EmptyQRRPT(int count, TransactionType type)
+        {
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            switch (type)
+            {
+                case TransactionType.TT_QR:
+                    AddText("--QR Slip Empty--");
+                    AddText("");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    AddText("Removed Type", "QR Slip", 100);
+                    AddText("Removed Count", count.ToString(), 100);
+                    AddText("");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    break;
+                case TransactionType.TT_RPT:
+                    AddText("--RPT Empty--");
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("Removed Type", "RPT", 100);
+                    AddText("Removed Count", count.ToString(), 100);
+                    AddText("------------------------------------------------------------------------------");
+                    AddText("");
+                    break;
+                default:
+                    break;
+            }
 
             PrintDocument Document1 = new PrintDocument();
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);

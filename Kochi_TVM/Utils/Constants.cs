@@ -5,6 +5,8 @@ namespace Kochi_TVM.Utils
 {
     public static class Constants
     {
+        public static int CheckDeviceTime = 15 * 1000;
+
         public static bool IsVoiceEnabled = false;
         //BNR
         public static string BNRStatus = "";

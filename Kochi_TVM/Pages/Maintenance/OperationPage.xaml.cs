@@ -75,7 +75,8 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnAddTicket_Click(object sender, RoutedEventArgs e)
         {
-
+            Utility.PlayClick();
+            NavigationService.Navigate(new Pages.Maintenance.AddCardAndQRPage());
         }
 
         private void btnAddBanknote_Click(object sender, RoutedEventArgs e)
