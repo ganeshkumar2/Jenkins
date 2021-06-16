@@ -301,8 +301,8 @@ namespace Kochi_TVM.Pages
                     noteunload = new List<int>();
                     List<string> extenedCassette = extenedCassetteStatus.ToList();
                     extenedCassette.RemoveAt(0);
-
-                    if (extenedCassette.Contains("Bill type ->" + Constants.EscrowAmount))
+                    int billtype = billTable.Where(x => x.DigitBillType == Constants.EscrowAmount).Select(x => x.BillType).FirstOrDefault();
+                    if (extenedCassette.Contains("Bill type ->" + billtype))
                     {
                         if (extenedCassette.Count > 1)
                         {
@@ -454,28 +454,30 @@ namespace Kochi_TVM.Pages
 
                 foreach (var data in stackedNotesListReceived)
                 {
-                    int bill = 0;
-                    bill = billTable.Where(x => x.BillType == data.BillType).Select(x => x.DigitBillType).FirstOrDefault();
-                    if (cassettes[0].billType == data.BillType || cassettes[1].billType == 24)
+                    if (data.BillNumber != 0)
                     {
-                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
-                        if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, data.BillNumber))
-                            MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, bill);
-                    }
-                    else if (cassettes[1].billType == data.BillType || cassettes[1].billType == 24)
-                    {
-                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
-                        if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, data.BillNumber))
-                            MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, bill);
-                    }
-                    else if (cassettes[2].billType == data.BillType || cassettes[2].billType == 24)
-                    {
-                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
-                        if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, data.BillNumber))
-                            MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, bill);
+                        int bill = 0;
+                        bill = billTable.Where(x => x.BillType == data.BillType).Select(x => x.DigitBillType).FirstOrDefault();
+                        if (cassettes[0].billType == data.BillType || cassettes[0].billType == 24)
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, data.BillNumber))
+                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, bill);
+                        }
+                        else if (cassettes[1].billType == data.BillType || cassettes[1].billType == 24)
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, data.BillNumber))
+                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, bill);
+                        }
+                        else if (cassettes[2].billType == data.BillType || cassettes[2].billType == 24)
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, data.BillNumber))
+                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, bill);
+                        }
                     }
                 }
-
             }
             catch (Exception ex)
             {

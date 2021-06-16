@@ -5,7 +5,7 @@ namespace Kochi_TVM.Utils
 {
     public static class Constants
     {
-        public static int CheckDeviceTime = 15 * 1000;
+        public static int CheckDeviceTime = 20000;
 
         public static bool IsVoiceEnabled = false;
         //BNR
@@ -19,6 +19,7 @@ namespace Kochi_TVM.Utils
         public static Cassette[] CassettesInfo = new Cassette[3];
         public static byte[] EnableBillNotes = new byte[6];
         public static bool NoChangeMode = false;
+        public static bool NoReceiptMode = false;
 
         public static string Hopper1Level = "";
         public static string Hopper2Level = "";

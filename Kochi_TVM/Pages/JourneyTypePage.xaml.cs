@@ -77,5 +77,13 @@ namespace Kochi_TVM.Pages
                     break;
             }
         }
+
+        private void gridGrp_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Utility.PlayClick();
+            Ticket.journeyType = JourneyType.Group_Ticket;
+            GoToNextStep();
+            NavigationService.Navigate(new Pages.StationPage());
+        }
     }
 }

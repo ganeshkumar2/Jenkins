@@ -402,29 +402,33 @@ namespace Kochi_TVM.Business
             }
             return result;
         }
-        //public static void PassTypeList(int type)
-        //{
-        //    try
-        //    {
-        //        listPassTypes.Clear();
-        //        var rp = Parameters.db.SelEmvPass(type);
+        public static void PassTypeList(int type)
+        {
+            try
+            {
+                listPassTypes.Clear();
 
-        //        for (var i = 0; i < rp.Data.Tables[0].Rows.Count; i++)
-        //        {
-        //            var emvTicket = new EmvPassTicketTypes
-        //            {
-        //                Explanation = rp.Data.Tables[0].Rows[i]["explanation"].ToString(),
-        //                Id = Convert.ToInt32(rp.Data.Tables[0].Rows[i]["recId"]),
-        //                TripCount = Convert.ToInt32(rp.Data.Tables[0].Rows[i]["tripCount"]),
-        //                Validity = Convert.ToDateTime(DateTime.Now.AddDays(Convert.ToInt32(rp.Data.Tables[0].Rows[i]["validDayCount"]) - 1).ToString("dd/MM/yyyy")).AddHours(23).AddMinutes(59).AddSeconds(59)
-        //            };
-        //            listPassTypes.Add(emvTicket);
-        //        }
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //    }
-        //}
+                using (var context = new Models.TVM_Entities())
+                {
+                    var val = context.sp_SelEmvPass(type).ToList();
+
+                    foreach(var item in val)
+                    {
+                        var emvTicket = new EmvPassTicketTypes
+                        {
+                            Explanation = item.explanation.ToString(),
+                            Id = Convert.ToInt32(item.recId),
+                            TripCount = Convert.ToInt32(item.tripCount),
+                            Validity = Convert.ToDateTime(DateTime.Now.AddDays(Convert.ToInt32(item.validDayCount) - 1).ToString("dd/MM/yyyy")).AddHours(23).AddMinutes(59).AddSeconds(59)
+                        };
+                        listPassTypes.Add(emvTicket);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+            }
+        }
     }
 
     public class TSelectedTickets : IComparable<TSelectedTickets>

@@ -98,8 +98,8 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnTestHopper_Click(object sender, RoutedEventArgs e)
         {
-            CCTalkManager.Instance.coinHopperEV4000_3.DispenseCoins(1);
-            CCTalkManager.Instance.coinHopperEV4000_3.DispenseCoins(1);
+            CCTalkManager.Instance.coinHopperEV4000_1.DispenseCoins(1);
+            CCTalkManager.Instance.coinHopperEV4000_2.DispenseCoins(1);
             CCTalkManager.Instance.coinHopperEV4000_3.DispenseCoins(1);
             MessageBoxOperations.ShowMessage("Hopper Test", "Test is completed.", MessageBoxButtonSet.OK);
         }
@@ -115,7 +115,7 @@ namespace Kochi_TVM.Pages.Maintenance
             PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
             if (QRPrinter == PRINTER_STATE.OK)
             {
-                var qr = Utility.PrepareQRImage(Ticket.startStation.description);
+                var qr = Utility.PrepareQRImage("QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test");
                 CustomKPM150HPrinter.Instance.PrintTestQRTicket(qr);
                 MessageBoxOperations.ShowMessage("QR Printer Test", "Test is completed.", MessageBoxButtonSet.OK);
             }

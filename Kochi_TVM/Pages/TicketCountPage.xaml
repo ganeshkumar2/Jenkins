@@ -11,7 +11,63 @@
       Loaded="Page_Loaded" 
       Unloaded="Page_Unloaded"
       Title="TicketCountPage">
+    <Page.Resources>
+        <Style  TargetType="ScrollBar" >
+            <Setter Property="Width" Value="500"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Name="Bg" 
+             
+              SnapsToDevicePixels="true" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition MaxHeight="50"/>
+                                <RowDefinition Height="0.00001*"/>
+                                <RowDefinition MaxHeight="50"/>
+                            </Grid.RowDefinitions>
+                            <RepeatButton 
+                        IsEnabled="{TemplateBinding IsMouseOver}"
+                        Height="50"
+                      Foreground="#FF00AFAA"
+                        Command="ScrollBar.LineUpCommand"
+                        Content="^" FontSize="30" FontWeight="Bold" />
+                            <!-- Set the ViewporSize to NaN to disable autosizing of the Thumb. -->
+                            <Track Name="PART_Track" 
+                 ViewportSize="NaN"
+                 IsDirectionReversed="true"
+                 Grid.Row="1"
+                 Grid.ZIndex="-1">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton 
+                            Command="ScrollBar.PageUpCommand"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton 
+                            Command="ScrollBar.PageDownCommand"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <!-- Set the height of the Thumb.-->
+                                    <Thumb Height="30"/>
+                                </Track.Thumb>
+                            </Track>
+                            <RepeatButton 
+            Grid.Row="2" 
+            VerticalAlignment="Bottom"
+            Height="50" Foreground="#FF00AFAA"
+            Command="ScrollBar.LineDownCommand" VerticalContentAlignment="Top"
+            Content="v" FontSize="30" FontWeight="Bold"/>
 
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="PART_Track" Property="IsEnabled" Value="false">
+                                <Setter TargetName="PART_Track" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid x:Name="mainGrid" Background="Transparent">
         <Grid.RowDefinitions>
             <!--Top space -->
@@ -45,8 +101,8 @@
                 <RowDefinition Height="8*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="9*"/>
             </Grid.ColumnDefinitions>
             <Grid x:Name="gridSJT" Grid.Row="0" Grid.Column="0" Height="200" Width="200">
                 <Grid.RowDefinitions>
@@ -92,6 +148,29 @@
                 <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/RJT.png"/>
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
                 <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Return Journey" Style="{StaticResource styleLabelHeader4}" />
+            </Grid>
+
+            <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="0" Height="200" Width="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
+                <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/groupTicket.png"/>
+                <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
+                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Group Ticket" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
             <ScrollViewer Name="scrollCountGrid" Grid.Column="1" Grid.Row="0" VerticalScrollBarVisibility="Auto" Style="{StaticResource SemiTransparentThinScrollViewer}" >

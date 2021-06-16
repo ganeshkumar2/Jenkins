@@ -159,16 +159,19 @@ namespace Kochi_TVM.Utils
             TT_ADD_QR,
             TT_REMOVE_QR,
             TT_EMPTY_QR,
+            TT_ADD_BANKNOTE5,
             TT_ADD_BANKNOTE50,
             TT_ADD_BANKNOTE100,
             TT_ADD_BANKNOTE200,
             TT_ADD_BANKNOTE500,
             TT_ADD_BANKNOTE2000,
+            TT_REMOVE_BANKNOTE5,
             TT_REMOVE_BANKNOTE50,
             TT_REMOVE_BANKNOTE100,
             TT_REMOVE_BANKNOTE200,
             TT_REMOVE_BANKNOTE500,
             TT_REMOVE_BANKNOTE2000,
+            TT_PAYOUT_BANKNOTE5,
             TT_PAYOUT_BANKNOTE50,
             TT_PAYOUT_BANKNOTE100,
             TT_PAYOUT_BANKNOTE200,
@@ -328,6 +331,22 @@ namespace Kochi_TVM.Utils
 
             DEFAULT_VALUE = 0xFFFE,// costome error
             OFFLINE = 0xFFFF// costome error   
+        }
+        public enum Dispenser_ErrorCodes
+        {
+            //device err : 10, device Code : 04, err Code : 1 - 99 => ex : 100312
+            Success = 0,
+            ParameterError = 100401,
+            GetStatusError = 100402,
+            ResetError = 100403,
+            CommOpenError = 100404,
+            EnableError = 100405,
+            DisableError = 100406,
+            DispenseError = 100407,
+            DeviceBussyError = 100408,
+            DeviceEmptyError = 100409,
+            JammedError = 100410,
+            UnknownError = 100499
         }
     }
 }

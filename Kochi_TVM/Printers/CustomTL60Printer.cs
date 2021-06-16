@@ -25,7 +25,7 @@ namespace Kochi_TVM.Printers
 
         static int widthPoits = 144;
 
-        static int lineGap = 25;
+        static int lineGap = 18;
         static int space = 5;
         static int seperatorPoint = 120;
         static int lineY = 2;
@@ -39,7 +39,7 @@ namespace Kochi_TVM.Printers
             Text = 0,
             Image = 1
         }
-        public struct PrintObject
+        private struct PrintObject
         {
             public StringAlignment align;
             public int startX;
@@ -117,13 +117,11 @@ namespace Kochi_TVM.Printers
             AddPrintObject(startX, startY, ContentType.Text, printText, null, align);
             return true;
         }
-
         public bool AddLine(int startX, int startY, string printText)
         {
             AddPrintObject(startX, startY, ContentType.Text, printText, null, StringAlignment.Far);
             return true;
         }
-
         public bool AddLine(int startX, int startY, Bitmap image)
         {
             AddPrintObject(startX, startY, ContentType.Image, String.Empty, image, StringAlignment.Far);
@@ -166,9 +164,9 @@ namespace Kochi_TVM.Printers
             startPosition = ((pageSize - objectSize) / 2);
             return startPosition;
         }      
-
         public void TestBNA()
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -176,8 +174,6 @@ namespace Kochi_TVM.Printers
             logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
             //logo.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipY);
-
-            AddText("");
             AddText("KOCHI METRO");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
@@ -190,6 +186,8 @@ namespace Kochi_TVM.Printers
             AddText("");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
@@ -197,6 +195,7 @@ namespace Kochi_TVM.Printers
 
         public void TestHopper()
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -205,7 +204,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
             //logo.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipY);
 
-            AddText("");
             AddText("KOCHI METRO");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
@@ -218,12 +216,15 @@ namespace Kochi_TVM.Printers
             AddText("");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void TestReceiptPrinter()
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -232,7 +233,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
             //logo.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipY);
 
-            AddText("");
             AddText("KOCHI METRO");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
@@ -244,12 +244,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void TicketReceipt(string ReceivedAmt, string ChangeAmt)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -290,12 +293,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void TVMInfoReceipt()
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -323,12 +329,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void TVMDeviceInfoReceipt()
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -362,12 +371,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void CollectionReceipt()
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -437,6 +449,8 @@ namespace Kochi_TVM.Printers
             AddText("");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
@@ -501,6 +515,7 @@ namespace Kochi_TVM.Printers
                     }
                 }
 
+                lineY = 2;
                 printList = new List<PrintObject>();
                 string headerAddress = "Images\\kmrl_icon.png";
                 Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -592,6 +607,8 @@ namespace Kochi_TVM.Printers
 
 
                 PrintDocument Document1 = new PrintDocument();
+                PrintController printController = new StandardPrintController();
+                Document1.PrintController = printController;
                 Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
                 Document1.PrinterSettings.PrinterName = PrinterName;
                 Document1.Print();
@@ -604,8 +621,8 @@ namespace Kochi_TVM.Printers
         }
         public void CoinAddPrint(int count, int coin, int stock)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
-
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
@@ -627,12 +644,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void CoinDispatchPrint(int count, int coin, int stock)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -641,7 +661,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("sys_EquipmentId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -657,12 +676,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void CoinEmptyBoxPrint(int count, int coin, int stock)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -671,7 +693,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -692,6 +713,8 @@ namespace Kochi_TVM.Printers
             AddText("");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
@@ -699,6 +722,7 @@ namespace Kochi_TVM.Printers
         public void StockStatusReport(int coin1, int coin2, int coin5, int qr, int rpt, int receipt,
             int banknote10, int banknote20, int box)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -706,7 +730,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -735,12 +758,15 @@ namespace Kochi_TVM.Printers
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void AddPrintQRRPT(int count, TransactionType type, int stock)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -748,7 +774,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -782,6 +807,8 @@ namespace Kochi_TVM.Printers
             }
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
@@ -789,6 +816,7 @@ namespace Kochi_TVM.Printers
 
         public void DispatchQRRPT(int count, TransactionType type, int stock)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -796,7 +824,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -829,12 +856,15 @@ namespace Kochi_TVM.Printers
             }
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void EmptyQRRPT(int count, TransactionType type)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -842,7 +872,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -874,6 +903,8 @@ namespace Kochi_TVM.Printers
             }
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
@@ -881,6 +912,7 @@ namespace Kochi_TVM.Printers
 
         public void SendBoxNotes(int count, int billType)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -888,7 +920,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -903,12 +934,15 @@ namespace Kochi_TVM.Printers
             AddText("");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
         public void RemoveCashBoxNotes(int amount, int count)
         {
+            lineY = 2;
             printList = new List<PrintObject>();
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
@@ -916,7 +950,6 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("");
             AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
@@ -930,10 +963,54 @@ namespace Kochi_TVM.Printers
             AddText("");
 
             PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
             Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
+
+        public void AddBanknotes(int count1, int notes1,int count2, int notes2, int count3, int notes3)
+        {
+            lineY = 2;
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            AddText("--Banknote Replenish--");
+            AddText("------------------------------------------------------------------------------");
+            AddText(string.Format("Added Notes: {0} Rs.", notes1));
+            AddText("Added Count", count1.ToString(), 80);
+            AddText("Added Amount", (count1 * notes1).ToString() + "Rs.", 80);
+            AddText("------------------------------------------------------------------------------");
+            AddText(string.Format("Added Notes: {0} Rs.", notes2));
+            AddText("Added Count", count2.ToString(), 80);
+            AddText("Added Amount", (count2 * notes2).ToString() + "Rs.", 80);
+            AddText("------------------------------------------------------------------------------");
+            AddText(string.Format("Added Notes: {0} Rs.", notes3));
+            AddText("Added Count", count3.ToString(), 80);
+            AddText("Added Amount", (count3 * notes3).ToString() + "Rs.", 80);
+            AddText("------------------------------------------------------------------------------");
+            AddText("Total Count", (count1 + count2 + notes3).ToString(), 80);
+            AddText("------------------------------------------------------------------------------");
+            AddText("");
+
+            PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
+
         void printDocumentPrintPage(object sender, PrintPageEventArgs e)
         {
             printGraphics = e.Graphics;

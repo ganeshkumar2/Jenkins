@@ -22,5 +22,7 @@ namespace Kochi_TVM.Models
         public int cassette2 { get; set; }
         public int cassette3 { get; set; }
         public int box { get; set; }
+        public Nullable<int> qrSlip { get; set; }
+        public Nullable<int> receiptSlip { get; set; }
     }
 }

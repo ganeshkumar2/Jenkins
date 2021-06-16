@@ -31,10 +31,11 @@
                     <Label Name="lblChange"  HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,0,0,20"/>
                 </StackPanel>
                 
-                <StackPanel  Orientation="Horizontal" Height="80" HorizontalAlignment="Center">
+                <StackPanel x:Name="stkPrint" Orientation="Horizontal" Height="80" HorizontalAlignment="Center" Visibility="Collapsed">
                     <Button x:Name="btnPrintRecipt"  Content="Print Receipt " Style="{StaticResource styleCardTypeBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="25" Click="btnPrintRecipt_Click" Margin="0,0,50,0"/>
                     <Button x:Name="btnPrintReciptSkip" Grid.Row="0" Grid.Column="1" Content="Skip Receipt " Style="{StaticResource styleCardTypeBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="25" Click="btnPrintReciptSkip_Click" />
                 </StackPanel>
+                <Button x:Name="btnFinish" Height="80" Content="Finish" Visibility="Collapsed" Style="{StaticResource styleCardTypeBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="25" Click="btnPrintReciptSkip_Click" Margin="50,0,50,0"/>
             </StackPanel>
         </Grid>
     </Grid>

@@ -4,6 +4,7 @@ using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
+using log4net;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,16 +21,14 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class MainPage : Page
     {
+        private static ILog log = LogManager.GetLogger(typeof(MainPage).Name);
+
         private static Timer checkDeviceTimer;
         private static TimerCallback checkDeviceTimerDelegate;
         bool Check_Receiptprinter = false;
         public MainPage()
         {
-            InitializeComponent();
-            MultiLanguage.Init("EN");
-            Message();
-            checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
-            checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
+            InitializeComponent();            
         }
         
         void Message()
@@ -70,14 +69,17 @@ namespace Kochi_TVM.Pages
                     if (ReceiptPrinter == PRINTER_STATE.OK)
                     {
                         Check_Receiptprinter = true;
+                        Constants.NoReceiptMode = false;
                     }
                     else
                     {
                         Check_Receiptprinter = false;
+                        Constants.NoReceiptMode = true;
                     }
                 }
                 catch (Exception ex)
                 {
+                    log.Error("Error MainPage -> CheckDeviceAction() : " + ex.ToString());
                 }
             }), DispatcherPriority.Background);
         }
@@ -110,7 +112,7 @@ namespace Kochi_TVM.Pages
             }
             catch (Exception ex)
             {
-                //log.Error("Error OptionPage -> BrdQRInfo_MouseLeftButtonDown() : " + ex.ToString());
+                log.Error("Error MainPage -> btnSelectTicket_Click() : " + ex.ToString());
             }
         }
 
@@ -199,17 +201,22 @@ namespace Kochi_TVM.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            BNRManager.Instance.PollingAction();
-            new Thread(() => AsyncDBCal()).Start();
-        }
-        private void AsyncDBCal()
-        {
             try
             {
+                MultiLanguage.Init("EN");
+
+                Message();
+
+                checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
+                checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
+
+                BNRManager.Instance.PollingAction();
                 StockOperations.SelStockStatus();
             }
-            catch (Exception)
-            { }
+            catch (Exception ex)
+            {
+                log.Error("Error MainPage -> Page_Loaded() : " + ex.ToString());
+            }
         }
         private void btnReceiptOK_Click(object sender, RoutedEventArgs e)
         {
@@ -225,10 +232,16 @@ namespace Kochi_TVM.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (checkDeviceTimer != null)
-                checkDeviceTimer.Dispose();
+            try
+            {
+                if (checkDeviceTimer != null)
+                    checkDeviceTimer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error MainPage -> Page_Loaded() : " + ex.ToString());
+            }
         }
-
         private void btnNoChangeExit_Click(object sender, RoutedEventArgs e)
         {
             Utility.PlayClick();

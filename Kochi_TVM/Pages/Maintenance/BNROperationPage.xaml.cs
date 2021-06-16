@@ -86,7 +86,7 @@ namespace Kochi_TVM.Pages.Maintenance
                         if (cassetteset.cassetteId == 1)
                         {
                             noteincasset1 = cassetteset.billNumber;
-                            if (cassetteset.cassetteStatus == CassetteStatus.ESCROW)
+                            if (cassetteset.cassetteId == 1 && cassetteset.cassetteStatus == CassetteStatus.ESCROW)
                             {
                                 notevalincasset1 = Constants.EscrowAmount;
                             }
@@ -101,13 +101,13 @@ namespace Kochi_TVM.Pages.Maintenance
                         if (cassetteset.cassetteId == 2)
                         {
                             noteincasset2 = cassetteset.billNumber;
-                            if (cassetteset.cassetteStatus == CassetteStatus.ESCROW)
+                            if (cassetteset.cassetteId == 2 && cassetteset.cassetteStatus == CassetteStatus.ESCROW)
                             {
-                                noteincasset2 = Constants.EscrowAmount;
+                                notevalincasset2 = Constants.EscrowAmount;
                             }
                             else
                             {
-                                noteincasset2 = bill;
+                                notevalincasset2 = bill;
                             }
                             lblCassette2.Content = "₹ " + bill;
                             Casette2Billtype = cassetteset.billType;
@@ -116,7 +116,7 @@ namespace Kochi_TVM.Pages.Maintenance
                         if (cassetteset.cassetteId == 3)
                         {
                             noteincasset3 = cassetteset.billNumber;
-                            if (cassetteset.cassetteStatus == CassetteStatus.ESCROW)
+                            if (cassetteset.cassetteId == 3 && cassetteset.cassetteStatus == CassetteStatus.ESCROW)
                             {
                                 notevalincasset3 = Constants.EscrowAmount;
                             }
@@ -207,6 +207,7 @@ namespace Kochi_TVM.Pages.Maintenance
             if (!isAccepting)
             {
                 Utility.PlayClick();
+                log.Debug("Debug notevalincasset1 : " + notevalincasset1 + " notevalincasset2 : " + notevalincasset2 +" notevalincasset3 : " + notevalincasset3);
                 grdMoneyAccept.Visibility = Visibility.Visible;
                 isAccepting = true;
                 if (notevalincasset1 == 10 && notevalincasset2 == 20 && notevalincasset3 == 50)
@@ -327,27 +328,33 @@ namespace Kochi_TVM.Pages.Maintenance
                     isAccepting = false;
                     foreach (var data in stackedNotesListReceived)
                     {
-                        int bill = 0;
-                        bill = billTable.Where(x => x.BillType == data.BillType).Select(x => x.DigitBillType).FirstOrDefault();
-                        if (notevalincasset1 == bill)
+                        if (data.BillNumber != 0)
                         {
-                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
-                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, data.BillNumber))
-                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, bill);
-                        }
-                        else if (notevalincasset2 == bill)
-                        {
-                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
-                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, data.BillNumber))
-                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, bill);
-                        }
-                        else if (notevalincasset3 == bill)
-                        {
-                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
-                            if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, data.BillNumber))
-                                MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, bill);
+                            int bill = 0;
+                            bill = billTable.Where(x => x.BillType == data.BillType).Select(x => x.DigitBillType).FirstOrDefault();
+                            if (notevalincasset1 == bill || cassettes[0].billType == 24)
+                            {
+                                long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                                if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, data.BillNumber))
+                                    MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Increase, bill);
+                            }
+                            else if (notevalincasset2 == bill || cassettes[1].billType == 24)
+                            {
+                                long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                                if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, data.BillNumber))
+                                    MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette2, (int)UpdateType.Increase, bill);
+                            }
+                            else if (notevalincasset3 == bill || cassettes[2].billType == 24)
+                            {
+                                long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_ADD_BANKNOTE" + bill)));
+                                if (StockOperations.InsStock(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, data.BillNumber))
+                                    MoneyOperations.InsMoney(trxId, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette3, (int)UpdateType.Increase, bill);
+                            }
                         }
                     }
+
+                    if (noteincasset1 > 0 || noteincasset2 > 0 || noteincasset3 > 0)
+                        CustomTL60Printer.Instance.AddBanknotes(noteincasset1,notevalincasset1, noteincasset2, notevalincasset2,noteincasset2, notevalincasset2);
                 }
                 catch { }
             }

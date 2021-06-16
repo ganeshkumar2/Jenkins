@@ -373,11 +373,6 @@ namespace Kochi_TVM.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_SelMoneyStatus_Result>("sp_SelMoneyStatus");
         }
     
-        public virtual ObjectResult<sp_SelStockStatus_Result> sp_SelStockStatus()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_SelStockStatus_Result>("sp_SelStockStatus");
-        }
-    
         public virtual ObjectResult<Nullable<decimal>> sp_SelTrxId(Nullable<long> trxTypeId)
         {
             var trxTypeIdParameter = trxTypeId.HasValue ?
@@ -589,6 +584,11 @@ namespace Kochi_TVM.Models
                 new ObjectParameter("alarmMessage", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_insertTvmAlarm", stationIdParameter, deviceNoParameter, alarmTypeIdParameter, alarmMessageParameter);
+        }
+    
+        public virtual ObjectResult<sp_SelStockStatus_Result> sp_SelStockStatus()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_SelStockStatus_Result>("sp_SelStockStatus");
         }
     }
 }

@@ -60,6 +60,9 @@ namespace Kochi_TVM.Pages
                     ListJourneyBtnsInGrid();
                     break;
                 case JourneyType.Group_Ticket:
+                    gridSJT.Visibility = System.Windows.Visibility.Hidden;
+                    gridRJT.Visibility = System.Windows.Visibility.Hidden;
+                    gridGrp.Visibility = System.Windows.Visibility.Visible;
                     isOk = CreatePassengerCountGrid();
                     if (isOk)
                         ListPassengerCountInGrid();
@@ -67,12 +70,14 @@ namespace Kochi_TVM.Pages
                 case JourneyType.SJT:
                     gridSJT.Visibility = System.Windows.Visibility.Visible;
                     gridRJT.Visibility = System.Windows.Visibility.Hidden;
+                    gridGrp.Visibility = System.Windows.Visibility.Hidden;
                     isOk = CreateTicketCountGrid();
                     ListTicketCountInGrid();
                     break;
                 case JourneyType.RJT:
                     gridSJT.Visibility = System.Windows.Visibility.Hidden;
                     gridRJT.Visibility = System.Windows.Visibility.Visible;
+                    gridGrp.Visibility = System.Windows.Visibility.Hidden;
                     isOk = CreateTicketCountGrid();
                     ListTicketCountInGrid();
                     break;
@@ -259,8 +264,8 @@ namespace Kochi_TVM.Pages
 
             if (Ticket.journeyType == JourneyType.Group_Ticket)
             {
-                int minGroupCount = 10;//Convert.ToInt32(Parameters.TVMDynamic.GetParameter("sys_MinGroupCount"));
-                int maxGroupCount = 20;//Convert.ToInt32(Parameters.TVMDynamic.GetParameter("sys_MaxGroupCount"));
+                int minGroupCount = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("sys_MinGroupCount"));
+                int maxGroupCount = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("sys_MaxGroupCount"));
                 if (count >= minGroupCount && count <= maxGroupCount)
                 {
                     //if (count <= StockOperations.qrSlip)

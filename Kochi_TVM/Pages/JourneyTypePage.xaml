@@ -132,6 +132,29 @@
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
                 <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Return Journey" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
+
+            <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridGrp_MouseLeftButtonDown">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
+                <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/groupTicket.png"/>
+                <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
+                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Group Ticket" Style="{StaticResource styleLabelHeader4}" />
+            </Grid>
         </Grid>
 
         <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">

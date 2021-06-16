@@ -73,8 +73,8 @@ namespace Kochi_TVM.Business
                     banknote20 = (int)(data.cassette2);
                     banknote10 = (int)(data.cassette3);
                     box = (int)(data.box);
-                    //qrSlip = (int)(data.qrSlip);
-                    //receiptSlip = (int)(data.receiptSlip);
+                    qrSlip = (int)(data.qrSlip);
+                    receiptSlip = (int)(data.receiptSlip);
 
                     result = true;
                 }
