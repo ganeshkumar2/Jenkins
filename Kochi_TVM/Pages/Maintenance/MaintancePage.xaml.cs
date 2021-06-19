@@ -117,19 +117,19 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnTestDevice_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.DeviceTestsPage());
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
     }

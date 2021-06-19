@@ -31,6 +31,9 @@ namespace Kochi_TVM
                 InitialTimer();
                 Stations.FillStationList();
                 Stations.FillCurrentStation();
+                Parameters.TVMDynamic.FillOrUpdateParameters();
+                DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
+                DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
                 lStation.Content = "You are at : [" + Stations.currentStation.name + "] Station";
 
                 if (ConfigurationManager.AppSettings["VoiceEnable"].ToString() == "True")
@@ -81,13 +84,13 @@ namespace Kochi_TVM
         {
             if (i == 2)
                 return;
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             i++;            
         }
 
         private void gridDT_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             i++;
             if (i == 3)
             {

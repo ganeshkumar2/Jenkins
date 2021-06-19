@@ -1,6 +1,9 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.MultiLanguages;
+using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
+using log4net;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,29 +17,46 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class JourneyTypePage : Page
     {
+        private static ILog log = LogManager.GetLogger(typeof(JourneyTypePage).Name);
         public JourneyTypePage()
         {
             InitializeComponent();
-            Message();
+            try
+            {
+                btnBack.Content = MultiLanguage.GetText("back");
+                btnFinish.Content = MultiLanguage.GetText("cancel");
+                labelSJT.Content = MultiLanguage.GetText("sj");
+                lblRJT.Content = MultiLanguage.GetText("rj");
+                lblGroup.Content = MultiLanguage.GetText("gj");
+                lblHeader.Content = MultiLanguage.GetText("selectTicketType");
+                
+                //lblGroup.Content
+                Message();
+                LedOperations.GreenText("SELECT TICKET TYPE");
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error JourneyTypePage -> JourneyTypePage() : " + ex.ToString());
+            }
         }
         void Message()
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(2, null, null, "EN");
+                TVMUtility.PlayVoice(2, null, null, "EN");
             }
             if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(2, null, null, "ML");
+                TVMUtility.PlayVoice(2, null, null, "ML");
             }
             if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(2, null, null, "IN");
+                TVMUtility.PlayVoice(2, null, null, "IN");
             }
         }
         private void gridSJT_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             Ticket.journeyType = JourneyType.SJT;
             GoToNextStep();
             NavigationService.Navigate(new Pages.StationPage());
@@ -44,7 +64,7 @@ namespace Kochi_TVM.Pages
 
         private void gridRJT_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             Ticket.journeyType = JourneyType.RJT;
             GoToNextStep();
             NavigationService.Navigate(new Pages.StationPage());
@@ -52,13 +72,13 @@ namespace Kochi_TVM.Pages
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.MainPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.MainPage());
         }
         private void GoToNextStep()
@@ -80,10 +100,24 @@ namespace Kochi_TVM.Pages
 
         private void gridGrp_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             Ticket.journeyType = JourneyType.Group_Ticket;
             GoToNextStep();
             NavigationService.Navigate(new Pages.StationPage());
+        }
+
+        private void gridOnePass_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Ticket.journeyType = JourneyType.Day_Pass;
+            GoToNextStep();
+            NavigationService.Navigate(new Pages.TicketCountPage());
+        }
+
+        private void gridWeekendPass_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Ticket.journeyType = JourneyType.Weekend_Pass;
+            GoToNextStep();
+            NavigationService.Navigate(new Pages.TicketCountPage());
         }
     }
 }

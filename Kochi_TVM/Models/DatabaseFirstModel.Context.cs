@@ -253,8 +253,44 @@ namespace Kochi_TVM.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsQRCodeTicket", qRCreateModeParameter, qRCreateStationParameter, qRCreateSalePointIdParameter, transactionIdParameter, qRCreateUserIdParameter, insDTParameter);
         }
     
-        public virtual int sp_InsRFIDTicket(string rFIDCreateMode, Nullable<int> rFIDCreateStation, Nullable<int> rFIDCreateSalePointId, Nullable<int> transactionId, Nullable<int> rFIDCreateUserId)
+        public virtual int sp_InsRFIDTicket(Nullable<int> ticketType, Nullable<decimal> ticketPrice, Nullable<int> fromId, Nullable<int> toId, Nullable<int> passType, Nullable<System.DateTime> activeFrom, Nullable<System.DateTime> activeTo, string rFIDTicketId, Nullable<short> peopleCount, string rFIDCreateMode, Nullable<int> rFIDCreateStation, Nullable<int> rFIDCreateSalePointId, Nullable<int> transactionId, Nullable<int> rFIDCreateUserId)
         {
+            var ticketTypeParameter = ticketType.HasValue ?
+                new ObjectParameter("ticketType", ticketType) :
+                new ObjectParameter("ticketType", typeof(int));
+    
+            var ticketPriceParameter = ticketPrice.HasValue ?
+                new ObjectParameter("ticketPrice", ticketPrice) :
+                new ObjectParameter("ticketPrice", typeof(decimal));
+    
+            var fromIdParameter = fromId.HasValue ?
+                new ObjectParameter("fromId", fromId) :
+                new ObjectParameter("fromId", typeof(int));
+    
+            var toIdParameter = toId.HasValue ?
+                new ObjectParameter("toId", toId) :
+                new ObjectParameter("toId", typeof(int));
+    
+            var passTypeParameter = passType.HasValue ?
+                new ObjectParameter("passType", passType) :
+                new ObjectParameter("passType", typeof(int));
+    
+            var activeFromParameter = activeFrom.HasValue ?
+                new ObjectParameter("activeFrom", activeFrom) :
+                new ObjectParameter("activeFrom", typeof(System.DateTime));
+    
+            var activeToParameter = activeTo.HasValue ?
+                new ObjectParameter("activeTo", activeTo) :
+                new ObjectParameter("activeTo", typeof(System.DateTime));
+    
+            var rFIDTicketIdParameter = rFIDTicketId != null ?
+                new ObjectParameter("RFIDTicketId", rFIDTicketId) :
+                new ObjectParameter("RFIDTicketId", typeof(string));
+    
+            var peopleCountParameter = peopleCount.HasValue ?
+                new ObjectParameter("peopleCount", peopleCount) :
+                new ObjectParameter("peopleCount", typeof(short));
+    
             var rFIDCreateModeParameter = rFIDCreateMode != null ?
                 new ObjectParameter("RFIDCreateMode", rFIDCreateMode) :
                 new ObjectParameter("RFIDCreateMode", typeof(string));
@@ -275,7 +311,7 @@ namespace Kochi_TVM.Models
                 new ObjectParameter("RFIDCreateUserId", rFIDCreateUserId) :
                 new ObjectParameter("RFIDCreateUserId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsRFIDTicket", rFIDCreateModeParameter, rFIDCreateStationParameter, rFIDCreateSalePointIdParameter, transactionIdParameter, rFIDCreateUserIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsRFIDTicket", ticketTypeParameter, ticketPriceParameter, fromIdParameter, toIdParameter, passTypeParameter, activeFromParameter, activeToParameter, rFIDTicketIdParameter, peopleCountParameter, rFIDCreateModeParameter, rFIDCreateStationParameter, rFIDCreateSalePointIdParameter, transactionIdParameter, rFIDCreateUserIdParameter);
         }
     
         public virtual int sp_InsStock(Nullable<long> trxId, Nullable<int> stockType, Nullable<int> deviceType, Nullable<int> updType, Nullable<int> quantity)

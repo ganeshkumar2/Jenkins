@@ -44,20 +44,45 @@
             </Grid.ColumnDefinitions>
 
             <TextBox x:Name="txtTypeNumber" Text="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Style="{StaticResource styleCountText}" FontSize="55" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <Button x:Name="btn1" Grid.Row="2" Grid.Column="0" Content="1"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn1_Click" />
-            <Button x:Name="btn2" Grid.Row="2" Grid.Column="2" Content="2"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn2_Click" />
-            <Button x:Name="btn3" Grid.Row="2" Grid.Column="4" Content="3"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn3_Click" />
-            <Button x:Name="btn4" Grid.Row="4" Grid.Column="0" Content="4"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn4_Click" />
-            <Button x:Name="btn5" Grid.Row="4" Grid.Column="2" Content="5"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn5_Click" />
-            <Button x:Name="btn6" Grid.Row="4" Grid.Column="4" Content="6"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn6_Click" />
-            <Button x:Name="btn7" Grid.Row="6" Grid.Column="0" Content="7"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn7_Click" />
-            <Button x:Name="btn8" Grid.Row="6" Grid.Column="2" Content="8"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn8_Click" />
-            <Button x:Name="btn9" Grid.Row="6" Grid.Column="4" Content="9"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn9_Click" />
-            <Button x:Name="btn0" Grid.Row="8" Grid.Column="2" Content="0"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn0_Click" />
-            <Button x:Name="btnClr" Grid.Row="8" Grid.Column="0" Content="CLR"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnClr_Click" />
-            <Button x:Name="btnDel" Grid.Row="8" Grid.Column="4" Content="DEL"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnDel_Click" />
-            <Button x:Name="btnCancel" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Content="Exit"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnCancel_Click" />
-            <Button x:Name="btnOK" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="3" Content="OK"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnOK_Click" />
-        </Grid>
+            <Border x:Name="btn1" Grid.Row="2" Grid.Column="0" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn1_Click">
+                <Label Content="1"></Label>
+            </Border>
+            <Border x:Name="btn2" Grid.Row="2" Grid.Column="2" Style="{StaticResource NumberButton}"  MouseLeftButtonDown="btn2_Click">
+                <Label Content="2" />
+            </Border>
+            <Border x:Name="btn3" Grid.Row="2" Grid.Column="4" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn3_Click">
+                <Label Content="3" />
+            </Border>
+            <Border x:Name="btn4" Grid.Row="4" Grid.Column="0" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn4_Click">
+                <Label Content="4" />
+            </Border>
+            <Border x:Name="btn5" Grid.Row="4" Grid.Column="2" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn5_Click">
+                <Label Content="5" />
+            </Border>
+            <Border x:Name="btn6" Grid.Row="4" Grid.Column="4" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn6_Click">
+                <Label Content="6" />
+            </Border>
+            <Border x:Name="btn7" Grid.Row="6" Grid.Column="0"  Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn7_Click">
+                <Label Content="7" />
+            </Border>
+            <Border x:Name="btn8" Grid.Row="6" Grid.Column="2" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn8_Click">
+                <Label Content="8" />
+            </Border>
+            <Border x:Name="btn9" Grid.Row="6" Grid.Column="4" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn9_Click">
+                <Label Content="9" />
+            </Border>
+            <Border x:Name="btn0" Grid.Row="8" Grid.Column="2" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn0_Click">
+                <Label Content="0" />
+            </Border>
+            <Border x:Name="btnClr" Grid.Row="8" Grid.Column="0"  Style="{StaticResource NumberButton}" MouseLeftButtonDown="btnClr_Click">
+                <Label Content="CLR" />
+            </Border>
+            <Border x:Name="btnDel" Grid.Row="8" Grid.Column="4" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btnDel_Click">
+                <Label Content="DEL"  />
+            </Border>
+            <Button x:Name="btnCancel" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnCancel_Click" />
+            <Button x:Name="btnOK" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="2" Content="OK"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnOK_Click" />
+                 
+           </Grid>
     </Grid>
 </Window>

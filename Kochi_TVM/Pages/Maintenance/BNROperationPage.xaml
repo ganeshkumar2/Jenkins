@@ -89,7 +89,7 @@
             
         </Grid>
 
-        <Grid Name="grdMoneyAccept" Grid.Column="1" Grid.Row="3" Margin="0.2,0.4,0.2,22.4" Grid.RowSpan="2" Visibility="Hidden">
+        <Grid Name="grdMoneyAccept" Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
@@ -101,14 +101,40 @@
             <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Height="670" Background="Black" Opacity="0.6">
             </Grid>
 
-            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="400" Width="400" Background="White">
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="450" Width="700" Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="30" Text="Start Accepting Money" HorizontalAlignment="Center" Foreground="Black" Style="{StaticResource LableMaintanBlakFont}"/>
-                <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" VerticalAlignment="Center" FontSize="30" Grid.ColumnSpan="2" Text="Start Accepting Money" HorizontalAlignment="Center" Foreground="Black" Style="{StaticResource LableMaintanBlakFont}"/>
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Label Name="lblCassette1Add" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                        <Label Content=": Count -" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                        <Label Name="lblAddCount1" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Label Name="lblCassette2Add" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                        <Label Content=": Count -" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                        <Label Name="lblAddCount2" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Label Name="lblCassette3Add" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                        <Label Content=": Count -" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                        <Label Name="lblAddCount3" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader3}"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="1*"/>
@@ -116,7 +142,7 @@
                     <TextBlock VerticalAlignment="Center" Grid.Row="0" FontSize="30" Text="Added Amount" HorizontalAlignment="Center" Foreground="Black" Style="{StaticResource LableMaintanBlakFont}"/>
                     <Label VerticalAlignment="Center" Name="lblBNRAmount" Grid.Row="1" FontSize="70" HorizontalAlignment="Center" Foreground="Black"/>
                 </Grid>
-                <Button x:Name="btnStopMoney" Content="Finish" Grid.Row="3" Grid.Column="3" Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" Width="250" Height="80" VerticalAlignment="Stretch" Click="btnStopMoney_Click" />
+                <Button x:Name="btnStopMoney" Content="Finish" Grid.Row="3" Grid.Column="1" Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" Width="250" Height="80" VerticalAlignment="Stretch" Click="btnStopMoney_Click" />
             </Grid>
         </Grid>
 

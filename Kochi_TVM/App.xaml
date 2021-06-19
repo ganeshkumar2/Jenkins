@@ -220,6 +220,27 @@
             </Setter>
         </Style>
 
+        <Style x:Key="NumberButton" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource MainColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ShadowColor}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Effect" >
+                <Setter.Value>
+                    <DropShadowEffect />
+                </Setter.Value>
+            </Setter>
+            <Style.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Foreground" Value="{StaticResource WhiteFontColor}"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="28px"/>
+                    <Setter Property="FontFamily" Value="Titillium"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
         <Style x:Key="styleLanguageSetBtn" TargetType="{x:Type Button}">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="BorderBrush" Value="Transparent"/>

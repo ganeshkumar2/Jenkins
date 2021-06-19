@@ -84,7 +84,7 @@ namespace Kochi_TVM.Pages.Maintenance
                     var comd = sentCommand;
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                     {
-                        var dataresult = Utils.Utility.Hex2Binary(data[4].ToString());
+                        var dataresult = Utils.TVMUtility.Hex2Binary(data[4].ToString());
                         var highorlow = dataresult.Substring(dataresult.Length - 2);
                         var high = highorlow[0];
                         var low = highorlow[1];
@@ -132,356 +132,404 @@ namespace Kochi_TVM.Pages.Maintenance
         bool coin1 = false;
         private void btnAddCoin1_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-
-            if (!coin1)
-                return;
-
-            int count = Convert.ToInt32(lblTypeCoin1.Text);
-            if (count == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
-                return;
-            }
+                TVMUtility.PlayClick();
 
-            if (Convert.ToInt32(count) < 0)
+                if (!coin1)
+                    return;
+
+                int count = Convert.ToInt32(lblTypeCoin1.Text);
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(count) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_COIN1);
+                if (StockOperations.InsStock(Convert.ToInt64(trxId), (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCoin1.Text)))
+                    if (MoneyOperations.InsMoney(Convert.ToInt64(trxId), (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Increase, Convert.ToDecimal(lblTypeCoin1.Text) * Constants.HopperAddress1Coin))
+                        if (StockOperations.SelStockStatus())
+                        {
+                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                CustomTL60Printer.Instance.CoinAddPrint(Convert.ToInt32(lblTypeCoin1.Text), Constants.HopperAddress1Coin, StockOperations.coin1);
+                            }
+                            UpdValOnScr();
+                            MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress1Coin + "\n" + "Added Count : " + count +
+                                                    "\nAdded Amount : " + "₹" + StockOperations.coin1 * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                        }
+
+                coin1 = false;
+            }
+            catch (Exception ex)
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
-                return;
+                log.Error("Error CoinDispenserTestPage -> btnAddCoin1_Click() : " + ex.ToString());
             }
-
-            decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_COIN1);
-            if (StockOperations.InsStock(Convert.ToInt64(trxId), (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCoin1.Text)))
-                if (MoneyOperations.InsMoney(Convert.ToInt64(trxId), (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Increase, Convert.ToDecimal(lblTypeCoin1.Text) * 1))
-                    if (StockOperations.SelStockStatus())
-                    {
-                        CustomTL60Printer.Instance.CoinAddPrint(Convert.ToInt32(lblTypeCoin1.Text), Constants.HopperAddress1Coin, StockOperations.coin1);
-                        UpdValOnScr();
-                        MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ "+ Constants.HopperAddress1Coin +"\n" +"Added Count : " + count +
-                                                "\nAdded Amount : " + "₹" + StockOperations.coin1 * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
-                    }
-            
-            coin1 = false;
         }
 
         private void btnMinusCoin1_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-
-            if (!coin1)
-                return;
-
-            int count = Convert.ToInt32(lblTypeCoin1.Text);
-
-            if (count == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
-                return;
-            }
+                TVMUtility.PlayClick();
 
-            if (Convert.ToInt32(lblTypeCoin1.Text) < 0)
+                if (!coin1)
+                    return;
+
+                int count = Convert.ToInt32(lblTypeCoin1.Text);
+
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(lblTypeCoin1.Text) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (StockOperations.coin1 == 0)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
+                else if (count > StockOperations.coin1)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Less value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
+                else
+                {
+                    CCTalkManager.Instance.coinHopperEV4000_1.DispenseCoins(count);
+
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN1);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, count))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, Convert.ToDecimal(count) * Constants.HopperAddress1Coin))
+                            if (StockOperations.SelStockStatus())
+                            {
+                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                {
+                                    CustomTL60Printer.Instance.CoinDispatchPrint(count, Constants.HopperAddress1Coin, StockOperations.coin1);
+                                }
+                                UpdValOnScr();
+                                MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress1Coin + "\nRemoved Count : " + count +
+                                                "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                            }
+                }
+                coin1 = false;
+            }
+            catch (Exception ex)
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
-                return;
+                log.Error("Error CoinDispenserTestPage -> btnMinusCoin1_Click() : " + ex.ToString());
             }
-
-            if (StockOperations.coin1 == 0)
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
-            else if (count > StockOperations.coin1)
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Less value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
-            else
-            {
-                CCTalkManager.Instance.coinHopperEV4000_1.DispenseCoins(count);
-
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN1);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, count))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, Convert.ToDecimal(count) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            CustomTL60Printer.Instance.CoinDispatchPrint(count, Constants.HopperAddress1Coin, StockOperations.coin1);
-                            UpdValOnScr();
-                            MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress1Coin + "\nRemoved Count : " + count +
-                                            "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
-                        }
-            }
-            coin1 = false;
         }
 
         private void btnEmptyCoin1_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (StockOperations.coin1 == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
-                return;
-            }
-            int stock = StockOperations.coin1;
+                TVMUtility.PlayClick();
+                if (StockOperations.coin1 == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+                int stock = StockOperations.coin1;
 
-            CCTalkManager.Instance.coinHopperEV4000_1.EmptyHopper();
+                CCTalkManager.Instance.coinHopperEV4000_1.EmptyHopper();
 
-            if (stock != StockOperations.coin1)
-            {
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN1);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, Convert.ToDecimal(stock) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            //PrintOperations.CoinDispatchPrint(stock, 1, StockOperations.coin1);
-                            UpdValOnScr();
-                        }
-            }
-            else
-            {
                 decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN1);
                 if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, Convert.ToDecimal(stock) * 1))
+                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, Convert.ToDecimal(stock) * Constants.HopperAddress1Coin))
                         if (StockOperations.SelStockStatus())
                         {
-                            CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress1Coin, StockOperations.coin1);
+                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress1Coin, StockOperations.coin1);
+                            }
                             UpdValOnScr();
                         }
 
                 MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹\nRemoved Count : " + stock +
                                             "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
             }
+            catch (Exception ex)
+            {
+                log.Error("Error CoinDispenserTestPage -> btnEmptyCoin1_Click() : " + ex.ToString());
+            }
         }
 
         bool coin2 = false;
         private void btnAddCoin2_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (!coin2)
-                return;
-
-            int count = Convert.ToInt32(lblTypeCoin2.Text);
-            if (count == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
-                return;
-            }
+                TVMUtility.PlayClick();
+                if (!coin2)
+                    return;
 
-            if (Convert.ToInt32(count) < 0)
+                int count = Convert.ToInt32(lblTypeCoin2.Text);
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(count) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_COIN2);
+                if (StockOperations.InsStock(Convert.ToInt64(trxId), (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCoin2.Text)))
+                    if (MoneyOperations.InsMoney(Convert.ToInt64(trxId), (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Increase, Convert.ToDecimal(lblTypeCoin2.Text) * Constants.HopperAddress2Coin))
+                        if (StockOperations.SelStockStatus())
+                        {
+                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                CustomTL60Printer.Instance.CoinAddPrint(Convert.ToInt32(lblTypeCoin2.Text), Constants.HopperAddress2Coin, StockOperations.coin2);
+                            }
+                            UpdValOnScr();
+                            MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress2Coin + "\n" + "Added Count : " + count +
+                                                    "\nAdded Amount : " + "₹" + StockOperations.coin2 * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                        }
+
+                coin2 = false;
+            }
+            catch (Exception ex)
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
-                return;
+                log.Error("Error CoinDispenserTestPage -> btnAddCoin2_Click() : " + ex.ToString());
             }
-
-            decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_COIN2);
-            if (StockOperations.InsStock(Convert.ToInt64(trxId), (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCoin2.Text)))
-                if (MoneyOperations.InsMoney(Convert.ToInt64(trxId), (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Increase, Convert.ToDecimal(lblTypeCoin2.Text) * 1))
-                    if (StockOperations.SelStockStatus())
-                    {
-                        CustomTL60Printer.Instance.CoinAddPrint(Convert.ToInt32(lblTypeCoin2.Text), Constants.HopperAddress2Coin, StockOperations.coin2);
-                        UpdValOnScr();
-                        MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress2Coin + "\n" + "Added Count : " + count +
-                                                "\nAdded Amount : " + "₹" + StockOperations.coin2 * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
-                    }
-
-            coin2 = false;
         }
 
         private void btnMinusCoin2_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (!coin2)
-                return;
-            int count = Convert.ToInt32(lblTypeCoin2.Text);
-
-            if (count == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
-                return;
-            }
+                TVMUtility.PlayClick();
+                if (!coin2)
+                    return;
+                int count = Convert.ToInt32(lblTypeCoin2.Text);
 
-            if (Convert.ToInt32(lblTypeCoin2.Text) < 0)
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(lblTypeCoin2.Text) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (StockOperations.coin2 == 0)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
+                else if (count > StockOperations.coin2)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Less value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
+                else
+                {
+                    CCTalkManager.Instance.coinHopperEV4000_2.DispenseCoins(count);
+
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN2);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, count))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, Convert.ToDecimal(count) * Constants.HopperAddress2Coin))
+                            if (StockOperations.SelStockStatus())
+                            {
+                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                {
+                                    CustomTL60Printer.Instance.CoinDispatchPrint(count, Constants.HopperAddress2Coin, StockOperations.coin2);
+                                }
+                                UpdValOnScr();
+                                MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress2Coin + "\nRemoved Count : " + count +
+                                                "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                            }
+                }
+                coin2 = false;
+            }
+            catch (Exception ex)
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
-                return;
+                log.Error("Error CoinDispenserTestPage -> btnMinusCoin2_Click() : " + ex.ToString());
             }
-
-            if (StockOperations.coin2 == 0)
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
-            else if (count > StockOperations.coin2)
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Less value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
-            else
-            {
-                CCTalkManager.Instance.coinHopperEV4000_2.DispenseCoins(count);
-
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN2);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, count))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, Convert.ToDecimal(count) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            CustomTL60Printer.Instance.CoinDispatchPrint(count, Constants.HopperAddress2Coin, StockOperations.coin2);
-                            UpdValOnScr();
-                            MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress2Coin + "\nRemoved Count : " + count +
-                                            "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
-                        }
-            }
-            coin2 = false;
         }
 
         private void btnEmptyCoin2_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (StockOperations.coin2 == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
-                return;
-            }
-            int stock = StockOperations.coin2;
+                TVMUtility.PlayClick();
+                if (StockOperations.coin2 == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+                int stock = StockOperations.coin2;
 
-            CCTalkManager.Instance.coinHopperEV4000_2.EmptyHopper();
+                CCTalkManager.Instance.coinHopperEV4000_2.EmptyHopper();
 
-            if (stock != StockOperations.coin2)
-            {
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN2);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, Convert.ToDecimal(stock) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            //PrintOperations.CoinDispatchPrint(stock, 1, StockOperations.coin1);
-                            UpdValOnScr();
-                        }
-            }
-            else
-            {
                 decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN2);
                 if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, Convert.ToDecimal(stock) * 1))
+                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, Convert.ToDecimal(stock) * Constants.HopperAddress2Coin))
                         if (StockOperations.SelStockStatus())
                         {
-                            CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress2Coin, StockOperations.coin2);
+                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress2Coin, StockOperations.coin2);
+                            }
                             UpdValOnScr();
                         }
 
                 MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹\nRemoved Count : " + stock +
                                             "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
             }
+            catch (Exception ex)
+            {
+                log.Error("Error CoinDispenserTestPage -> btnEmptyCoin2_Click() : " + ex.ToString());
+            }
         }
         bool coin3 = false;
         private void btnAddCoin5_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (!coin3)
-                return;
-
-            int count = Convert.ToInt32(lblTypeCoin5.Text);
-            if (count == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
-                return;
-            }
+                TVMUtility.PlayClick();
+                if (!coin3)
+                    return;
 
-            if (Convert.ToInt32(count) < 0)
+                int count = Convert.ToInt32(lblTypeCoin5.Text);
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(count) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_COIN5);
+                if (StockOperations.InsStock(Convert.ToInt64(trxId), (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCoin5.Text)))
+                    if (MoneyOperations.InsMoney(Convert.ToInt64(trxId), (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Increase, Convert.ToDecimal(lblTypeCoin5.Text) * Constants.HopperAddress3Coin))
+                        if (StockOperations.SelStockStatus())
+                        {
+                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                CustomTL60Printer.Instance.CoinAddPrint(Convert.ToInt32(lblTypeCoin5.Text), Constants.HopperAddress3Coin, StockOperations.coin5);
+                            }
+                            UpdValOnScr();
+                            MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress3Coin + "\n" + "Added Count : " + count +
+                                                    "\nAdded Amount : " + "₹" + StockOperations.coin5 * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                        }
+
+                coin3 = false;
+            }
+            catch (Exception ex)
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
-                return;
+                log.Error("Error CoinDispenserTestPage -> btnAddCoin5_Click() : " + ex.ToString());
             }
-
-            decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_COIN5);
-            if (StockOperations.InsStock(Convert.ToInt64(trxId), (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCoin5.Text)))
-                if (MoneyOperations.InsMoney(Convert.ToInt64(trxId), (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Increase, Convert.ToDecimal(lblTypeCoin5.Text) * 1))
-                    if (StockOperations.SelStockStatus())
-                    {
-                        CustomTL60Printer.Instance.CoinAddPrint(Convert.ToInt32(lblTypeCoin5.Text), Constants.HopperAddress3Coin, StockOperations.coin5);
-                        UpdValOnScr();
-                        MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress3Coin + "\n" + "Added Count : " + count +
-                                                "\nAdded Amount : " + "₹" + StockOperations.coin5 * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
-                    }
-
-            coin3 = false;
         }
 
         private void btnMinusCoin5_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (!coin3)
-                return;
-            int count = Convert.ToInt32(lblTypeCoin5.Text);
-
-            if (count == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
-                return;
-            }
+                TVMUtility.PlayClick();
+                if (!coin3)
+                    return;
+                int count = Convert.ToInt32(lblTypeCoin5.Text);
 
-            if (Convert.ToInt32(lblTypeCoin5.Text) < 0)
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(lblTypeCoin5.Text) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (StockOperations.coin5 == 0)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
+                else if (count > StockOperations.coin5)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Less value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
+                else
+                {
+                    CCTalkManager.Instance.coinHopperEV4000_3.DispenseCoins(count);
+
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN5);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, count))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, Convert.ToDecimal(count) * Constants.HopperAddress3Coin))
+                            if (StockOperations.SelStockStatus())
+                            {
+                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                {
+                                    CustomTL60Printer.Instance.CoinDispatchPrint(count, Constants.HopperAddress3Coin, StockOperations.coin5);
+                                }
+                                UpdValOnScr();
+                                MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress3Coin + "\nRemoved Count : " + count +
+                                                "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                            }
+                }
+                coin3 = false;
+            }
+            catch (Exception ex)
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
-                return;
+                log.Error("Error CoinDispenserTestPage -> btnMinusCoin5_Click() : " + ex.ToString());
             }
-
-            if (StockOperations.coin5 == 0)
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
-            else if (count > StockOperations.coin5)
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Less value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
-            else
-            {
-                CCTalkManager.Instance.coinHopperEV4000_3.DispenseCoins(count);
-
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN5);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, count))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, Convert.ToDecimal(count) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            CustomTL60Printer.Instance.CoinDispatchPrint(count, Constants.HopperAddress3Coin, StockOperations.coin5);
-                            UpdValOnScr();
-                            MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress3Coin + "\nRemoved Count : " + count +
-                                            "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
-                        }
-            }
-            coin3 = false;
         }
 
         private void btnEmptyCoin5_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
-            if (StockOperations.coin5 == 0)
+            try
             {
-                MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
-                return;
-            }
-            int stock = StockOperations.coin5;
+                TVMUtility.PlayClick();
+                if (StockOperations.coin5 == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+                int stock = StockOperations.coin5;
 
-            CCTalkManager.Instance.coinHopperEV4000_3.EmptyHopper();
+                CCTalkManager.Instance.coinHopperEV4000_3.EmptyHopper();
 
-            if (stock != StockOperations.coin5)
-            {
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN5);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, Convert.ToDecimal(stock) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            //PrintOperations.CoinDispatchPrint(stock, 1, StockOperations.coin1);
-                            UpdValOnScr();
-                        }
-            }
-            else
-            {
                 decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN5);
                 if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Empty, stock))
                     if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Empty, Convert.ToDecimal(stock) * 1))
                         if (StockOperations.SelStockStatus())
                         {
-                            CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress3Coin, StockOperations.coin5);
+                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress3Coin, StockOperations.coin5);
+                            }
                             UpdValOnScr();
                         }
 
                 MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹" + "\nRemoved Count : " + stock +
                                             "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
             }
+            catch (Exception ex)
+            {
+                log.Error("Error CoinDispenserTestPage -> btnEmptyCoin5_Click() : " + ex.ToString());
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.OperationPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
@@ -493,6 +541,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCoin1.Text = i.ToString();
                 coin1 = true;
             }
+            else
+            {
+                lblTypeCoin1.Text = Convert.ToString(StockOperations.coin1);
+            }
         }
 
         private void lblTypeCoin2_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -503,6 +555,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCoin2.Text = i.ToString();
                 coin2 = true;
             }
+            else
+            {
+                lblTypeCoin2.Text = Convert.ToString(StockOperations.coin2);
+            }
         }
 
         private void lblTypeCoin5_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -512,6 +568,10 @@ namespace Kochi_TVM.Pages.Maintenance
             {
                 lblTypeCoin5.Text = i.ToString();
                 coin3 = true;
+            }
+            else
+            {
+                lblTypeCoin5.Text = Convert.ToString(StockOperations.coin5);
             }
         }
     }

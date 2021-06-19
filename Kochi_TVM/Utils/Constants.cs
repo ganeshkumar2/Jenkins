@@ -31,5 +31,7 @@ namespace Kochi_TVM.Utils
         public static int NoChangeAvailable = 5;
 
         public static string CurrencySymbol = "₹";
+
+        public static int Change = 0;
     }
 }

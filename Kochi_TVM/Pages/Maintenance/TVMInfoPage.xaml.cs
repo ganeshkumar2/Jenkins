@@ -102,13 +102,13 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminInfoPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
     }

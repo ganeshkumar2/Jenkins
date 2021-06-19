@@ -29,37 +29,37 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
         private void btnTVMInfo_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.TVMInfoPage());
         }
 
         private void btnDeviceInfo_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.DeviceInfoPage());
         }
 
         private void btnStockStatus_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.StockInfoPage());
         }
 
         private void btnDailyTxn_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.DailyTransactionPage());
         }
 

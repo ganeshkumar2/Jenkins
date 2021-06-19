@@ -49,9 +49,18 @@
     <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="pcsc-sharp">
+      <HintPath>ExternalLibrary\Dispenser\pcsc-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="RPTIssueLib">
       <HintPath>ExternalLibrary\Dispenser\RPTIssueLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SAMOprLib">
+      <HintPath>ExternalLibrary\Dispenser\SAMOprLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SveltaLib">
+      <HintPath>ExternalLibrary\Dispenser\SveltaLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -74,6 +83,9 @@
     </Reference>
     <Reference Include="USHDLL">
       <HintPath>ExternalLibrary\Crypto\USHDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="Utility">
+      <HintPath>ExternalLibrary\Dispenser\Utility.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -407,10 +419,12 @@
     <Compile Include="Pages\TicketCountPage.xaml.cs">
       <DependentUpon>TicketCountPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PID\LedOperations.cs" />
     <Compile Include="PID\LedPanel.cs" />
     <Compile Include="Printers\CustomKPM150HPrinter.cs" />
     <Compile Include="Printers\CustomTL60Printer.cs" />
     <Compile Include="RptDispenser\Dispenser.cs" />
+    <Compile Include="RptDispenser\RPTOperations.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Conversion.cs" />
     <Compile Include="Utils\Enums.cs" />
@@ -950,6 +964,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

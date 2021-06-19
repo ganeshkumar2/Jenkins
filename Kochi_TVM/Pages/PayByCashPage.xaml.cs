@@ -3,6 +3,9 @@ using Kochi_TVM.BNR;
 using Kochi_TVM.Business;
 using Kochi_TVM.CCTalk;
 using Kochi_TVM.MultiLanguages;
+using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.PID;
+using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
 using log4net;
 using System;
@@ -45,18 +48,18 @@ namespace Kochi_TVM.Pages
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.OrderPreviewPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.MainPage());
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+        {            
             myGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\getting_money.gif");
             returnCashImageGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\giving_money.gif");
             loadingImageGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\Spinner.gif");
@@ -119,6 +122,21 @@ namespace Kochi_TVM.Pages
                 lblMoney200.Visibility = Visibility.Visible;
                 lblMoney500.Visibility = Visibility.Visible;
             }
+            try
+            {
+                checkTranTimerDelegate = new TimerCallback(dispatcherTimer_Tick);
+                checkTranTimer = new Timer(checkTranTimerDelegate, null, TranCancelTimer * 1000, 0);
+            }
+            catch (Exception ex2)
+            {
+
+            }
+            PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
+            if (QRPrinter != PRINTER_STATE.OK)
+            {
+                MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
+                return;
+            }
             Message();
             IniEvent();
         }
@@ -127,21 +145,22 @@ namespace Kochi_TVM.Pages
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(7, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "EN");
+                TVMUtility.PlayVoice(7, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "EN");
             }
             if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(7, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "ML");
+                TVMUtility.PlayVoice(7, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "ML");
             }
             if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(7, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "IN");
+                TVMUtility.PlayVoice(7, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "IN");
             }
         }
         private async void IniEvent()
         {
             try
             {
+                LedOperations.GreenText("CASH PAYMENT IN PROGRESS");
                 TotalAmountToCollect = Ticket.totalPrice;
                 BNRManager.BNRStateInputEvent += new BNRManager.BNRStateEventHandler(BNRManager_BNRStateInputEvent);
                 BNRManager.BNRBillTableInputEvent += new BNRManager.BNRBillTableEventHandler(BNRManager_BNRBillTableInputEvent);
@@ -162,15 +181,7 @@ namespace Kochi_TVM.Pages
 
             }
             stackedNotesRecived = new List<StackedNotes>();
-            try
-            {
-                checkTranTimerDelegate = new TimerCallback(dispatcherTimer_Tick);
-                checkTranTimer = new Timer(checkTranTimerDelegate, null, TranCancelTimer * 1000, 0);
-            }
-            catch (Exception ex2)
-            {
-
-            }
+           
             Dispatcher.Invoke((Action)(() =>
             {
                 Countdown(TranCancelTimer, TimeSpan.FromSeconds(1), cur => lblRemain.Content = cur.ToString());
@@ -536,6 +547,7 @@ namespace Kochi_TVM.Pages
                             log.Debug("PayByCashOrCoinPage -> cashincast : " + cashincast);
                             if (cashincast == 0)
                             {
+                                Constants.Change = balance;
                                 isReturn = false;
                                 await Task.Delay(200);
                                 BNRManager.Instance.GetExtendedCassetteStatus();
@@ -775,17 +787,17 @@ namespace Kochi_TVM.Pages
                 {
                     if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
                     {
-                        Utility.PlayVoice(8, null, Convert.ToString(Convert.ToInt16(balance)), "EN");
+                        TVMUtility.PlayVoice(8, null, Convert.ToString(Convert.ToInt16(balance)), "EN");
                     }
                     if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
                     {
-                        Utility.PlayVoice(8, null, Convert.ToString(Convert.ToInt16(balance)), "ML");
+                        TVMUtility.PlayVoice(8, null, Convert.ToString(Convert.ToInt16(balance)), "ML");
                     }
                     if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
                     {
-                        Utility.PlayVoice(8, null, Convert.ToString(Convert.ToInt16(balance)), "IN");
+                        TVMUtility.PlayVoice(8, null, Convert.ToString(Convert.ToInt16(balance)), "IN");
                     }
-
+                    LedOperations.GreenText("PLEASE COLLECT BALANCE");
                     await Task.Delay(1000);
                     
                     waitGrid.Visibility = Visibility.Hidden;
@@ -1141,7 +1153,7 @@ namespace Kochi_TVM.Pages
                 {
                     try
                     {
-                        var Dataresult = Utils.Utility.Hex2Binary(Data[4].ToString());
+                        var Dataresult = Utils.TVMUtility.Hex2Binary(Data[4].ToString());
                         var highorlow = Dataresult.Substring(Dataresult.Length - 2);
                         var high = highorlow[0];
                         var low = highorlow[1];

@@ -62,13 +62,13 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.MaintancePage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
@@ -115,7 +115,7 @@ namespace Kochi_TVM.Pages.Maintenance
             PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
             if (QRPrinter == PRINTER_STATE.OK)
             {
-                var qr = Utility.PrepareQRImage("QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test");
+                var qr = TVMUtility.PrepareQRImage("QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test");
                 CustomKPM150HPrinter.Instance.PrintTestQRTicket(qr);
                 MessageBoxOperations.ShowMessage("QR Printer Test", "Test is completed.", MessageBoxButtonSet.OK);
             }

@@ -6,9 +6,9 @@ using ZXing.QrCode;
 
 namespace Kochi_TVM.Utils
 {
-    public static class Utility
+    public static class TVMUtility
     {
-        private static ILog log = LogManager.GetLogger(typeof(Utility).Name);
+        private static ILog log = LogManager.GetLogger(typeof(TVMUtility).Name);
 
         private static MediaPlayer mplayer = new MediaPlayer();
         private static SpeechSynthesizer synthesizer = new SpeechSynthesizer();

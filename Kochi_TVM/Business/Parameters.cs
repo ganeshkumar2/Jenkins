@@ -202,7 +202,7 @@ namespace Kochi_TVM.Business
         {
             bool result = false;
             try
-            {
+            {               
                 //var rpc = Parameters.sr.SelUnitByUID(Parameters.TVMStatic.GetParameter("macAddress"));
                 ////Log.log.Write("MacID : " + Parameters.TVMStatic.GetParameter("macAddress"));
                 //result = ((Validation.IsValidAFCRP(rpc)) && (rpc.Result == 1));
@@ -288,7 +288,7 @@ namespace Kochi_TVM.Business
             {
                 using (var context = new Models.TVM_Entities())
                 {
-                    var rp = context.sp_SelSalePointByMac(Parameters.TVMStatic.GetParameter("macAddress")).ToList();
+                    var rp = context.sp_SelSalePointByMac("00-01-2E-7E-3B-CA").ToList();//Parameters.TVMStatic.GetParameter("macAddress")).ToList();
                     if (rp.Count > 0)
                     {
                         foreach (var item in rp)

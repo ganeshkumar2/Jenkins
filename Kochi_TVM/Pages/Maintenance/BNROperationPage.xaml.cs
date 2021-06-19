@@ -94,9 +94,20 @@ namespace Kochi_TVM.Pages.Maintenance
                             {
                                 notevalincasset1 = bill;
                             }
-                            lblCassette1.Content = "₹ " + bill;
+                            lblCassette1.Content = "₹ " + notevalincasset1;
+                            lblCassette1Add.Content = "₹ " + notevalincasset1;
                             Casette1Billtype = cassetteset.billType;
-                            lblCassette1Info.Content = "₹ " + bill + " ₹ " + (noteincasset1 * notevalincasset1);
+                            lblCassette1Info.Content = "₹ " + notevalincasset1 + " ₹ " + (noteincasset1 * notevalincasset1);
+                            if(noteincasset1 > 0)
+                            {
+                                btnSendBox1.IsEnabled = true;
+                                btnSendBox1.Opacity = 1;
+                            }
+                            else
+                            {
+                                btnSendBox1.IsEnabled = false;
+                                btnSendBox1.Opacity = 0.2;
+                            }
                         }
                         if (cassetteset.cassetteId == 2)
                         {
@@ -109,9 +120,20 @@ namespace Kochi_TVM.Pages.Maintenance
                             {
                                 notevalincasset2 = bill;
                             }
-                            lblCassette2.Content = "₹ " + bill;
+                            lblCassette2.Content = "₹ " + notevalincasset2;
+                            lblCassette2Add.Content = "₹ " + notevalincasset2;
                             Casette2Billtype = cassetteset.billType;
-                            lblCassette2Info.Content = "₹ " + bill + " ₹ " + (noteincasset2 * notevalincasset2);
+                            lblCassette2Info.Content = "₹ " + notevalincasset2 + " ₹ " + (noteincasset2 * notevalincasset2);
+                            if (noteincasset2 > 0)
+                            {
+                                btnSendBox2.IsEnabled = true;
+                                btnSendBox2.Opacity = 1;
+                            }
+                            else
+                            {
+                                btnSendBox2.IsEnabled = false;
+                                btnSendBox2.Opacity = 0.2;
+                            }
                         }
                         if (cassetteset.cassetteId == 3)
                         {
@@ -124,9 +146,20 @@ namespace Kochi_TVM.Pages.Maintenance
                             {
                                 notevalincasset3 = bill;
                             }
-                            lblCassette3.Content = "₹ " + Constants.EscrowAmount.ToString();
+                            lblCassette3.Content = "₹ " + notevalincasset3;
+                            lblCassette3Add.Content = "₹ " + notevalincasset3;
                             Casette3Billtype = cassetteset.billType;
                             lblCassette3Info.Content = "₹ " + notevalincasset3 + " ₹ " + (noteincasset3 * notevalincasset3);
+                            if (noteincasset3 > 0)
+                            {
+                                btnSendBox3.IsEnabled = true;
+                                btnSendBox3.Opacity = 1;
+                            }
+                            else
+                            {
+                                btnSendBox3.IsEnabled = false;
+                                btnSendBox3.Opacity = 0.2;
+                            }
                         }
                     }
                 }
@@ -153,6 +186,14 @@ namespace Kochi_TVM.Pages.Maintenance
                         {
                             bill = billTable.Where(x => x.BillType == stackedNote.BillType).Select(x => x.DigitBillType).FirstOrDefault();
                             billCount = stackedNote.BillNumber;
+
+                            if(notevalincasset1 == bill)
+                                lblAddCount1.Content = stackedNote.BillNumber.ToString();
+                            if (notevalincasset2 == bill)
+                                lblAddCount2.Content = stackedNote.BillNumber.ToString();
+                            if (notevalincasset3 == bill)
+                                lblAddCount3.Content = stackedNote.BillNumber.ToString();
+
                             total += bill * billCount;
                         }
                     }
@@ -174,6 +215,11 @@ namespace Kochi_TVM.Pages.Maintenance
                 {
                     Constants.BNRStatus = Enum.GetName(typeof(BNRState), state);
                     lblBNR.Content = Constants.BNRStatus;
+
+                    if (state == BNRState.UNLOADED)
+                    {
+                        UnloadValue();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -192,13 +238,13 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.OperationPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
         bool isAccepting = false;
@@ -206,7 +252,7 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             if (!isAccepting)
             {
-                Utility.PlayClick();
+                TVMUtility.PlayClick();
                 log.Debug("Debug notevalincasset1 : " + notevalincasset1 + " notevalincasset2 : " + notevalincasset2 +" notevalincasset3 : " + notevalincasset3);
                 grdMoneyAccept.Visibility = Visibility.Visible;
                 isAccepting = true;
@@ -279,15 +325,46 @@ namespace Kochi_TVM.Pages.Maintenance
             }
         }
 
+        int unloadedCasset = 0;
+        void UnloadValue()
+        {
+            Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                BNRManager.Instance.GetCassetteStatus();
+                await Task.Delay(300);
+
+                if (unloadedCasset == 1)
+                {
+                    unloadedCasset = 0;
+                    MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset1 + "" + "\nSent Count : " + noteincasset1.ToString() +
+                                                                                        "\nSent Amount : Rs. " + noteincasset1 * notevalincasset1, MessageBoxButtonSet.OK);
+                }
+                else if (unloadedCasset == 2)
+                {
+                    unloadedCasset = 0;
+                    MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset2 + "" + "\nSent Count : " + noteincasset2.ToString() +
+                                                                                        "\nSent Amount : Rs. " + noteincasset2 * notevalincasset2, MessageBoxButtonSet.OK);
+                }
+                else if (unloadedCasset == 3)
+                {
+                    unloadedCasset = 0;
+                    MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset3 + "" + "\nSent Count : " + noteincasset3.ToString() +
+                                                                                    "\nSent Amount : Rs. " + noteincasset3 * notevalincasset3, MessageBoxButtonSet.OK);
+                }
+            }), DispatcherPriority.Background);
+        }
+
         private void btnSendBox1_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Utility.PlayClick();
+                TVMUtility.PlayClick();
                 if (Constants.BNRStatus == "DISABLED")
                 {
                     if (noteincasset1 != 0)
                     {
+                        unloadedCasset = 1;
+
                         UnloadCassette(1, noteincasset1);
 
                         long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + notevalincasset1)));
@@ -299,9 +376,10 @@ namespace Kochi_TVM.Pages.Maintenance
                                     if (MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset1), (int)DeviceType.Box, (int)UpdateType.Increase, notevalincasset1 * noteincasset1))
                                         if (MoneyOperations.SelMoneyStatus())
                                         {
-                                            CustomTL60Printer.Instance.SendBoxNotes(noteincasset1, notevalincasset1);
-                                            MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. "+notevalincasset1+""+ "\nSent Count : " + noteincasset1.ToString() +
-                                                                                    "\nSent Amount : Rs. " + noteincasset1 * notevalincasset1, MessageBoxButtonSet.OK);
+                                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                            {
+                                                CustomTL60Printer.Instance.SendBoxNotes(noteincasset1, notevalincasset1);
+                                            }
                                         }
                             }
                     }
@@ -319,7 +397,7 @@ namespace Kochi_TVM.Pages.Maintenance
             {
                 try
                 {
-                    Utility.PlayClick();
+                    TVMUtility.PlayClick();
                     grdMoneyAccept.Visibility = Visibility.Hidden;
                     BNRManager.Instance.StopProcess();
                     await Task.Delay(300);
@@ -354,7 +432,12 @@ namespace Kochi_TVM.Pages.Maintenance
                     }
 
                     if (noteincasset1 > 0 || noteincasset2 > 0 || noteincasset3 > 0)
-                        CustomTL60Printer.Instance.AddBanknotes(noteincasset1,notevalincasset1, noteincasset2, notevalincasset2,noteincasset2, notevalincasset2);
+                    {
+                        if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                        {
+                            CustomTL60Printer.Instance.AddBanknotes(noteincasset1, notevalincasset1, noteincasset2, notevalincasset2, noteincasset2, notevalincasset2);
+                        }
+                    }
                 }
                 catch { }
             }
@@ -364,11 +447,13 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             try
             {
-                Utility.PlayClick();
+                TVMUtility.PlayClick();
                 if (Constants.BNRStatus == "DISABLED")
                 {
                     if (noteincasset2 != 0)
                     {
+                        unloadedCasset = 2;
+
                         UnloadCassette(2, noteincasset2);
 
                         long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + notevalincasset2)));
@@ -380,9 +465,10 @@ namespace Kochi_TVM.Pages.Maintenance
                                     if (MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset2), (int)DeviceType.Box, (int)UpdateType.Increase, notevalincasset2 * noteincasset2))
                                         if (MoneyOperations.SelMoneyStatus())
                                         {
-                                            CustomTL60Printer.Instance.SendBoxNotes(noteincasset2, notevalincasset2);
-                                            MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset2 + "" + "\nSent Count : " + noteincasset2.ToString() +
-                                                                                    "\nSent Amount : Rs. " + noteincasset2 * notevalincasset2, MessageBoxButtonSet.OK);
+                                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                            {
+                                                CustomTL60Printer.Instance.SendBoxNotes(noteincasset2, notevalincasset2);
+                                            }                                            
                                         }
                             }
                     }
@@ -398,11 +484,13 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             try
             {
-                Utility.PlayClick();
+                TVMUtility.PlayClick();
                 if (Constants.BNRStatus == "DISABLED")
                 {
                     if (noteincasset3 != 0)
                     {
+                        unloadedCasset = 3;
+
                         UnloadCassette(3, noteincasset3);
 
                         long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + notevalincasset3)));
@@ -414,9 +502,10 @@ namespace Kochi_TVM.Pages.Maintenance
                                     if (MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + notevalincasset3), (int)DeviceType.Box, (int)UpdateType.Increase, notevalincasset3 * noteincasset3))
                                         if (MoneyOperations.SelMoneyStatus())
                                         {
-                                            CustomTL60Printer.Instance.SendBoxNotes(noteincasset3, notevalincasset3);
-                                            MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset3 + "" + "\nSent Count : " + noteincasset3.ToString() +
-                                                                                    "\nSent Amount : Rs. " + noteincasset3 * notevalincasset3, MessageBoxButtonSet.OK);
+                                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                            {
+                                                CustomTL60Printer.Instance.SendBoxNotes(noteincasset3, notevalincasset3);
+                                            }                                            
                                         }
                             }
                     }
@@ -430,32 +519,42 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnClearBox_Click(object sender, RoutedEventArgs e)
         {
-            int moneyStock = 0;
-            int countStock = 0;
-            if (MoneyOperations.SelMoneyStatus())
+            try
             {
-                Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("Clear Box", "Money Amount : " + MoneyOperations.box, MessageBoxButtonSet.OKCancel);
-                if (messageBoxResult == Custom.MessageBoxResult.OK)
+                int moneyStock = 0;
+                int countStock = 0;
+                if (MoneyOperations.SelMoneyStatus())
                 {
-                    moneyStock = (int)MoneyOperations.box;
-                    countStock = StockOperations.box;
-                    if (moneyStock == 0)
+                    Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("Clear Box", "Money Amount : " + MoneyOperations.box, MessageBoxButtonSet.OKCancel);
+                    if (messageBoxResult == Custom.MessageBoxResult.OK)
                     {
-                        MessageBoxOperations.ShowMessage("ATTENTION!!", "Box is empty!", MessageBoxButtonSet.OKCancel);
-                        return;
-                    }
-                    else
-                    {
-                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_BOX));
-                        if (StockOperations.InsStock(trxId, (int)StockType.Unknown, (int)DeviceType.Box, (int)UpdateType.Empty, 0))
-                            MoneyOperations.InsMoney(trxId, (int)StockType.Unknown, (int)DeviceType.Box, (int)UpdateType.Empty, 0);
-                        if (MoneyOperations.SelMoneyStatus())
+                        moneyStock = (int)MoneyOperations.box;
+                        countStock = StockOperations.box;
+                        if (moneyStock == 0)
                         {
-                            UpdValOnScr();
+                            MessageBoxOperations.ShowMessage("ATTENTION!!", "Box is empty!", MessageBoxButtonSet.OKCancel);
+                            return;
+                        }
+                        else
+                        {
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_BOX));
+                            if (StockOperations.InsStock(trxId, (int)StockType.Unknown, (int)DeviceType.Box, (int)UpdateType.Empty, 0))
+                                MoneyOperations.InsMoney(trxId, (int)StockType.Unknown, (int)DeviceType.Box, (int)UpdateType.Empty, 0);
+                            if (MoneyOperations.SelMoneyStatus())
+                            {
+                                UpdValOnScr();
+                            }
                         }
                     }
+                    if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    {
+                        CustomTL60Printer.Instance.RemoveCashBoxNotes(moneyStock, countStock);
+                    }
                 }
-                CustomTL60Printer.Instance.RemoveCashBoxNotes(moneyStock, countStock);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error BNROperationPage -> btnClearBox_Click() : " + ex.ToString());
             }
         }
 
@@ -463,7 +562,7 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             MoneyOperations.SelMoneyStatus();
             StockOperations.SelStockStatus();
-            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 lblBoxInfo.Content = String.Format("Box Amount : {0}", Conversion.MoneyFormat(MoneyOperations.box));
                 lblBoxCount.Content = String.Format("Box Count : {0}", StockOperations.box);               

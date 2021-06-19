@@ -13,7 +13,13 @@
 	<system:String x:Key="collectRefund">Please collect your refund!</system:String>
 	<system:String x:Key="sj">Single Journey</system:String>
 	<system:String x:Key="rj">Return Journey</system:String>
-	<system:String x:Key="welcome">Welcome to Kochi Metro!</system:String>
+    <system:String x:Key="gj">Group Journey</system:String>
+    <system:String x:Key="NoChange">NO CHANGE MODE</system:String>
+    <system:String x:Key="AvailableCoin">Available Coins :</system:String>
+    <system:String x:Key="NoReceipt">NO RECEIPT MODE</system:String>
+    <system:String x:Key="Exit">Exit</system:String>
+    <system:String x:Key="Ok">Ok</system:String>
+    <system:String x:Key="welcome">Welcome to Kochi Metro!</system:String>
 	<system:String x:Key="buyTicket">Buy Ticket</system:String>
 	<system:String x:Key="k1CardOp">Kochi-1 Card Operation</system:String>
 	<system:String x:Key="comingSoon">Coming Soon</system:String>
@@ -147,10 +153,10 @@
 	<system:String x:Key="shutdownCap">SHUTDOWN</system:String>
 	<system:String x:Key="areYouSureRestart">Are you sure you want to Restart the TVM?</system:String>
 	<system:String x:Key="areYouSureShutdown">Are you sure you want to Shutdown the TVM?</system:String>
+    <system:String x:Key="ChangeAmt">Change Amount:</system:String>
 
-	
-	
-	
-	
+
+
+
 
 </ResourceDictionary>

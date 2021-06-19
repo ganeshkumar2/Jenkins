@@ -348,5 +348,11 @@ namespace Kochi_TVM.Utils
             JammedError = 100410,
             UnknownError = 100499
         }
+
+        public enum PaymentType
+        {
+            card = 1,
+            cash = 2
+        }
     }
 }

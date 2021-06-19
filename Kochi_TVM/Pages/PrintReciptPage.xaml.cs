@@ -1,6 +1,8 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.MultiLanguages;
+using Kochi_TVM.PID;
 using Kochi_TVM.Printers;
+using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Utils;
 using log4net;
 using System;
@@ -37,36 +39,44 @@ namespace Kochi_TVM.Pages
         public PrintReciptPage(string NumberOfTicket, string ReceivedAmt, string ChangeAmt)
         {
             InitializeComponent();
-            RecAmt = ReceivedAmt;
-            ChaAmt = ChangeAmt;
-            returnCashImageGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\giving_money.gif");
-            lblTicketCount.Content = NumberOfTicket;
-            lblChange.Content = ChangeAmt;
-            if (!Constants.NoReceiptMode)
+            try
             {
-                stkPrint.Visibility = Visibility.Visible;
-                btnFinish.Visibility = Visibility.Collapsed;
-                Message();                
+                LedOperations.GreenText("PAYMENT SUCCESSFUL");
+                RecAmt = ReceivedAmt;
+                ChaAmt = ChangeAmt;
+                returnCashImageGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\giving_money.gif");
+                lblTicketCount.Content = NumberOfTicket;
+                lblChange.Content = ChangeAmt;
+                if (!Constants.NoReceiptMode)
+                {
+                    stkPrint.Visibility = Visibility.Visible;
+                    btnFinish.Visibility = Visibility.Collapsed;
+                    Message();
+                }
+                else
+                {
+                    stkPrint.Visibility = Visibility.Collapsed;
+                    btnFinish.Visibility = Visibility.Visible;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                stkPrint.Visibility = Visibility.Collapsed;
-                btnFinish.Visibility = Visibility.Visible;
+                log.Debug("Error PrintReciptPage -> PrintReciptPage() : " + ex.ToString());
             }
         }
         void Message()
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(9, null, null, "EN");
+                TVMUtility.PlayVoice(9, null, null, "EN");
             }
             if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(9, null, null, "ML");
+                TVMUtility.PlayVoice(9, null, null, "ML");
             }
             if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(9, null, null, "IN");
+                TVMUtility.PlayVoice(9, null, null, "IN");
             }
         }
         async void PrintReceipt()
@@ -81,28 +91,33 @@ namespace Kochi_TVM.Pages
                 CustomTL60Printer.Instance.TicketReceipt(RecAmt, ChaAmt);
             }
             await Task.Delay(1000);
-            PrintQR();
+            switch (Ticket.journeyType)
+            {
+                case JourneyType.Group_Ticket:
+                case JourneyType.SJT:
+                case JourneyType.RJT:
+                        PrintQR();
+                    break;
+                case JourneyType.Day_Pass:
+                case JourneyType.Weekend_Pass:
+                        RPT();
+                    break;
+                default:
+                    break;
+            }
             //NavigationService.Navigate(new Pages.MainPage());
         }
         async void PrintQR()
         {
             try
             {
+                LedOperations.GreenText("PLEASE COLLECT TICKET");
                 LastMessage();
                 //foreach (var selectedTickets in Ticket.listTickets)
                 //{
                 //    var qr = Utility.PrepareQRImage(selectedTickets.TicketGUID);
                 //    CustomTL60Printer.Instance.PrintQRTicket(selectedTickets, qr);
-                //}
-                if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
-                {
-                    var qr = Utility.PrepareQRImage("38AdU7+keAz1lOiyG9WuMhsJ1kRooVCwYAAwAAAAAAiAADABQAAAAAMFcA");
-                    CustomKPM150HPrinter.Instance.PrintQRTicket(qr);
-                }
-
-                long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                int stock = StockOperations.qrSlip;
-                StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                //}            
 
                 await Task.Delay(5000);
                 NavigationService.Navigate(new Pages.MainPage());
@@ -113,19 +128,43 @@ namespace Kochi_TVM.Pages
             }
         }
 
+        private bool RPT()
+        {
+            bool result = false;
+            try
+            {
+                result = RPTOperations.GiveRPTTicket();
+                if (result)
+                {
+                    log.Debug("LogTypes.Info : GiveRPTTicket return true");
+                }
+                else
+                {
+                    result = false;
+                    log.Debug("LogTypes.Warning : GiveRPTTicket return false");
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                log.Error("LogTypes.Error " + ex.ToString());
+            }
+            return result;
+        }
+
         void LastMessage()
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(10, null, null, "EN");
+                TVMUtility.PlayVoice(10, null, null, "EN");
             }
             if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(10, null, null, "ML");
+                TVMUtility.PlayVoice(10, null, null, "ML");
             }
             if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(10, null, null, "IN");
+                TVMUtility.PlayVoice(10, null, null, "IN");
             }
         }
         private void returnCashImageGif_MediaEnded(object sender, RoutedEventArgs e)
@@ -139,7 +178,20 @@ namespace Kochi_TVM.Pages
             idleTimer.Dispose();
             btnFinish.IsEnabled = false;
             btnPrintReciptSkip.IsEnabled = false;
-            PrintQR();
+            switch (Ticket.journeyType)
+            {
+                case JourneyType.Group_Ticket:
+                case JourneyType.SJT:
+                case JourneyType.RJT:
+                    PrintQR();
+                    break;
+                case JourneyType.Day_Pass:
+                case JourneyType.Weekend_Pass:
+                    RPT();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void btnPrintRecipt_Click(object sender, RoutedEventArgs e)
@@ -151,7 +203,35 @@ namespace Kochi_TVM.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            initialTimer();
+            try
+            {
+                lblChaAmt.Content = MultiLanguage.GetText("ChangeAmt");
+                lblSaleSucc.Content = MultiLanguage.GetText("ticketSaleSucces");
+                lblCollect.Content = MultiLanguage.GetText("collectTicketChange");
+                lblNoOfTick.Content = MultiLanguage.GetText("numberOfTickets");
+                btnPrintRecipt.Content = MultiLanguage.GetText("printReceipt");
+                btnPrintReciptSkip.Content = MultiLanguage.GetText("skipReceipt");
+                btnFinish.Content = MultiLanguage.GetText("qrPrinter");
+
+                if (StockOperations.qrSlip > 0)
+                {
+                    if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    {
+                        var qr = TVMUtility.PrepareQRImage("38AdU7+keAz1lOiyG9WuMhsJ1kRooVCwYAAwAAAAAAiAADABQAAAAAMFcA");
+                        CustomKPM150HPrinter.Instance.PrintQRTicket(qr);
+                    }
+
+                    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                    int stock = StockOperations.qrSlip;
+                    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                }
+
+                initialTimer();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Page_Loaded " + ex.ToString());
+            }
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -177,7 +257,20 @@ namespace Kochi_TVM.Pages
                 idleTimer.Dispose();
                 this.Dispatcher.Invoke(() =>
                 {
-                    PrintQR();
+                    switch (Ticket.journeyType)
+                    {
+                        case JourneyType.Group_Ticket:
+                        case JourneyType.SJT:
+                        case JourneyType.RJT:
+                            PrintQR();
+                            break;
+                        case JourneyType.Day_Pass:
+                        case JourneyType.Weekend_Pass:
+                            RPT();
+                            break;
+                        default:
+                            break;
+                    }
                 });
             }
             catch (Exception ex)

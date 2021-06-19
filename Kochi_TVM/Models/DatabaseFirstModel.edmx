@@ -1232,6 +1232,15 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
           <Parameter Name="insDT" Type="datetime" Mode="In" />
         </Function>
         <Function Name="sp_InsRFIDTicket" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="trx">
+          <Parameter Name="ticketType" Type="int" Mode="In" />
+          <Parameter Name="ticketPrice" Type="numeric" Mode="In" />
+          <Parameter Name="fromId" Type="int" Mode="In" />
+          <Parameter Name="toId" Type="int" Mode="In" />
+          <Parameter Name="passType" Type="int" Mode="In" />
+          <Parameter Name="activeFrom" Type="datetime" Mode="In" />
+          <Parameter Name="activeTo" Type="datetime" Mode="In" />
+          <Parameter Name="RFIDTicketId" Type="nvarchar" Mode="In" />
+          <Parameter Name="peopleCount" Type="smallint" Mode="In" />
           <Parameter Name="RFIDCreateMode" Type="char" Mode="In" />
           <Parameter Name="RFIDCreateStation" Type="int" Mode="In" />
           <Parameter Name="RFIDCreateSalePointId" Type="int" Mode="In" />
@@ -2706,6 +2715,15 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
             <Parameter Name="insDT" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="sp_InsRFIDTicket">
+            <Parameter Name="ticketType" Mode="In" Type="Int32" />
+            <Parameter Name="ticketPrice" Mode="In" Type="Decimal" />
+            <Parameter Name="fromId" Mode="In" Type="Int32" />
+            <Parameter Name="toId" Mode="In" Type="Int32" />
+            <Parameter Name="passType" Mode="In" Type="Int32" />
+            <Parameter Name="activeFrom" Mode="In" Type="DateTime" />
+            <Parameter Name="activeTo" Mode="In" Type="DateTime" />
+            <Parameter Name="RFIDTicketId" Mode="In" Type="String" />
+            <Parameter Name="peopleCount" Mode="In" Type="Int16" />
             <Parameter Name="RFIDCreateMode" Mode="In" Type="String" />
             <Parameter Name="RFIDCreateStation" Mode="In" Type="Int32" />
             <Parameter Name="RFIDCreateSalePointId" Mode="In" Type="Int32" />

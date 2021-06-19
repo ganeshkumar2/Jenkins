@@ -1,6 +1,8 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.MultiLanguages;
+using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class StationPage : Page
     {
+        private static ILog log = LogManager.GetLogger(typeof(StationPage).Name);
         Grid GridStations = null;
         public StationPage()
         {
@@ -31,29 +34,37 @@ namespace Kochi_TVM.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Message();
-            btnBack.Content = MultiLanguage.GetText("back");
-            btnFinish.Content = MultiLanguage.GetText("cancel");
-            btnStationMap.Content = MultiLanguage.GetText("showStationMap");
-            Dictionary<int, Station> stations = Stations.stationList;
-            SetHeaderText();
-            bool isOk = CreateGridStations();
-            if (isOk)
-                ListStationsInGrid();            
+            try
+            {
+                LedOperations.GreenText("Select Destination");
+                Message();
+                btnBack.Content = MultiLanguage.GetText("back");
+                btnFinish.Content = MultiLanguage.GetText("cancel");
+                btnStationMap.Content = MultiLanguage.GetText("showStationMap");
+                Dictionary<int, Station> stations = Stations.stationList;
+                SetHeaderText();
+                bool isOk = CreateGridStations();
+                if (isOk)
+                    ListStationsInGrid();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error StationPage -> Page_Loaded() : " + ex.ToString());
+            }
         }
         void Message()
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(3, null, null, "EN");
+                TVMUtility.PlayVoice(3, null, null, "EN");
             }
             if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(3, null, null, "ML");
+                TVMUtility.PlayVoice(3, null, null, "ML");
             }
             if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(3, null, null, "IN");
+                TVMUtility.PlayVoice(3, null, null, "IN");
             }
         }
         private void SetHeaderText()
@@ -117,7 +128,7 @@ namespace Kochi_TVM.Pages
             catch (Exception ex)
             {
                 result = false;
-                //Logger.Log.log.Write(ex.ToString());
+                log.Error("Error StationPage -> CreateGridStations() : " + ex.ToString());
             }
             return result;
         }
@@ -155,14 +166,13 @@ namespace Kochi_TVM.Pages
             }
             catch (Exception ex)
             {
-                //Logger.Log.log.Write(ex.ToString());
+                log.Error("Error StationPage -> ListStationsInGrid() : " + ex.ToString());
             }
-
         }
 
         private void btnStation_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             int selectedStationId = 0;
             selectedStationId = Stations.GetStation(((Button)sender).Content.ToString()).id;
             //if (Stations.stationList.ContainsKey(selectedStationId))
@@ -223,19 +233,19 @@ namespace Kochi_TVM.Pages
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.MainPage());
         }
 
         private void btnStationMap_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.StationMapPage());
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.JourneyTypePage());
         }
     }

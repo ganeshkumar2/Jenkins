@@ -91,15 +91,17 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="185*" />
-                <ColumnDefinition Width="326*" />
+                <ColumnDefinition Width="280*" />
                 <ColumnDefinition Width="32*" />
                 <ColumnDefinition Width="160*" />
                 <ColumnDefinition Width="32*" />
                 <ColumnDefinition Width="159*" />
                 <ColumnDefinition Width="32*" />
+                <ColumnDefinition Width="159*" />
             </Grid.ColumnDefinitions>
             <Label Name="lblSelectLanguage" Content="Select Your Language" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader4}" Width="329" Grid.ColumnSpan="2"/>
-            <Button x:Name="btnLang1" Grid.Row="1" Grid.Column="3" Content="हिन्दी"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang1_Click"/>
+            <Button x:Name="btnLang1" Grid.Row="1" Grid.Column="3" Content="English"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang1_Click"/>
+            <Button x:Name="btnLang3" Grid.Row="1" Grid.Column="7" Content="हिन्दी"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang3_Click"/>
             <Button x:Name="btnLang2" Grid.Row="1" Grid.Column="5" Content="മലയാളം"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang2_Click"/>
         </Grid>
 
@@ -120,21 +122,20 @@
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Row="0" Source="..\Images\NoCoin.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="200"></Image>
-                <TextBlock Grid.Row="1" Text="NO CHANGE MODE" FontFamily="Helvetica" HorizontalAlignment="Center"  VerticalAlignment="Center"  FontSize="25" FontWeight="UltraBold" 
-                       Tag="lbl_NoChangeMode"/>
+                <Label Name="lblNoChange" Grid.Row="1" Content="NO CHANGE MODE" Style="{StaticResource styleLabelHeader1}"  />
                 <Button x:Name="btnNoChangeExit" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnNoChangeExit_Click" />
-                <Button x:Name="btnNoChangeYes" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="OK"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnNoChangeYes_Click" />
+                <Button x:Name="btnNoChangeYes" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnNoChangeYes_Click" />
                 <StackPanel Name="stackCoin" Orientation="Horizontal" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
-                    <Label  Content="Available Coins : " VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <Label Name="lblAvailable"  Content="Available Coins : " Style="{StaticResource styleLabelHeader2}" />
                    
                     <Border Name="lbl5RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                        <Label  Content="₹5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <Label  Content="₹5" Style="{StaticResource styleLabelHeader2}" />
                     </Border>
                     <Border Name="lbl2RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                        <Label  Content="₹2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <Label  Content="₹2" Style="{StaticResource styleLabelHeader2}" />
                     </Border>
                     <Border Name="lbl1RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                        <Label  Content="₹1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Helvetica" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <Label  Content="₹1" Style="{StaticResource styleLabelHeader2}" />
                     </Border>
                 </StackPanel>
             </Grid>
@@ -157,10 +158,9 @@
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Row="0" Source="..\Images\NoReceipt.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="300" Width="300"></Image>
-                <TextBlock Grid.Row="1" FontFamily="Helvetica" HorizontalAlignment="Center" Text="NO RECEIPT MODE" VerticalAlignment="Center"  FontSize="25" FontWeight="UltraBold" 
-                       Tag="lbl_NoReceiptPrinter"/>
+                <Label Name="lblNoReceipt" Grid.Row="1" Content="NO RECEIPT MODE" Style="{StaticResource styleLabelHeader1}"  />
                 <Button x:Name="btnReceiptCancel" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnReceiptCancel_Click" />
-                <Button x:Name="btnReceiptOK" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="OK"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnReceiptOK_Click" />
+                <Button x:Name="btnReceiptOK" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnReceiptOK_Click" />
                 
             </Grid>
         </Grid>

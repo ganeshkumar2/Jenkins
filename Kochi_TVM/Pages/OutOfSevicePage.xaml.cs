@@ -1,7 +1,10 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.CCTalk;
+using Kochi_TVM.PID;
+using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Utils;
 using log4net;
+using RPTIssueLib;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +23,7 @@ namespace Kochi_TVM.Pages
         private static ILog log = LogManager.GetLogger(typeof(OutOfSevicePage).Name);
         public OutOfSevicePage()
         {
-            InitializeComponent();
+            InitializeComponent();            
             new Thread(() => AsyncIntFunc()).Start();
         }
 
@@ -30,8 +33,8 @@ namespace Kochi_TVM.Pages
             {
                 Dispatcher.Invoke(DispatcherPriority.Background, new Action(async () =>
                 {
-                  await Task.Delay(1000);
-
+                    LedOperations.Close();
+                    await Task.Delay(1000);
                     InitializeBNR();
 
                 }));
@@ -122,6 +125,24 @@ namespace Kochi_TVM.Pages
             }));
         }
 
+        private void Dispencer()
+        {
+            Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            {
+                try
+                {
+                    DISP_STAT stat = DISP_STAT.STACKER_FULL;
+                    RPTOperations.GetStatus(ref stat);
+                    outOfServiceLbl.Content = "Dispenser Status " + stat.ToString();
+                }
+                catch (Exception ex)
+                {
+                    outOfServiceLbl.Content = ex.Message;
+                }
+            }));
+            
+        }
+
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             BNRManager.BNRStateInputEvent += new BNRManager.BNRStateEventHandler(BNRManager_BNRStateInputEvent);
@@ -174,6 +195,9 @@ namespace Kochi_TVM.Pages
 
                     CoinHopper3();
                     await Task.Delay(1000);
+
+                    //Dispencer();
+                    //await Task.Delay(1000);
 
                     NavigationService.Navigate(new Pages.MainPage());
                 }));

@@ -1,6 +1,7 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.Models;
 using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
+            LedOperations.Close();
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -42,7 +43,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             bool notAuthorized = false;
             bool log = Login(txtUserID.Text, pbUserPassword.Password, Stations.currentStation.id, ref notAuthorized);
             if (notAuthorized)
@@ -80,7 +81,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.MainPage());
         }
         public bool Login(string userName, string password, int stationId, ref bool notAuthorized)

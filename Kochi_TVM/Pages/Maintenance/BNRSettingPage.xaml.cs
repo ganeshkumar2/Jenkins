@@ -130,13 +130,13 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminSettingPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
 
@@ -199,7 +199,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void GridSubmitSetting_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
 
             if ((cbCassette.SelectedIndex == -1))
             {

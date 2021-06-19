@@ -52,13 +52,13 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("Log Out", "Do you want to Log Out?", MessageBoxButtonSet.OKCancel);
 
             if (messageBoxResult == Custom.MessageBoxResult.OK)
@@ -69,25 +69,25 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminInfoPage());
         }
 
         private void btnCollection_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.OperationPage());
         }
 
         private void btnMaintance_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.MaintancePage());
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminSettingPage());
         }
     }

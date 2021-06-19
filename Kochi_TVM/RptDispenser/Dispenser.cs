@@ -1,4 +1,5 @@
-﻿using RPTIssueLib;
+﻿using log4net;
+using RPTIssueLib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,6 +12,8 @@ namespace Kochi_TVM.RptDispenser
 {
     public class Dispenser
     {
+        private static ILog log = LogManager.GetLogger(typeof(Dispenser).Name);
+
         #region Definations
         private string id = "Dispenser";
         private string name = "Dispenser";
@@ -36,7 +39,7 @@ namespace Kochi_TVM.RptDispenser
         #endregion
         public Dispenser()
         {
-            Init();
+            //Init();
         }
         public bool Init()
         {
@@ -50,6 +53,8 @@ namespace Kochi_TVM.RptDispenser
                 if (rpt.Init(DEVICE_TYPE.CRT571_DISPENSER, ref err))
                     if (err == LIB_ERR.NO_ERROR)
                         result = true;
+
+                log.Debug("Debug MainPage -> rptDispenserStatus : " + err.ToString());
 
             }
             catch (Exception ex)

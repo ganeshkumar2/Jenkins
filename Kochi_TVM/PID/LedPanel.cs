@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO.Ports;
@@ -17,7 +18,7 @@ namespace Kochi_TVM.PID
         Percent100 = 0x0A
     }
 
-    enum Action
+    enum TextAction
     {
         Auto = 0x00,
         ShowNow = 0x01,
@@ -54,7 +55,7 @@ namespace Kochi_TVM.PID
         Dotted2RGY = 0x06
     }
 
-    enum Color
+    public enum Color
     {
         Yellow = 0x00,
         Red = 0x01,
@@ -83,6 +84,8 @@ namespace Kochi_TVM.PID
 
     public class LedPanel
     {
+        private static ILog log = LogManager.GetLogger(typeof(LedPanel).Name);
+
         private static LedPanel _instance = null;
         public static LedPanel Instance
         {
@@ -90,8 +93,8 @@ namespace Kochi_TVM.PID
             {
                 if (_instance == null)
                 {
-                    string UPS_COMPort = ConfigurationManager.AppSettings["PID_PORT_NAME"];
-                    _instance = new LedPanel(UPS_COMPort);
+                    string LED_COMPort = ConfigurationManager.AppSettings["PID_PORT_NAME"];
+                    _instance = new LedPanel(LED_COMPort);
                 }
                 return _instance;
             }
@@ -114,7 +117,7 @@ namespace Kochi_TVM.PID
         byte[] data = new byte[99]; //max 100
         byte[] rcvData = new byte[2];
         byte[] sendData = new byte[512];
-
+        Color color = Color.Green;
         #endregion
 
         #region interface functions
@@ -151,22 +154,25 @@ namespace Kochi_TVM.PID
                 port.ReadTimeout = 500;
                 if (!port.IsOpen)
                     port.Open();
+                log.Debug("LED Port Open");
                 return true;
             }
             catch (Exception ex)
             {
+                log.Error("LED Port Error " + ex.ToString());
                 return false;
             }
         }
-        public bool ChangeText(string Text, Kochi_TVM.PID.Speed spd)
+        public bool ChangeText(string Text, Kochi_TVM.PID.Speed spd, Color textcolor)
         {
             speed = spd;
-
+            color = textcolor;
             if (!String.IsNullOrEmpty(Text))
             {
                 text = Text.ToUpper();
                 if (PrepareBuff())
-                {
+                {                    
+                    log.Debug("LED Text " + text);
                     //Fix me : Open serial plug
                     //if(sp.SendReceive(sendData, ref rcvData, 100))
                     return true;
@@ -224,6 +230,8 @@ namespace Kochi_TVM.PID
 
         bool PrepareBuff()
         {
+            sendData = new byte[512];
+
             int index = 0;
             byte stx_etx = 0x79;
             byte rsType = 0x00; //send rs type
@@ -263,11 +271,13 @@ namespace Kochi_TVM.PID
 
         int PrepareShowData()
         {
+            data = new byte[99];
+
             int index = 21;
             Brightness br = Brightness.Percent100;
-            Action action = Action.ContinusLeft;
+            TextAction action = TextAction.ContinusLeft;
             Speed stay = (Speed)speed;
-            Color color = Color.Red;
+            
             Border border = Border.NoBorder;
 
             data[index++] = (byte)br;

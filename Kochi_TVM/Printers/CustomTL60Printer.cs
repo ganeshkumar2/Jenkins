@@ -192,7 +192,6 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
-
         public void TestHopper()
         {
             lineY = 2;
@@ -720,7 +719,7 @@ namespace Kochi_TVM.Printers
             Document1.Print();
         }
         public void StockStatusReport(int coin1, int coin2, int coin5, int qr, int rpt, int receipt,
-            int banknote10, int banknote20, int box)
+            int banknote10, int banknote20, int bankescrow, int billval1, int billval2, int billval3, int box)
         {
             lineY = 2;
             printList = new List<PrintObject>();
@@ -741,19 +740,19 @@ namespace Kochi_TVM.Printers
             //PrinterFunctions.AddText("Receipt Slip Count", receipt.ToString(), 120);
             //PrinterFunctions.AddText("RPT Count", rpt.ToString(), 120);
 
-            AddText("1 Rs. Coin Count", coin1.ToString(), 120);
-            AddText("2 Rs. Coin Count", coin2.ToString(), 120);
-            AddText("5 Rs. Coin Count", coin5.ToString(), 120);
-            AddText("Hoppers Amount", (coin1 * 1 + coin2 * 2 + coin5 * 5).ToString() + " Rs.", 120);
+            AddText(Constants.HopperAddress1Coin + " Rs. Coin Count", coin1.ToString(), 120);
+            AddText(Constants.HopperAddress2Coin+" Rs. Coin Count", coin2.ToString(), 120);
+            AddText(Constants.HopperAddress3Coin+" Rs. Coin Count", coin5.ToString(), 120);
+            AddText("Hoppers Amount", ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin)).ToString() + " Rs.", 120);
 
-            AddText("10 Rs. Banknote Count", banknote10.ToString(), 130);
-            AddText("20 Rs. Banknote Count", banknote20.ToString(), 130);
+            AddText(billval1+" Rs. Banknote Count", banknote10.ToString(), 130);
+            AddText(billval2+" Rs. Banknote Count", banknote20.ToString(), 130);
+            AddText(billval3+" Rs. Banknote Count", bankescrow.ToString(), 130);
             AddText("Box Amount", box.ToString() + " Rs.", 130);
-            AddText("Banknotes Amount", (banknote10 * 10 + banknote20 * 20 + box).ToString() + " Rs.", 130);
+            AddText("Banknotes Amount", ((banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box).ToString() + " Rs.", 130);
 
 
-            AddText("Grand Total", (coin1 * 1 + coin2 * 2 + coin5 * 5 + banknote10 * 10 + banknote20 * 20
-                                    + box).ToString() + " Rs.", 130);
+            AddText("Grand Total", ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin) + (banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box).ToString() + " Rs.", 130);
 
             AddText("------------------------------------------------------------------------------");
 
@@ -813,7 +812,6 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
-
         public void DispatchQRRPT(int count, TransactionType type, int stock)
         {
             lineY = 2;
@@ -909,7 +907,6 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
-
         public void SendBoxNotes(int count, int billType)
         {
             lineY = 2;
@@ -969,7 +966,6 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
-
         public void AddBanknotes(int count1, int notes1,int count2, int notes2, int count3, int notes3)
         {
             lineY = 2;
@@ -1010,7 +1006,6 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
-
         void printDocumentPrintPage(object sender, PrintPageEventArgs e)
         {
             printGraphics = e.Graphics;

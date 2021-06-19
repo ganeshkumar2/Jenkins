@@ -13,7 +13,13 @@
 	<system:String x:Key="collectRefund">ദയവായി തുക തിരികെ ശേഖരിക്കുക !</system:String>
 	<system:String x:Key="sj">ഒറ്റയാത്ര</system:String>
 	<system:String x:Key="rj">മടക്കയാത്ര</system:String>
-	<system:String x:Key="welcome">കൊച്ചി മെട്രോയിലേക്ക് സ്വാഗതം</system:String>
+    <system:String x:Key="gj">ഗ്രൂപ്പ് യാത്ര</system:String>
+    <system:String x:Key="NoChange">മാറ്റ മോഡൊന്നുമില്ല</system:String>
+    <system:String x:Key="AvailableCoin">ലഭ്യമായ നാണയങ്ങൾ :</system:String>
+    <system:String x:Key="NoReceipt">രസീത് മോഡ് ഇല്ല</system:String>
+    <system:String x:Key="Exit">പുറത്ത്</system:String>
+    <system:String x:Key="Ok">ശരി</system:String>
+    <system:String x:Key="welcome">കൊച്ചി മെട്രോയിലേക്ക് സ്വാഗതം</system:String>
 	<system:String x:Key="buyTicket">ടിക്കറ്റ് വാങ്ങുക</system:String>
 	<system:String x:Key="k1CardOp">Kochi-1 Card Operation</system:String>
 	<system:String x:Key="comingSoon">ഉടൻ വരുന്നു</system:String>
@@ -147,10 +153,10 @@
 	<system:String x:Key="shutdownCap">SHUTDOWN</system:String>
 	<system:String x:Key="areYouSureRestart">Are you sure you want to Restart the TVM?</system:String>
 	<system:String x:Key="areYouSureShutdown">Are you sure you want to Shutdown the TVM?</system:String>
+    <system:String x:Key="ChangeAmt">തുക മാറ്റുക:</system:String>
 
-	
-	
-	
-	
+
+
+
 
 </ResourceDictionary>

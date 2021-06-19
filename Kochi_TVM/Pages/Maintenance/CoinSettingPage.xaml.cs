@@ -30,7 +30,7 @@ namespace Kochi_TVM.Pages.Maintenance
         bool coin1 = false;
         private void btnAddCoin1_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             if (!coin1)
                 return;
 
@@ -61,7 +61,7 @@ namespace Kochi_TVM.Pages.Maintenance
         bool coin2 = false;
         private void btnAddCoin2_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             if (!coin2)
                 return;
 
@@ -93,7 +93,7 @@ namespace Kochi_TVM.Pages.Maintenance
         bool coin3 = false;
         private void btnAddCoin3_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             if (!coin3)
                 return;
 
@@ -123,13 +123,13 @@ namespace Kochi_TVM.Pages.Maintenance
         }
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminSettingPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
         private void HooperManager_HopperStateInputEvent(byte[] res, CoinHopperCommands sentCommand)
@@ -142,7 +142,7 @@ namespace Kochi_TVM.Pages.Maintenance
                 {
                     try
                     {
-                        var Dataresult = Utils.Utility.Hex2Binary(Data[4].ToString());
+                        var Dataresult = Utils.TVMUtility.Hex2Binary(Data[4].ToString());
                         var highorlow = Dataresult.Substring(Dataresult.Length - 2);
                         var high = highorlow[0];
                         var low = highorlow[1];
@@ -191,6 +191,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCoin1.Text = i.ToString();
                 coin1 = true;
             }
+            else
+            {
+                lblTypeCoin1.Text = Convert.ToString(Constants.HopperAddress1Coin);
+            }
         }
 
         private void lblTypeCoin2_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -201,6 +205,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCoin2.Text = i.ToString();
                 coin2 = true;
             }
+            else
+            {
+                lblTypeCoin2.Text = Convert.ToString(Constants.HopperAddress2Coin);
+            }
         }
 
         private void lblTypeCoin3_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -210,6 +218,10 @@ namespace Kochi_TVM.Pages.Maintenance
             {
                 lblTypeCoin3.Text = i.ToString();
                 coin3 = true;
+            }
+            else
+            {
+                lblTypeCoin3.Text = Convert.ToString(Constants.HopperAddress3Coin);
             }
         }
     }

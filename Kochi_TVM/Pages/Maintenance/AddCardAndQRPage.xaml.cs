@@ -61,6 +61,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCount.Text = i.ToString();
                 card = true;
             }
+            else
+            {
+                lblTypeCount.Text = "0";
+            }
         }
 
         bool qr = false;
@@ -71,6 +75,10 @@ namespace Kochi_TVM.Pages.Maintenance
             {
                 lblQrCount.Text = i.ToString();
                 qr = true;
+            }
+            else
+            {
+                lblQrCount.Text = "0";
             }
         }
 
@@ -227,13 +235,13 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.OperationPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
     }

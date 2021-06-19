@@ -13,7 +13,13 @@
 	<system:String x:Key="collectRefund">कृपया अपनी धन की वापसी प्राप्त करें !</system:String>
 	<system:String x:Key="sj">एक तरफ की यात्रा</system:String>
 	<system:String x:Key="rj">वापसी यात्रा</system:String>
-	<system:String x:Key="welcome">कोच्चि मेट्रो में आपका स्वागत है!</system:String>
+    <system:String x:Key="gj">समूह यात्रा</system:String>
+    <system:String x:Key="NoChange">कोई परिवर्तन मोड नहीं</system:String>
+    <system:String x:Key="AvailableCoin">उपलब्ध सिक्के :</system:String>
+    <system:String x:Key="NoReceipt">कोई रसीद मोड नहीं</system:String>
+    <system:String x:Key="Exit">बाहर जाएं</system:String>
+    <system:String x:Key="Ok">ठीक है</system:String>
+    <system:String x:Key="welcome">कोच्चि मेट्रो में आपका स्वागत है!</system:String>
 	<system:String x:Key="buyTicket">टिकट खरीदें</system:String>
 	<system:String x:Key="k1CardOp">कोच्चि -1 कार्ड ऑपरेशन</system:String>
 	<system:String x:Key="comingSoon">जल्द ही आने वाला है!</system:String>
@@ -147,10 +153,10 @@
 	<system:String x:Key="shutdownCap">SHUTDOWN</system:String>
 	<system:String x:Key="areYouSureRestart">Are you sure you want to Restart the TVM?</system:String>
 	<system:String x:Key="areYouSureShutdown">Are you sure you want to Shutdown the TVM?</system:String>
+    <system:String x:Key="ChangeAmt">राशि बदलें:</system:String>
 
-	
-	
-	
-	
+
+
+
 
 </ResourceDictionary>

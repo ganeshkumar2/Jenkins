@@ -107,7 +107,7 @@
                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
                 <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/SJT.png"/>
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label x:Name="labelBtn" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Single Journey" Style="{StaticResource styleLabelHeader4}" />
+                <Label x:Name="labelSJT" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Single Journey" Style="{StaticResource styleLabelHeader4}" />
              </Grid>
 
             <Grid x:Name="gridRJT" Grid.Row="0" Grid.Column="2" MouseLeftButtonDown="gridRJT_MouseLeftButtonDown">
@@ -130,7 +130,7 @@
                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
                 <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/RJT.png"/>
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Return Journey" Style="{StaticResource styleLabelHeader4}" />
+                <Label Name="lblRJT" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Return Journey" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
             <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridGrp_MouseLeftButtonDown">
@@ -153,7 +153,53 @@
                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
                 <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/groupTicket.png"/>
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Group Ticket" Style="{StaticResource styleLabelHeader4}" />
+                <Label Name="lblGroup" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Group Ticket" Style="{StaticResource styleLabelHeader4}" />
+            </Grid>
+
+            <Grid x:Name="gridOnePass" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="gridOnePass_MouseLeftButtonDown" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
+                <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/dayPass.png"/>
+                <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
+                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="One Day Pass" Style="{StaticResource styleLabelHeader4}" />
+            </Grid>
+
+            <Grid x:Name="gridWeekendPass" Grid.Row="2" Grid.Column="2" MouseLeftButtonDown="gridWeekendPass_MouseLeftButtonDown" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
+                <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/weekendPass.png"/>
+                <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
+                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Weekend Pass" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
         </Grid>
 

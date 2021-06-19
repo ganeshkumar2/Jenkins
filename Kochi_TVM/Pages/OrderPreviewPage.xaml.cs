@@ -1,7 +1,11 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.Business;
 using Kochi_TVM.MultiLanguages;
+using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.PID;
+using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,49 +30,73 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class OrderPreviewPage : Page
     {
+        private static ILog log = LogManager.GetLogger(typeof(OrderPreviewPage).Name);
         public OrderPreviewPage()
         {
             InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        {            
-            lblInfo.Content = MultiLanguage.GetText("startPaymentProc");
-            btnBack.Content = MultiLanguage.GetText("back");
-            btnFinish.Content = MultiLanguage.GetText("cancel");
-            btnCash.Content = MultiLanguage.GetText("cash");
-            Dispatcher.BeginInvoke(new Action(() =>
+        {
+            try
             {
-                try
+                LedOperations.GreenText("PAY USING CASH");
+                lblInfo.Content = MultiLanguage.GetText("startPaymentProc");
+                btnBack.Content = MultiLanguage.GetText("back");
+                btnFinish.Content = MultiLanguage.GetText("cancel");
+                btnCash.Content = MultiLanguage.GetText("cash");
+                PRINTER_STATE ReceiptPrinter = CustomTL60Printer.Instance.getStatusWithUsb();
+                if (ReceiptPrinter == PRINTER_STATE.OK)
                 {
-                    if (Ticket.PrepareTicket())
+                    Constants.NoReceiptMode = false;
+                }
+                else
+                {
+                    Constants.NoReceiptMode = true;
+                }
+                PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
+                if (QRPrinter != PRINTER_STATE.OK)
+                {
+                    MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
+                    return;
+                }
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    try
                     {
-                        DefaultTicketInfo();
-                        ArrangTicketInfo();
-                        btnCash.Visibility = Visibility.Visible;
-                        Message();
+                        if (Ticket.PrepareTicket())
+                        {
+                            DefaultTicketInfo();
+                            ArrangTicketInfo();
+                            btnCash.Visibility = Visibility.Visible;
+                            Message();
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
+                    catch (Exception ex)
+                    {
 
-                }
-            }), DispatcherPriority.Background);
-            BNRManager.Instance.PollingAction();
+                    }
+                }), DispatcherPriority.Background);
+                BNRManager.Instance.PollingAction();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error OrderPreviewPage -> Page_Loaded() : " + ex.ToString());
+            }
         }
         void Message()
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(6, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "EN");
+                TVMUtility.PlayVoice(6, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "EN");
             }
             if (MultiLanguage.GetCurrentLanguage() == "ML" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(6, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "ML");
+                TVMUtility.PlayVoice(6, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "ML");
             }
             if (MultiLanguage.GetCurrentLanguage() == "IN" && Constants.IsVoiceEnabled)
             {
-                Utility.PlayVoice(6, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "IN");
+                TVMUtility.PlayVoice(6, null, Convert.ToString(Convert.ToInt16(Ticket.totalPrice)), "IN");
             }
         }
         private bool ArrangTicketInfo()
@@ -136,7 +164,7 @@ namespace Kochi_TVM.Pages
                         //lblLine3Key.Content = "Ticket Type :"; lblLine3Value.Content = Ticket.ticketTypeText;
                         lblLine3Key.Content = MultiLanguage.GetText("numberOfTickets"); lblLine3Value.Content = Ticket.ticketCount;
                         lblLine4Key.Content = MultiLanguage.GetText("amount"); lblLine4Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
-                        Constants.EnableBillNotes = Utility.EnableBill(Ticket.totalPrice);
+                        Constants.EnableBillNotes = TVMUtility.EnableBill(Ticket.totalPrice);
                         break;
 
                     default:
@@ -160,7 +188,7 @@ namespace Kochi_TVM.Pages
             }
             catch (Exception ex)
             {
-                //Logger.Log.log.Write(ex.ToString());
+                log.Error("Error DefaultTicketInfo -> Page_Loaded() : " + ex.ToString());
             }
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -170,19 +198,19 @@ namespace Kochi_TVM.Pages
 
         private void btnCash_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.PayByCashPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.MainPage());
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Utility.PlayClick();
+            TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.TicketCountPage());
         }
     }
