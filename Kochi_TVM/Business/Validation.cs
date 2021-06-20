@@ -1,5 +1,7 @@
-﻿using System;
+﻿using KioskFramework.OccSrv;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,36 +10,36 @@ namespace Kochi_TVM.Business
 {
     public static class Validation
     {
-        //public static bool IsValidRP(LocalDbPackage rp)
-        //{
-        //    var Result = ((rp != null) &&
-        //                  (rp.Data != null) &&
-        //                  (rp.Data.Tables.Count > 0) &&
-        //                  (rp.Data.Tables[0].Rows != null) &&
-        //                  (rp.Data.Tables[0].Rows.Count > 0));
+        public static bool IsValidRP(LocalDbPackage rp)
+        {
+            var Result = ((rp != null) &&
+                          (rp.Data != null) &&
+                          (rp.Data.Tables.Count > 0) &&
+                          (rp.Data.Tables[0].Rows != null) &&
+                          (rp.Data.Tables[0].Rows.Count > 0));
 
-        //    return Result;
-        //}
-        //public static bool IsValidAFCRP(PayPointSrv.ReturnPackage rp)
-        //{
-        //    var Result = ((rp != null) &&
-        //                  (rp.Data != null) &&
-        //                  (rp.Data.Tables.Count > 0) &&
-        //                  (rp.Data.Tables[0].Rows != null) &&
-        //                  (rp.Data.Tables[0].Rows.Count > 0));
+            return Result;
+        }
+        public static bool IsValidAFCRP(KioskFramework.PayPointSrv.ReturnPackage rp)
+        {
+            var Result = ((rp != null) &&
+                          (rp.Data != null) &&
+                          (rp.Data.Tables.Count > 0) &&
+                          (rp.Data.Tables[0].Rows != null) &&
+                          (rp.Data.Tables[0].Rows.Count > 0));
 
-        //    return Result;
-        //}
-        //public static bool IsValidOCCRP(ReturnPackage rp)
-        //{
-        //    var Result = ((rp != null) &&
-        //                  (rp.Data != null) &&
-        //                  (rp.Data.Tables.Count > 0) &&
-        //                  (rp.Data.Tables[0].Rows != null) &&
-        //                  (rp.Data.Tables[0].Rows.Count > 0));
+            return Result;
+        }
+        public static bool IsValidOCCRP(ReturnPackage rp)
+        {
+            var Result = ((rp != null) &&
+                          (rp.Data != null) &&
+                          (rp.Data.Tables.Count > 0) &&
+                          (rp.Data.Tables[0].Rows != null) &&
+                          (rp.Data.Tables[0].Rows.Count > 0));
 
-        //    return Result;
-        //}
+            return Result;
+        }
 
         public static string PassValidityVOL(string operatorChar, string operatorCode, string vehicleChar, string vehicleCode,
       string lineChar, string lineNo, int fromStage, int fromStationId, int toStage, int toStationId)
@@ -137,6 +139,15 @@ namespace Kochi_TVM.Business
 
             return passValidityVOL + "0000000000000000";
         }
+
+    }
+    public class LocalDbPackage
+    {
+        public int Result { get; set; }
+
+        public string Description { get; set; }
+
+        public DataSet Data { get; set; }
 
     }
 }

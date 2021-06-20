@@ -1,5 +1,6 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.Business;
+using Kochi_TVM.Models;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.PID;
@@ -9,6 +10,8 @@ using Kochi_TVM.Utils;
 using log4net;
 using RPTIssueLib;
 using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,12 +31,45 @@ namespace Kochi_TVM.Pages
 
         private static Timer checkDeviceTimer;
         private static TimerCallback checkDeviceTimerDelegate;
+
+        private readonly BackgroundWorker bwAfcStatus = null;
+        private readonly BackgroundWorker bwSendSc = null;
+        private readonly BackgroundWorker bwSendMonitoring = null;
+
         bool Check_Receiptprinter = false;
+        bool Check_QRprinter = false;
         public MainPage()
         {
             InitializeComponent();
+            bwAfcStatus = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+
+            bwSendSc = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+
+            bwSendMonitoring = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+
+            bwAfcStatus.ProgressChanged += bwAfcStatus_ProgressChanged;
+            bwAfcStatus.DoWork += bwAfcStatus_DoWork;
+
+            bwSendSc.DoWork += bwSendSc_DoWork;
+            bwSendMonitoring.DoWork += bwSendMonitoring_DoWork;
+
+            bwSendSc.RunWorkerAsync();
             btnLang1.IsEnabled = false;
             btnLang1.Opacity = 0.5;
+
+            Ticket.Clear();
         }
         
         void Message()
@@ -51,20 +87,326 @@ namespace Kochi_TVM.Pages
                 TVMUtility.PlayVoice(1, Stations.currentStation.name, null, "IN");
             }
         }
+        void timerOccConnMsg_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+
+                DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
+                DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
+
+                if ((startDate <= DateTime.Now) && (endDate >= DateTime.Now))
+                {
+
+                    if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            lblNoConnection.Content = "";
+                        });
+                    }
+                }
+            }
+
+            //if (!Devices.inUse)
+            //{
+            //    Devices.InitHopper1();
+            //    Parameters.TVMStatic.AddOrUpdateParameter("hopper1Status", Devices.GetStatusHopper() == true ? "OK" : "ERROR");
+
+            //    Devices.InitHopper2();
+            //    Parameters.TVMStatic.AddOrUpdateParameter("hopper2Status", Devices.GetStatusHopper() == true ? "OK" : "ERROR");
+
+            //    Devices.InitHopper5();
+            //    Parameters.TVMStatic.AddOrUpdateParameter("hopper5Status", Devices.GetStatusHopper() == true ? "OK" : "ERROR");
+            //}
+
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+            }
+        }
+        private void bwAfcStatus_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                var worker = sender as BackgroundWorker;
+                DateTime lastUpdate = DateTime.Now;
+                do
+                {
+
+                    TimeSpan diff = DateTime.Now - lastUpdate;
+                    if (diff.Seconds > 2)
+                    {
+                        var result = Parameters.TVMDynamic.GetAfcConnStatus();
+                        lastUpdate = DateTime.Now;
+                        worker?.ReportProgress(0, result);
+                    }
+
+                    Thread.Sleep(100);
+
+                } while (worker != null && !worker.CancellationPending);
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+            }
+        }
+        private void bwAfcStatus_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            try
+            {
+
+                DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
+                DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
+
+                if ((startDate <= DateTime.Now) && (endDate >= DateTime.Now))
+                {
+                    var stat = (bool)e.UserState;
+                    byte status = 1;
+
+                    if (stat)
+                        status = 1;
+                    else
+                        status = 0;
+
+                    Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", status.ToString());
+
+                    if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
+                    {
+                        lblNoConnection.Content = "";
+                        //PageControl.ShowPage(Pages.journeyPage);
+                    }
+                    else
+                    {
+                        lblNoConnection.Content = "No Connection!";
+                        btnSelectTicket.Opacity = 0.2;
+                    }
+                }
+                else
+                {
+                    NavigationService.Navigate(new Pages.StationClosedPage());
+                }
+                bwAfcStatus.CancelAsync();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+            }
+        }
+        private void bwSendSc_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                try
+                {
+                    StockOperations.SelStockStatus();
+
+                    if (StockOperations.qrSlip <= 10)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                            string.Format("QR PAPER STOCK IS LESS! Please ADD PAPER"));
+
+                        //Log.log.Write("InsNStationAlarm qr --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                    if (StockOperations.coin1 == 0)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                            string.Format("Rs 1.00 stock is empty! Please refill."));
+
+                        //Log.log.Write("InsNStationAlarm coin1 --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                    if (StockOperations.coin2 == 0)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                            string.Format("Rs 2.00 stock is empty! Please refill."));
+
+                        //Log.log.Write("InsNStationAlarm coin2 --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                    if (StockOperations.coin5 == 0)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                            string.Format("Rs 5.00 stock is empty! Please refill."));
+
+                        //Log.log.Write("InsNStationAlarm coin5 --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                    if (StockOperations.banknote10 <= 5)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                        string.Format("Rs 10.00 currency (Cassette 3) stock is less! Please add notes."));
+
+                        //Log.log.Write("InsNStationAlarm banknote10 --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                    if (StockOperations.banknote20 <= 5)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                        string.Format("Rs 20.00 currency (Cassette 2) stock is less! Please add notes."));
+
+                        //Log.log.Write("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.ToString());
+                }
+
+                Parameters.lastSync = DateTime.Now;
+                Thread.Sleep(60000 * 5);
+            }
+
+        }
+        private void bwSendMonitoring_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int QRSJTCashCount = 0;
+            int QRSJTCashAmount = 0;
+            int QRSJTNonCashCount = 0;
+            int QRSJTNonCashAmount = 0;
+            int QRRJTCashCount = 0;
+            int QRRJTCashAmount = 0;
+            int QRRJTNonCashCount = 0;
+            int QRRJTNonCashAmount = 0;
+            int RPTSJTCashCount = 0;
+            int RPTSJTCashAmount = 0;
+            int RPTSJTNonCashCount = 0;
+            int RPTSJTNonCashAmount = 0;
+
+            bool result = false;
+
+            while (true)
+            {
+                try
+                {
+                    DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
+                    DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
+
+                    using (var context = new TVM_Entities())
+                    {
+                        var trxData = context.sp_SelShiftPaymentReport(Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), Stations.currentStation.id, 0, 0, startDate, endDate).ToList();
+
+                        foreach (var data in trxData)
+                        {
+                            if (Convert.ToString(data.Transaction) == "QR SJT-CASH")
+                            {
+                                QRSJTCashCount = Convert.ToInt32(data.Count);
+                                QRSJTCashAmount = Convert.ToInt32(data.Amount);
+                            }
+                            else if (Convert.ToString(data.Transaction) == "QR SJT-NonCASH")
+                            {
+                                QRSJTNonCashCount = Convert.ToInt32(data.Count);
+                                QRSJTNonCashAmount = Convert.ToInt32(data.Amount);
+                            }
+                            if (Convert.ToString(data.Transaction) == "QR RJT-CASH")
+                            {
+                                QRRJTCashCount = Convert.ToInt32(data.Count);
+                                QRRJTCashAmount = Convert.ToInt32(data.Amount);
+                            }
+                            else if (Convert.ToString(data.Transaction) == "QR RJT-NonCASH")
+                            {
+                                QRRJTNonCashCount = Convert.ToInt32(data.Count);
+                                QRRJTNonCashAmount = Convert.ToInt32(data.Amount);
+                            }
+                            else if (Convert.ToString(data.Transaction) == "RPT SJT-CASH")
+                            {
+                                RPTSJTCashCount = Convert.ToInt32(data.Count);
+                                RPTSJTCashAmount = Convert.ToInt32(data.Amount);
+                            }
+                            else if (Convert.ToString(data.Transaction) == "RPT SJT-NonCASH")
+                            {
+                                RPTSJTNonCashCount = Convert.ToInt32(data.Count);
+                                RPTSJTNonCashAmount = Convert.ToInt32(data.Amount);
+                            }
+                        }
+                    }
+                    
+                    Parameters.TvmMonitoringData.appVersion = Parameters.TVMStatic.GetParameter("appVersion");
+                    Parameters.TvmMonitoringData.banknote10 = StockOperations.banknote10.ToString();
+                    Parameters.TvmMonitoringData.banknote20 = StockOperations.banknote20.ToString();
+                    Parameters.TvmMonitoringData.bnrStatus = Parameters.TVMStatic.GetParameter("bnaStatus");
+                    Parameters.TvmMonitoringData.doorSensorStatus = " ";
+                    Parameters.TvmMonitoringData.hopperCoins1 = StockOperations.coin1.ToString();
+                    Parameters.TvmMonitoringData.hopperCoins2 = StockOperations.coin2.ToString();
+                    Parameters.TvmMonitoringData.hopperCoins5 = StockOperations.coin5.ToString();
+                    Parameters.TvmMonitoringData.hopperStatus1 = Parameters.TVMStatic.GetParameter("hopper1Status");
+                    Parameters.TvmMonitoringData.hopperStatus2 = Parameters.TVMStatic.GetParameter("hopper2Status");
+                    Parameters.TvmMonitoringData.hopperStatus5 = Parameters.TVMStatic.GetParameter("hopper5Status");
+                    Parameters.TvmMonitoringData.lastTransactionDate = DateTime.Now;
+                    Parameters.TvmMonitoringData.ledPanelStatus = " ";
+                    Parameters.TvmMonitoringData.numberOfQr = StockOperations.qrSlip;
+                    Parameters.TvmMonitoringData.qrPrinterStatus = Check_QRprinter == true ? "OK" : "ERROR";
+                    Parameters.TvmMonitoringData.QRRJT_Amount = QRRJTCashAmount;
+                    Parameters.TvmMonitoringData.QRRJT_Count = QRRJTCashCount;
+                    Parameters.TvmMonitoringData.QRSJT_Amount = QRSJTCashAmount;
+                    Parameters.TvmMonitoringData.QRSJT_Count = QRSJTCashCount;
+                    Parameters.TvmMonitoringData.receiptPrinterStatus = Check_Receiptprinter == true ? "OK" : "ERROR";
+                    Parameters.TvmMonitoringData.speakerStatus = " ";
+                    Parameters.TvmMonitoringData.stationId = Stations.currentStation.id;
+                    Parameters.TvmMonitoringData.Total_Amount = QRRJTCashAmount + QRSJTCashAmount;
+                    Parameters.TvmMonitoringData.Total_Count = QRRJTCashCount + QRSJTCashCount;
+                    Parameters.TvmMonitoringData.tvmId = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId"));
+
+                    result = Parameters.insTVMMonitoring();
+
+                    if (result)
+                    {
+                        Parameters.TVMStatic.AddOrUpdateParameter("ScConn", "1");
+                        Parameters.lastSync = DateTime.Now;
+                    }
+                    else
+                    {
+                        Parameters.TVMStatic.AddOrUpdateParameter("ScConn", "0");
+                        log.Debug("--SC Conn Error--");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.ToString());
+                    Parameters.TVMStatic.AddOrUpdateParameter("ScConn", "0");
+                }
+
+                Thread.Sleep(30000);
+            }
+        }
         private void CheckDeviceAction(object o)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 try
                 {
+                    Parameters.TVMDynamic.FillOrUpdateParameters();
+                    DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
+                    DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
+
+                    if (!((startDate <= DateTime.Now) && (endDate >= DateTime.Now)))
+                    {
+                        NavigationService.Navigate(new Pages.StationClosedPage());
+                        btnSelectTicket.Opacity = 0.2;
+                    }
+                    else
+                    {
+                        if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
+                        {
+                            lblNoConnection.Content = "";
+                            //btnSelectTicket.Visibility = Visibility.Visible;
+                            btnSelectTicket.Opacity = 1;
+                        }
+                    }
+
                     PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
                     if (QRPrinter == PRINTER_STATE.OK)
                     {
+                        Check_QRprinter = true;
                         btnSelectTicket.IsEnabled = true;
                         btnSelectTicket.Opacity = 1;
                     }
                     else
                     {
+                        Check_QRprinter = false;
                         btnSelectTicket.IsEnabled = false;
                         btnSelectTicket.Opacity = 0.2;
                     }

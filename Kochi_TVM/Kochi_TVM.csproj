@@ -70,6 +70,7 @@
     <Reference Include="System.Printing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -102,11 +103,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Business\MoneyOperations.cs" />
+    <Compile Include="Business\OCCOperations.cs" />
     <Compile Include="Business\Parameters.cs" />
+    <Compile Include="Business\QROperations.cs" />
     <Compile Include="Business\Stations.cs" />
     <Compile Include="Business\StockOperations.cs" />
     <Compile Include="Business\Ticket.cs" />
     <Compile Include="Business\TransactionInfo.cs" />
+    <Compile Include="Business\Validation.cs" />
     <Compile Include="CCTalk\CCTalkManager.cs" />
     <Compile Include="Models\Account.cs">
       <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
@@ -410,6 +414,9 @@
     <Compile Include="Pages\PrintReciptPage.xaml.cs">
       <DependentUpon>PrintReciptPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\StationClosedPage.xaml.cs">
+      <DependentUpon>StationClosedPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\StationMapPage.xaml.cs">
       <DependentUpon>StationMapPage.xaml</DependentUpon>
     </Compile>
@@ -429,6 +436,21 @@
     <Compile Include="Utils\Conversion.cs" />
     <Compile Include="Utils\Enums.cs" />
     <Compile Include="Utils\Utility.cs" />
+    <Compile Include="Connected Services\NStationService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\OccSrv\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\PayPointSrv\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Content Include="Images\kmlr_QR_logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -651,6 +673,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\StationClosedPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\StationMapPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -678,6 +704,11 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\NStationService\" />
+    <WCFMetadataStorage Include="Connected Services\OccSrv\" />
+    <WCFMetadataStorage Include="Connected Services\PayPointSrv\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

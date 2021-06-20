@@ -92,13 +92,13 @@ namespace Kochi_TVM.Pages.Maintenance
             }            
 
             lblQRSJTCashCount.Content = QRSJTCashCount;
-            lblQRSJTCashAmount.Content = QRSJTCashAmount;
+            lblQRSJTCashAmount.Content = Conversion.MoneyFormat(QRSJTCashAmount);
             lblQRSJTNonCashCount.Content = QRSJTNonCashCount;
-            lblQRSJTNonCashAmount.Content = QRSJTNonCashAmount;
+            lblQRSJTNonCashAmount.Content = Conversion.MoneyFormat(QRSJTNonCashAmount);
             lblQRRJTCashCount.Content = QRRJTCashCount;
-            lblQRRJTCashAmount.Content = QRRJTCashAmount;
+            lblQRRJTCashAmount.Content = Conversion.MoneyFormat(QRRJTCashAmount);
             lblQRRJTNonCashCount.Content = QRRJTNonCashCount;
-            lblQRRJTNonCashAmount.Content = QRRJTNonCashAmount;
+            lblQRRJTNonCashAmount.Content = Conversion.MoneyFormat(QRRJTNonCashAmount);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

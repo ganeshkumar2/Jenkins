@@ -47,8 +47,8 @@ namespace Kochi_TVM.Business
             bool result = false;
             try
             {
-                int stationId = 1;//Convert.ToInt32(Parameters.TVMDynamic.GetParameter("stationId"));
-                //Parameters.TVMConst.iniReader.Write("DEVICES_NAME", "StationId", stationId.ToString());
+                int stationId = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("stationId"));
+                Parameters.TVMConst.iniReader.Write("DEVICES_NAME", "StationId", stationId.ToString());
                 currentStation = Stations.GetStation(stationId);
 
                 //Log.log.Write("name: " + currentStation.name + " map row: " + currentStation.mapRow.ToString() + " mapColumn: " + currentStation.mapHereColumn.ToString()

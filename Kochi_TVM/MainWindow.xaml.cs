@@ -31,7 +31,7 @@ namespace Kochi_TVM
                 InitialTimer();
                 Stations.FillStationList();
                 Stations.FillCurrentStation();
-                Parameters.TVMDynamic.FillOrUpdateParameters();
+                //Parameters.TVMDynamic.FillOrUpdateParameters();
                 DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
                 DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
                 lStation.Content = "You are at : [" + Stations.currentStation.name + "] Station";

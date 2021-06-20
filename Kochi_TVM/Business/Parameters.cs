@@ -1,4 +1,7 @@
-﻿using System;
+﻿using KioskFramework.OccSrv;
+using KioskFramework.PayPointSrv;
+using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,10 +13,10 @@ namespace Kochi_TVM.Business
 {
     public static class Parameters
     {
-        //public static PayPointClient sr = new PayPointClient();
-        //public static OccClient occ = new OccClient();
+        public static PayPointClient sr = new PayPointClient();
+        public static OccClient occ = new OccClient();
         //public static Db db = new Db();
-        //public static TVMConsts TVMConst = new TVMConsts();
+        public static TVMConsts TVMConst = new TVMConsts();
         public static ParameterOperations TVMStatic = new StaticParameterOpr();
         public static DynamicParameterOpr TVMDynamic = new DynamicParameterOpr();
         //public static BackgroundWorker bwQrcPrinterStatus = null;
@@ -24,7 +27,7 @@ namespace Kochi_TVM.Business
         public static string userId;
         public static List<string> menuItems = new List<string>();
         //public static TopupInfo tuData = new TopupInfo();
-
+        public static TvmMonitoring TvmMonitoringData = new TvmMonitoring();
         public static class MenuStrings
         {
             public const string QrRep = "QR Replenishment";
@@ -49,6 +52,167 @@ namespace Kochi_TVM.Business
             public const string VibTest = "Vibration Test";
             public const string RFIDRdTest = "RFID Reader Test";
         };
+
+        public static bool InsNStationAlarm(int stationId, int deviceId, int alarmType, string message)
+        {
+            bool retVal = false;
+            string ip = Properties.Settings.Default.ip;
+            var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
+            KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
+            KioskFramework.NStationService.TvmAlarm model = new KioskFramework.NStationService.TvmAlarm();
+
+
+            var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+            {
+                Username = "NServiceUser",
+                Password = "n3ER7!cEn3Er"
+            };
+
+            model.alarmMessage = message;
+            model.alarmTypeId = alarmType;
+            model.deviceNo = deviceId;
+            model.stationId = stationId;
+
+            retVal = service.InsTvmAlarm(requestHeader, model);
+
+            return retVal;
+        }
+
+        public static bool insTVMMonitoring()
+        {
+            bool retVal = false;
+
+            try
+            {
+                string ip = Properties.Settings.Default.ip;
+                var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
+                KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
+                KioskFramework.NStationService.TvmMonitoring model = new KioskFramework.NStationService.TvmMonitoring();
+
+
+                var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+                {
+                    Username = "NServiceUser",
+                    Password = "n3ER7!cEn3Er"
+                };
+
+                model.appVersion = TvmMonitoringData.appVersion;
+                model.banknote10 = TvmMonitoringData.banknote10;
+                model.banknote20 = TvmMonitoringData.banknote20;
+                model.bnrStatus = TvmMonitoringData.bnrStatus;
+                model.doorSensorStatus = TvmMonitoringData.doorSensorStatus;
+                model.hopperCoins1 = TvmMonitoringData.hopperCoins1;
+                model.hopperCoins2 = TvmMonitoringData.hopperCoins2;
+                model.hopperCoins5 = TvmMonitoringData.hopperCoins5;
+                model.hopperStatus1 = TvmMonitoringData.hopperStatus1;
+                model.hopperStatus2 = TvmMonitoringData.hopperStatus2;
+                model.hopperStatus5 = TvmMonitoringData.hopperStatus5;
+                model.lastTransactionDate = TvmMonitoringData.lastTransactionDate;
+                model.ledPanelStatus = TvmMonitoringData.ledPanelStatus;
+                model.numberOfQr = TvmMonitoringData.numberOfQr;
+                model.qrPrinterStatus = TvmMonitoringData.qrPrinterStatus;
+                model.QRRJT_Amount = TvmMonitoringData.QRRJT_Amount;
+                model.QRRJT_Count = TvmMonitoringData.QRSJT_Count;
+                model.receiptPrinterStatus = TvmMonitoringData.receiptPrinterStatus;
+                model.speakerStatus = TvmMonitoringData.speakerStatus;
+                model.stationId = TvmMonitoringData.stationId;
+                model.Total_Amount = TvmMonitoringData.Total_Amount;
+                model.Total_Count = TvmMonitoringData.Total_Count;
+                model.tvmId = TvmMonitoringData.tvmId;
+
+                retVal = service.UpdTvmMonitoring(requestHeader, model);
+            }
+            catch (Exception ex)
+            {
+                //log.Write(ex.ToString());
+            }
+
+            return retVal;
+        }
+    }
+    public class TVMConsts
+    {
+        private static ILog log = LogManager.GetLogger(typeof(TVMConsts).Name);
+        bool isInit = false;
+        public IniFileOperations iniReader = new IniFileOperations();
+        public TVMConsts()
+        {
+            if (!isInit)
+                isInit = Init();
+        }
+        //#region Devices id  
+        //public int TVMID = 1001;
+        //#endregion
+        #region Devices seial ports       
+        public string BNAPort = "COM3";
+        public string Hopper5Port = "COM8";
+        public string Hopper2Port = "COM3";
+        public string Hopper1Port = "COM2";
+        public string LedPort = "COM4";
+        public string SensorPort = "COM11";
+        public string QRPrinterPort = "";
+        public string RPTDispenserPort = "";
+        public string UxPosPort = "COM9";
+        public string macAddress = "";
+        #endregion
+        #region Devices name
+        public string StationId = "1";
+        public string TVMName = "Aluva Station TVM";
+        public string QRPrinterName = "";
+        public string ReceiptPrinterName = "";
+        #endregion
+        #region Devices brand  
+        public string BNABrand = "BillToBill";
+        #endregion
+        #region Hopper address 
+        public int Hopper5Address = 3;
+        public int Hopper2Address = 4;
+        public int Hopper1Address = 5;
+        #endregion
+        bool Init()
+        {
+            bool result = false;
+            try
+            {
+                //#region Devices id  
+                //TVMID = int.Parse(iniReader.ReadParamByKey("DEVICES_ID", "TVMID"));
+                //#endregion
+                #region Devices name
+                StationId = iniReader.ReadParamByKey("DEVICES_NAME", "StationId");
+                TVMName = iniReader.ReadParamByKey("DEVICES_NAME", "TVMName");
+                QRPrinterName = iniReader.ReadParamByKey("DEVICES_NAME", "QRPrinterName");
+                ReceiptPrinterName = iniReader.ReadParamByKey("DEVICES_NAME", "ReceiptPrinterName");
+                macAddress = iniReader.ReadParamByKey("DEVICES_NAME", "MacAddress");
+                #endregion
+                #region Devices brand  
+                BNABrand = iniReader.ReadParamByKey("DEVICES_BRAND", "BNABrand");
+                #endregion
+                #region Hopper address 
+                Hopper5Address = int.Parse(iniReader.ReadParamByKey("HOPPER_ADDRESS", "Hopper5Address"));
+                Hopper2Address = int.Parse(iniReader.ReadParamByKey("HOPPER_ADDRESS", "Hopper2Address"));
+                Hopper1Address = int.Parse(iniReader.ReadParamByKey("HOPPER_ADDRESS", "Hopper1Address"));
+                #endregion
+                #region Devices seial ports      
+                BNAPort = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "BNAPort");
+                Hopper5Port = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "Hopper5Port");
+                Hopper2Port = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "Hopper2Port");
+                Hopper1Port = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "Hopper1Port");
+                LedPort = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "LedPort");
+                SensorPort = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "SensorPort");
+                QRPrinterPort = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "QRPrinterPort");
+                RPTDispenserPort = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "RPTDispenserPort");
+                UxPosPort = iniReader.ReadParamByKey("DEVICES_SERIAL_PORT", "UxPosPort");
+                #endregion
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                log.Error(ex.ToString());
+            }
+
+            return result;
+        }
     }
     public abstract class ParameterOperations
     {
@@ -93,6 +257,8 @@ namespace Kochi_TVM.Business
     }
     public class DynamicParameterOpr : ParameterOperations
     {
+        private static ILog log = LogManager.GetLogger(typeof(DynamicParameterOpr).Name);
+
         bool isInit = false;
         public DynamicParameterOpr()
         {
@@ -112,7 +278,7 @@ namespace Kochi_TVM.Business
             catch (Exception ex)
             {
                 result = false;
-                //Logger.Log.log.Write(ex.ToString());
+                log.Error(ex.ToString());
             }
             return result;
         }
@@ -151,7 +317,7 @@ namespace Kochi_TVM.Business
             }
             catch (Exception ex)
             {
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("LogTypes.Error.ToString() : " + ex.Message);
             }
             return result;
         }
@@ -168,7 +334,7 @@ namespace Kochi_TVM.Business
             catch (Exception ex)
             {
                 value = String.Empty;
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("LogTypes.Error.ToString() : " + ex.Message);
             }
             return value;
         }
@@ -194,7 +360,7 @@ namespace Kochi_TVM.Business
             catch (Exception ex)
             {
                 result = false;
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("LogTypes.Error.ToString() : " + ex.Message);
             }
             return result;
         }
@@ -202,27 +368,27 @@ namespace Kochi_TVM.Business
         {
             bool result = false;
             try
-            {               
-                //var rpc = Parameters.sr.SelUnitByUID(Parameters.TVMStatic.GetParameter("macAddress"));
-                ////Log.log.Write("MacID : " + Parameters.TVMStatic.GetParameter("macAddress"));
-                //result = ((Validation.IsValidAFCRP(rpc)) && (rpc.Result == 1));
-                //if (result)
-                //{
-                //    AddOrUpdateParameter("macAddress", rpc.Data.Tables[0].Rows[0]["macAddress"].ToString());
-                //    AddOrUpdateParameter("explanation", rpc.Data.Tables[0].Rows[0]["salePointCode"].ToString());
-                //    AddOrUpdateParameter("unitId", rpc.Data.Tables[0].Rows[0]["recId"].ToString());
-                //    AddOrUpdateParameter("stationId", rpc.Data.Tables[0].Rows[0]["stationId"].ToString());
-                //    AddOrUpdateParameter("unitType", rpc.Data.Tables[0].Rows[0]["salePointTypeId"].ToString());
-                //    AddOrUpdateParameter("descCode", rpc.Data.Tables[0].Rows[0]["descCode"].ToString());
-                //    AddOrUpdateParameter("localAuth", "0");
-                //    AddOrUpdateParameter("localAuthTimesUp", "0");
-                //    AddOrUpdateParameter("localAuthClosed", "0");
-                //}
+            {
+                var rpc = Parameters.sr.SelUnitByUID(Parameters.TVMStatic.GetParameter("macAddress"));
+                //log.Write("MacID : " + Parameters.TVMStatic.GetParameter("macAddress"));
+                result = ((Validation.IsValidAFCRP(rpc)) && (rpc.Result == 1));
+                if (result)
+                {
+                    AddOrUpdateParameter("macAddress", rpc.Data.Tables[0].Rows[0]["macAddress"].ToString());
+                    AddOrUpdateParameter("explanation", rpc.Data.Tables[0].Rows[0]["salePointCode"].ToString());
+                    AddOrUpdateParameter("unitId", rpc.Data.Tables[0].Rows[0]["recId"].ToString());
+                    AddOrUpdateParameter("stationId", rpc.Data.Tables[0].Rows[0]["stationId"].ToString());
+                    AddOrUpdateParameter("unitType", rpc.Data.Tables[0].Rows[0]["salePointTypeId"].ToString());
+                    AddOrUpdateParameter("descCode", rpc.Data.Tables[0].Rows[0]["descCode"].ToString());
+                    AddOrUpdateParameter("localAuth", "0");
+                    AddOrUpdateParameter("localAuthTimesUp", "0");
+                    AddOrUpdateParameter("localAuthClosed", "0");
+                }
             }
             catch (Exception ex)
             {
                 result = false;
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("LogTypes.Error.ToString() : " + ex.Message);
             }
 
             return result;
@@ -254,7 +420,7 @@ namespace Kochi_TVM.Business
 
                 AddOrUpdateParameter("AfcConn", "0");
                 result = false;
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("LogTypes.Error.ToString() : " + ex.Message);
             }
 
             //Parameters.lastSync = DateTime.Now;
@@ -265,17 +431,18 @@ namespace Kochi_TVM.Business
             bool result = false;
             try
             {
-                //var rpAfc = Parameters.sr.ExecSP("def.sp_GetSrvDT");
-                //var AfcConn = Validation.IsValidAFCRP(rpAfc);
-                //if (AfcConn)
-                //    result = true;
-                //else
-                //    result = false;
+                var rpAfc = Parameters.sr.ExecSP("def.sp_GetSrvDT");
+                var AfcConn = Validation.IsValidAFCRP(rpAfc);
+                log.Debug("Debug - GetAfcConnStatus() : " + AfcConn);
+                if (AfcConn)
+                    result = true;
+                else
+                    result = false;
             }
             catch (Exception ex)
             {
                 result = false;
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("LogTypes.Error.ToString() : " + ex.Message);
             }
             //Parameters.lastSync = DateTime.Now;
             return result;
@@ -288,7 +455,7 @@ namespace Kochi_TVM.Business
             {
                 using (var context = new Models.TVM_Entities())
                 {
-                    var rp = context.sp_SelSalePointByMac("00-01-2E-7E-3B-CA").ToList();//Parameters.TVMStatic.GetParameter("macAddress")).ToList();
+                    var rp = context.sp_SelSalePointByMac(Parameters.TVMStatic.GetParameter("macAddress")).ToList();
                     if (rp.Count > 0)
                     {
                         foreach (var item in rp)
@@ -426,8 +593,7 @@ namespace Kochi_TVM.Business
             //    Result += macAddress.Substring(ii, 1);
             //}
             //return Result;
-            IniFileOperations iniReader = new IniFileOperations();
-            return iniReader.ReadParamByKey("DEVICES_NAME", "MacAddress");//Parameters.TVMConst.macAddress;
+            return Parameters.TVMConst.macAddress;
         }
         public static string GetAppVersion()
         {
@@ -438,7 +604,6 @@ namespace Kochi_TVM.Business
             return Result;
         }
     }
-
     public class IniFileOperations
     {
         string filePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\" + "Setup.ini";
@@ -463,5 +628,33 @@ namespace Kochi_TVM.Business
         {
             WritePrivateProfileString(section, key, value.ToLower(), filePath);
         }
+    }
+    public class TvmMonitoring
+    {
+        public string bnrStatus { get; set; }
+        public string speakerStatus { get; set; }
+        public string hopperCoins1 { get; set; }
+        public string hopperCoins2 { get; set; }
+        public string hopperCoins5 { get; set; }
+        public string hopperStatus1 { get; set; }
+        public string hopperStatus2 { get; set; }
+        public string hopperStatus5 { get; set; }
+        public string banknote10 { get; set; }
+        public string banknote20 { get; set; }
+        public int numberOfQr { get; set; }
+        public string qrPrinterStatus { get; set; }
+        public string receiptPrinterStatus { get; set; }
+        public string ledPanelStatus { get; set; }
+        public string doorSensorStatus { get; set; }
+        public int QRSJT_Count { get; set; }
+        public int QRSJT_Amount { get; set; }
+        public int QRRJT_Count { get; set; }
+        public int QRRJT_Amount { get; set; }
+        public int Total_Count { get; set; }
+        public int Total_Amount { get; set; }
+        public int tvmId { get; set; }
+        public int stationId { get; set; }
+        public string appVersion { get; set; }
+        public DateTime lastTransactionDate { get; set; }
     }
 }

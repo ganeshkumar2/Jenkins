@@ -79,6 +79,7 @@ namespace Kochi_TVM.Business
             mapHeaderType = MapHeaderType.Unknown;
             journeyTypeText = string.Empty;
             ticketTypeText = string.Empty;
+            listTickets.Clear();
             //ticketInfoText = string.Empty;
             //ticketTotalAmountText = string.Empty;
         }

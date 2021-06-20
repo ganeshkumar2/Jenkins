@@ -134,15 +134,15 @@
                     </Grid.ColumnDefinitions>
 
 
-                    <Image Name="lblMoney5" Grid.Column="0" Grid.Row="0"    HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_5.jpg" />
-                    <Image Name="lblMoney10" Grid.Column="2" Grid.Row="0"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_10.jpg" />
-                    <Image Name="lblMoney20" Grid.Column="4" Grid.Row="0"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_20.jpg" />
-                    <Image Name="lblMoney50" Grid.Column="6" Grid.Row="0"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_50.jpg" />
+                    <Image Name="lblMoney5" Grid.Column="0" Grid.Row="0" Visibility="Hidden"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_5.jpg" />
+                    <Image Name="lblMoney10" Grid.Column="0" Grid.Row="0"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_10.jpg" />
+                    <Image Name="lblMoney20" Grid.Column="2" Grid.Row="0"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_20.jpg" />
+                    <Image Name="lblMoney50" Grid.Column="4" Grid.Row="0"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_50.jpg" />
 
-                    <Image Name="lblMoney100" Grid.Column="0" Grid.Row="2"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_100.jpg" />
-                    <Image Name="lblMoney200" Grid.Column="2" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_200.jpg" />
-                    <Image Name="lblMoney500" Grid.Column="4" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_500.jpg" />
-                    <!--<Image Name="lblMoney2000" Grid.Column="6" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/TVM_UI;component/images/Rupi_2000.jpg" />-->
+                    <Image Name="lblMoney100" Grid.Column="6" Grid.Row="0"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_100.jpg" />
+                    <Image Name="lblMoney200" Grid.Column="0" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_200.jpg" />
+                    <Image Name="lblMoney500" Grid.Column="2" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/Images/Rupi_500.jpg" />
+                    <Image Name="lblMoney2000" Grid.Column="4" Grid.Row="2"   HorizontalAlignment="Left" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/images/Rupi_2000.jpg" />
 
 
                 </Grid>

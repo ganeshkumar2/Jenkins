@@ -99,7 +99,7 @@
                 <ColumnDefinition Width="32*" />
                 <ColumnDefinition Width="159*" />
             </Grid.ColumnDefinitions>
-            <Label Name="lblSelectLanguage" Content="Select Your Language" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader4}" Width="329" Grid.ColumnSpan="2"/>
+            <Label Name="lblSelectLanguage" Content="Select Your Language" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader2}" Grid.Column="0" Grid.ColumnSpan="2"/>
             <Button x:Name="btnLang1" Grid.Row="1" Grid.Column="3" Content="English"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang1_Click"/>
             <Button x:Name="btnLang3" Grid.Row="1" Grid.Column="7" Content="हिन्दी"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang3_Click"/>
             <Button x:Name="btnLang2" Grid.Row="1" Grid.Column="5" Content="മലയാളം"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang2_Click"/>

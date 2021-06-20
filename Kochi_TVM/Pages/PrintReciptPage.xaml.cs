@@ -113,13 +113,7 @@ namespace Kochi_TVM.Pages
             {
                 LedOperations.GreenText("PLEASE COLLECT TICKET");
                 LastMessage();
-                //foreach (var selectedTickets in Ticket.listTickets)
-                //{
-                //    var qr = Utility.PrepareQRImage(selectedTickets.TicketGUID);
-                //    CustomTL60Printer.Instance.PrintQRTicket(selectedTickets, qr);
-                //}            
-
-                await Task.Delay(5000);
+                await Task.Delay(100);
                 NavigationService.Navigate(new Pages.MainPage());
             }
             catch(Exception ex)
@@ -152,7 +146,7 @@ namespace Kochi_TVM.Pages
             return result;
         }
 
-        void LastMessage()
+        async void LastMessage()
         {
             if (MultiLanguage.GetCurrentLanguage() == "EN" && Constants.IsVoiceEnabled)
             {
@@ -166,6 +160,9 @@ namespace Kochi_TVM.Pages
             {
                 TVMUtility.PlayVoice(10, null, null, "IN");
             }
+
+            if(Constants.IsVoiceEnabled)
+                await Task.Delay(5000);
         }
         private void returnCashImageGif_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -213,19 +210,31 @@ namespace Kochi_TVM.Pages
                 btnPrintReciptSkip.Content = MultiLanguage.GetText("skipReceipt");
                 btnFinish.Content = MultiLanguage.GetText("qrPrinter");
 
-                if (StockOperations.qrSlip > 0)
+                bool result = false;
+
+                result = OCCOperations.InsertQRTransaction();
+
+                if (result)
                 {
-                    if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    log.Debug("LogTypes.Info : InsertQRTransaction return true");
+
+                    if (StockOperations.qrSlip > 0)
                     {
-                        var qr = TVMUtility.PrepareQRImage("38AdU7+keAz1lOiyG9WuMhsJ1kRooVCwYAAwAAAAAAiAADABQAAAAAMFcA");
-                        CustomKPM150HPrinter.Instance.PrintQRTicket(qr);
+                        Ticket.sellTicketCount = 0;
+                        foreach (var t in Ticket.listTickets)
+                        {
+                            if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            {
+                                var qr = TVMUtility.PrepareQRImage(t.TicketGUID);
+                                CustomKPM150HPrinter.Instance.PrintQRTicket(qr);
+                            }
+
+                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                            int stock = StockOperations.qrSlip;
+                            StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                        }
                     }
-
-                    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                    int stock = StockOperations.qrSlip;
-                    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
                 }
-
                 initialTimer();
             }
             catch (Exception ex)

@@ -83,7 +83,7 @@ namespace Kochi_TVM.Pages
             lblMoney100.Visibility = Visibility.Collapsed;
             lblMoney200.Visibility = Visibility.Collapsed;
             lblMoney500.Visibility = Visibility.Collapsed;
-
+            lblMoney2000.Visibility = Visibility.Collapsed;
             btnBack.Visibility = Visibility.Hidden;
 
             //StockOperations.SelStockStatus();
@@ -96,7 +96,7 @@ namespace Kochi_TVM.Pages
                 lblMoney50.Visibility = Visibility.Visible;
             }
 
-            if ((Ticket.totalPrice >= 50 && Ticket.totalPrice < 100))
+            if ((Ticket.totalPrice > 50 && Ticket.totalPrice < 100))
             {
                 lblMoney10.Visibility = Visibility.Visible;
                 lblMoney20.Visibility = Visibility.Visible;
@@ -104,7 +104,7 @@ namespace Kochi_TVM.Pages
                 lblMoney100.Visibility = Visibility.Visible;
             }
 
-            if ((Ticket.totalPrice >= 100 && Ticket.totalPrice < 200))
+            if ((Ticket.totalPrice > 100 && Ticket.totalPrice < 500))
             {
                 lblMoney10.Visibility = Visibility.Visible;
                 lblMoney20.Visibility = Visibility.Visible;
@@ -113,7 +113,7 @@ namespace Kochi_TVM.Pages
                 lblMoney200.Visibility = Visibility.Visible;
             }
 
-            if ((Ticket.totalPrice >= 200))
+            if (Ticket.totalPrice > 500 && Ticket.totalPrice <= 1500)
             {
                 lblMoney10.Visibility = Visibility.Visible;
                 lblMoney20.Visibility = Visibility.Visible;
@@ -122,6 +122,18 @@ namespace Kochi_TVM.Pages
                 lblMoney200.Visibility = Visibility.Visible;
                 lblMoney500.Visibility = Visibility.Visible;
             }
+
+            if (Ticket.totalPrice >= 1500)
+            {
+                lblMoney10.Visibility = Visibility.Visible;
+                lblMoney20.Visibility = Visibility.Visible;
+                lblMoney50.Visibility = Visibility.Visible;
+                lblMoney100.Visibility = Visibility.Visible;
+                lblMoney200.Visibility = Visibility.Visible;
+                lblMoney500.Visibility = Visibility.Visible;
+                lblMoney2000.Visibility = Visibility.Visible;
+            }
+
             try
             {
                 checkTranTimerDelegate = new TimerCallback(dispatcherTimer_Tick);

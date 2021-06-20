@@ -224,8 +224,56 @@ namespace Kochi_TVM.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsMoneyManagementDetail", ticketTypeParameter, addAmountParameter, lessAmountParameter, emptyAmountParameter, stationIdParameter, salePointIdParameter, userIdParameter);
         }
     
-        public virtual int sp_InsQRCodeTicket(string qRCreateMode, Nullable<int> qRCreateStation, Nullable<int> qRCreateSalePointId, Nullable<int> transactionId, Nullable<int> qRCreateUserId, Nullable<System.DateTime> insDT)
+        public virtual int sp_InsQRCodeTicket(Nullable<int> ticketType, Nullable<decimal> ticketPrice, Nullable<int> fromId, Nullable<int> toId, Nullable<System.DateTime> activeFrom, Nullable<System.DateTime> activeTo, string qRCodeId, Nullable<short> peopleCount, Nullable<int> alias, string from, string to, string ticketStringValue, string qRCreateMode, Nullable<int> qRCreateStation, Nullable<int> qRCreateSalePointId, Nullable<int> transactionId, Nullable<int> qRCreateUserId, Nullable<System.DateTime> insDT)
         {
+            var ticketTypeParameter = ticketType.HasValue ?
+                new ObjectParameter("ticketType", ticketType) :
+                new ObjectParameter("ticketType", typeof(int));
+    
+            var ticketPriceParameter = ticketPrice.HasValue ?
+                new ObjectParameter("ticketPrice", ticketPrice) :
+                new ObjectParameter("ticketPrice", typeof(decimal));
+    
+            var fromIdParameter = fromId.HasValue ?
+                new ObjectParameter("fromId", fromId) :
+                new ObjectParameter("fromId", typeof(int));
+    
+            var toIdParameter = toId.HasValue ?
+                new ObjectParameter("toId", toId) :
+                new ObjectParameter("toId", typeof(int));
+    
+            var activeFromParameter = activeFrom.HasValue ?
+                new ObjectParameter("activeFrom", activeFrom) :
+                new ObjectParameter("activeFrom", typeof(System.DateTime));
+    
+            var activeToParameter = activeTo.HasValue ?
+                new ObjectParameter("activeTo", activeTo) :
+                new ObjectParameter("activeTo", typeof(System.DateTime));
+    
+            var qRCodeIdParameter = qRCodeId != null ?
+                new ObjectParameter("QRCodeId", qRCodeId) :
+                new ObjectParameter("QRCodeId", typeof(string));
+    
+            var peopleCountParameter = peopleCount.HasValue ?
+                new ObjectParameter("peopleCount", peopleCount) :
+                new ObjectParameter("peopleCount", typeof(short));
+    
+            var aliasParameter = alias.HasValue ?
+                new ObjectParameter("alias", alias) :
+                new ObjectParameter("alias", typeof(int));
+    
+            var fromParameter = from != null ?
+                new ObjectParameter("from", from) :
+                new ObjectParameter("from", typeof(string));
+    
+            var toParameter = to != null ?
+                new ObjectParameter("to", to) :
+                new ObjectParameter("to", typeof(string));
+    
+            var ticketStringValueParameter = ticketStringValue != null ?
+                new ObjectParameter("ticketStringValue", ticketStringValue) :
+                new ObjectParameter("ticketStringValue", typeof(string));
+    
             var qRCreateModeParameter = qRCreateMode != null ?
                 new ObjectParameter("QRCreateMode", qRCreateMode) :
                 new ObjectParameter("QRCreateMode", typeof(string));
@@ -250,7 +298,7 @@ namespace Kochi_TVM.Models
                 new ObjectParameter("insDT", insDT) :
                 new ObjectParameter("insDT", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsQRCodeTicket", qRCreateModeParameter, qRCreateStationParameter, qRCreateSalePointIdParameter, transactionIdParameter, qRCreateUserIdParameter, insDTParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsQRCodeTicket", ticketTypeParameter, ticketPriceParameter, fromIdParameter, toIdParameter, activeFromParameter, activeToParameter, qRCodeIdParameter, peopleCountParameter, aliasParameter, fromParameter, toParameter, ticketStringValueParameter, qRCreateModeParameter, qRCreateStationParameter, qRCreateSalePointIdParameter, transactionIdParameter, qRCreateUserIdParameter, insDTParameter);
         }
     
         public virtual int sp_InsRFIDTicket(Nullable<int> ticketType, Nullable<decimal> ticketPrice, Nullable<int> fromId, Nullable<int> toId, Nullable<int> passType, Nullable<System.DateTime> activeFrom, Nullable<System.DateTime> activeTo, string rFIDTicketId, Nullable<short> peopleCount, string rFIDCreateMode, Nullable<int> rFIDCreateStation, Nullable<int> rFIDCreateSalePointId, Nullable<int> transactionId, Nullable<int> rFIDCreateUserId)

@@ -1224,6 +1224,18 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
           <Parameter Name="userId" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_InsQRCodeTicket" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="trx">
+          <Parameter Name="ticketType" Type="int" Mode="In" />
+          <Parameter Name="ticketPrice" Type="numeric" Mode="In" />
+          <Parameter Name="fromId" Type="int" Mode="In" />
+          <Parameter Name="toId" Type="int" Mode="In" />
+          <Parameter Name="activeFrom" Type="datetime" Mode="In" />
+          <Parameter Name="activeTo" Type="datetime" Mode="In" />
+          <Parameter Name="QRCodeId" Type="nvarchar" Mode="In" />
+          <Parameter Name="peopleCount" Type="smallint" Mode="In" />
+          <Parameter Name="alias" Type="int" Mode="In" />
+          <Parameter Name="from" Type="nvarchar" Mode="In" />
+          <Parameter Name="to" Type="nvarchar" Mode="In" />
+          <Parameter Name="ticketStringValue" Type="nvarchar" Mode="In" />
           <Parameter Name="QRCreateMode" Type="char" Mode="In" />
           <Parameter Name="QRCreateStation" Type="int" Mode="In" />
           <Parameter Name="QRCreateSalePointId" Type="int" Mode="In" />
@@ -2707,6 +2719,18 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
             <Parameter Name="userId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_InsQRCodeTicket">
+            <Parameter Name="ticketType" Mode="In" Type="Int32" />
+            <Parameter Name="ticketPrice" Mode="In" Type="Decimal" />
+            <Parameter Name="fromId" Mode="In" Type="Int32" />
+            <Parameter Name="toId" Mode="In" Type="Int32" />
+            <Parameter Name="activeFrom" Mode="In" Type="DateTime" />
+            <Parameter Name="activeTo" Mode="In" Type="DateTime" />
+            <Parameter Name="QRCodeId" Mode="In" Type="String" />
+            <Parameter Name="peopleCount" Mode="In" Type="Int16" />
+            <Parameter Name="alias" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="String" />
+            <Parameter Name="to" Mode="In" Type="String" />
+            <Parameter Name="ticketStringValue" Mode="In" Type="String" />
             <Parameter Name="QRCreateMode" Mode="In" Type="String" />
             <Parameter Name="QRCreateStation" Mode="In" Type="Int32" />
             <Parameter Name="QRCreateSalePointId" Mode="In" Type="Int32" />
