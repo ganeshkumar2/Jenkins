@@ -87,28 +87,28 @@ namespace Kochi_TVM.Pages
                 SetDefaultStatus();
                 ListStationsInGrid();
 
-                btnStation1.Content = Stations.GetStation(1).description;
-                btnStation2.Content = Stations.GetStation(2).description;
-                btnStation3.Content = Stations.GetStation(3).description;
-                btnStation4.Content = Stations.GetStation(4).description;
-                btnStation5.Content = Stations.GetStation(5).description;
-                btnStation6.Content = Stations.GetStation(6).description;
-                btnStation7.Content = Stations.GetStation(7).description;
-                btnStation8.Content = Stations.GetStation(8).description;
-                btnStation9.Content = Stations.GetStation(9).description;
-                btnStation10.Content = Stations.GetStation(10).description;
-                btnStation11.Content = Stations.GetStation(11).description;
-                btnStation12.Content = Stations.GetStation(12).description;
-                btnStation13.Content = Stations.GetStation(13).description;
-                btnStation14.Content = Stations.GetStation(14).description;
-                btnStation15.Content = Stations.GetStation(15).description;
-                btnStation16.Content = Stations.GetStation(16).description;
-                btnStation17.Content = Stations.GetStation(17).description;
-                btnStation18.Content = Stations.GetStation(18).description;
-                btnStation19.Content = Stations.GetStation(19).description;
-                btnStation20.Content = Stations.GetStation(20).description;
-                btnStation21.Content = Stations.GetStation(21).description;
-                btnStation22.Content = Stations.GetStation(22).description;
+                btnStation1.Content = MultiLanguage.GetText(Stations.GetStation(1).description);
+                btnStation2.Content = MultiLanguage.GetText(Stations.GetStation(2).description);
+                btnStation3.Content = MultiLanguage.GetText(Stations.GetStation(3).description);
+                btnStation4.Content = MultiLanguage.GetText(Stations.GetStation(4).description);
+                btnStation5.Content = MultiLanguage.GetText(Stations.GetStation(5).description);
+                btnStation6.Content = MultiLanguage.GetText(Stations.GetStation(6).description);
+                btnStation7.Content = MultiLanguage.GetText(Stations.GetStation(7).description);
+                btnStation8.Content = MultiLanguage.GetText(Stations.GetStation(8).description);
+                btnStation9.Content = MultiLanguage.GetText(Stations.GetStation(9).description);
+                btnStation10.Content = MultiLanguage.GetText(Stations.GetStation(10).description);
+                btnStation11.Content = MultiLanguage.GetText(Stations.GetStation(11).description);
+                btnStation12.Content = MultiLanguage.GetText(Stations.GetStation(12).description);
+                btnStation13.Content = MultiLanguage.GetText(Stations.GetStation(13).description);
+                btnStation14.Content = MultiLanguage.GetText(Stations.GetStation(14).description);
+                btnStation15.Content = MultiLanguage.GetText(Stations.GetStation(15).description);
+                btnStation16.Content = MultiLanguage.GetText(Stations.GetStation(16).description);
+                btnStation17.Content = MultiLanguage.GetText(Stations.GetStation(17).description);
+                btnStation18.Content = MultiLanguage.GetText(Stations.GetStation(18).description);
+                btnStation19.Content = MultiLanguage.GetText(Stations.GetStation(19).description);
+                btnStation20.Content = MultiLanguage.GetText(Stations.GetStation(20).description);
+                btnStation21.Content = MultiLanguage.GetText(Stations.GetStation(21).description);
+                btnStation22.Content = MultiLanguage.GetText(Stations.GetStation(22).description);
             }
             catch (Exception ex)
             {

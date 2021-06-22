@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Management;
 using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,32 +68,60 @@ namespace Kochi_TVM.Printers
         {
             try
             {
+                string query = string.Format("SELECT * from Win32_Printer WHERE Name LIKE '%{0}'", PrinterName);
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+                using (ManagementObjectCollection coll = searcher.Get())
+                {
+                    try
+                    {
+                        foreach (ManagementObject printer in coll)
+                        {
+                            foreach (PropertyData property in printer.Properties)
+                            {
+                                if (property.Name == "WorkOffline")
+                                {
+                                    if ((bool)property.Value)
+                                    {
+                                        return Enums.PRINTER_STATE.ERROR;
+                                    }
+                                    else
+                                    {
+                                        var server = new LocalPrintServer();
 
-                var server = new LocalPrintServer();
+                                        PrintQueue queue = server.GetPrintQueue(PrinterName, new string[0] { });
 
-                PrintQueue queue = server.GetPrintQueue(PrinterName, new string[0] { });
+                                        queue.Refresh();
 
-                queue.Refresh();
+                                        if (queue.IsOffline)
+                                            return Enums.PRINTER_STATE.ERROR;
 
-                if (queue.IsOffline)
-                    return Enums.PRINTER_STATE.ERROR;
+                                        if (queue.IsPaused)
+                                            return Enums.PRINTER_STATE.ERROR;
 
-                if (queue.IsPaused)
-                    return Enums.PRINTER_STATE.ERROR;
+                                        if (queue.IsOutOfPaper)
+                                            return Enums.PRINTER_STATE.NO_PAPER;
 
-                if (queue.IsOutOfPaper)
-                    return Enums.PRINTER_STATE.NO_PAPER;
+                                        if (queue.HasPaperProblem)
+                                            return Enums.PRINTER_STATE.LOW_PAPER;
 
-                if (queue.HasPaperProblem)
-                    return Enums.PRINTER_STATE.LOW_PAPER;
+                                        if (!queue.IsOffline)
+                                            return Enums.PRINTER_STATE.OK;
 
-                if (!queue.IsOffline)
-                    return Enums.PRINTER_STATE.OK;
+                                        if (!queue.IsOutOfPaper)
+                                            return Enums.PRINTER_STATE.OK;
 
-                if (!queue.IsOutOfPaper)
-                    return Enums.PRINTER_STATE.OK;
-
-                return Enums.PRINTER_STATE.OTHER;
+                                        return Enums.PRINTER_STATE.OTHER;
+                                    }
+                                }
+                            }
+                        }
+                        return Enums.PRINTER_STATE.ERROR;
+                    }
+                    catch (ManagementException ex)
+                    {
+                        return Enums.PRINTER_STATE.ERROR;
+                    }
+                }
             }
             catch (Exception ex)
             {

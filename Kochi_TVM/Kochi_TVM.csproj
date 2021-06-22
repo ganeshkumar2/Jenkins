@@ -67,6 +67,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -348,6 +349,10 @@
       <DependentUpon>NumberPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Custom\NumberPadOperations.cs" />
+    <Compile Include="Pages\Custom\NumberPadUserControl.xaml.cs">
+      <DependentUpon>NumberPadUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Custom\UserControlNumberPadOperations.cs" />
     <Compile Include="Pages\JourneyTypePage.xaml.cs">
       <DependentUpon>JourneyTypePage.xaml</DependentUpon>
     </Compile>
@@ -396,6 +401,9 @@
     <Compile Include="Pages\Maintenance\OperationPage.xaml.cs">
       <DependentUpon>OperationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Maintenance\PIDSettingPage.xaml.cs">
+      <DependentUpon>PIDSettingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Maintenance\StockInfoPage.xaml.cs">
       <DependentUpon>StockInfoPage.xaml</DependentUpon>
     </Compile>
@@ -428,6 +436,7 @@
     </Compile>
     <Compile Include="PID\LedOperations.cs" />
     <Compile Include="PID\LedPanel.cs" />
+    <Compile Include="PID\PIDMessageLog.cs" />
     <Compile Include="Printers\CustomKPM150HPrinter.cs" />
     <Compile Include="Printers\CustomTL60Printer.cs" />
     <Compile Include="RptDispenser\Dispenser.cs" />
@@ -585,6 +594,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Custom\NumberPadUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\JourneyTypePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -646,6 +659,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Maintenance\OperationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Maintenance\PIDSettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

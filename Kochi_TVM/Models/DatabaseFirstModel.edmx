@@ -1156,6 +1156,12 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
           <Parameter Name="Key" Type="varchar" Mode="In" />
           <Parameter Name="Value" Type="numeric" Mode="InOut" />
         </Function>
+        <Function Name="sp_EmvDiscount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="def">
+          <Parameter Name="fareMediaType" Type="int" Mode="In" />
+          <Parameter Name="ticketType" Type="nvarchar" Mode="In" />
+          <Parameter Name="amount" Type="numeric" Mode="In" />
+          <Parameter Name="institutionId" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_GetPrices" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="def">
           <Parameter Name="fareMediaCode" Type="nvarchar" Mode="In" />
           <Parameter Name="fareMediaType" Type="nvarchar" Mode="In" />
@@ -2857,6 +2863,12 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
             <Parameter Name="alarmMessage" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_SelStockStatus" ReturnType="Collection(TVMModel.sp_SelStockStatus_Result)" />
+          <FunctionImport Name="sp_EmvDiscount">
+            <Parameter Name="fareMediaType" Mode="In" Type="Int32" />
+            <Parameter Name="ticketType" Mode="In" Type="String" />
+            <Parameter Name="amount" Mode="In" Type="Decimal" />
+            <Parameter Name="institutionId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_SelEmvPass_Result">
           <Property Type="Int32" Name="recId" Nullable="false" />
@@ -4701,6 +4713,7 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_EmvDiscount" FunctionName="TVMModel.Store.sp_EmvDiscount" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

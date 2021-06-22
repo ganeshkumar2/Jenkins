@@ -17,18 +17,18 @@ namespace Kochi_TVM.PID
 
         static bool SendGreenText(string text)
         {
-            const int MaxLength = 99;
+            const int MaxLength = 90;
             if (text.Length > MaxLength)
                 text = text.Substring(0, MaxLength);
-            return LedPanel.Instance.ChangeText(text, Speed.Speed5,Color.Green);
+            return LedPanel.Instance.ChangeText(text, Speed.Speed1,Color.Green);
         }
 
         static bool SendRedText(string text)
         {
-            const int MaxLength = 99;
+            const int MaxLength = 90;
             if (text.Length > MaxLength)
                 text = text.Substring(0, MaxLength);
-            return LedPanel.Instance.ChangeText(text, Speed.Speed5, Color.Red);
+            return LedPanel.Instance.ChangeText(text, Speed.Speed1, Color.Red);
         }
 
         public static void Open()

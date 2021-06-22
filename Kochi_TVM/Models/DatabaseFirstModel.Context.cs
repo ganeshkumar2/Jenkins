@@ -674,5 +674,26 @@ namespace Kochi_TVM.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_SelStockStatus_Result>("sp_SelStockStatus");
         }
+    
+        public virtual int sp_EmvDiscount(Nullable<int> fareMediaType, string ticketType, Nullable<decimal> amount, Nullable<int> institutionId)
+        {
+            var fareMediaTypeParameter = fareMediaType.HasValue ?
+                new ObjectParameter("fareMediaType", fareMediaType) :
+                new ObjectParameter("fareMediaType", typeof(int));
+    
+            var ticketTypeParameter = ticketType != null ?
+                new ObjectParameter("ticketType", ticketType) :
+                new ObjectParameter("ticketType", typeof(string));
+    
+            var amountParameter = amount.HasValue ?
+                new ObjectParameter("amount", amount) :
+                new ObjectParameter("amount", typeof(decimal));
+    
+            var institutionIdParameter = institutionId.HasValue ?
+                new ObjectParameter("institutionId", institutionId) :
+                new ObjectParameter("institutionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_EmvDiscount", fareMediaTypeParameter, ticketTypeParameter, amountParameter, institutionIdParameter);
+        }
     }
 }

@@ -59,5 +59,11 @@ namespace Kochi_TVM.Pages.Maintenance
             TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.CoinSettingPage());
         }
+
+        private void btnPIDSetting_Click(object sender, RoutedEventArgs e)
+        {
+            TVMUtility.PlayClick();
+            NavigationService.Navigate(new Pages.Maintenance.PIDSettingPage());
+        }
     }
 }

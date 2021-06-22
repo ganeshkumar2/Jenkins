@@ -351,6 +351,7 @@ namespace Kochi_TVM.Pages.Maintenance
                     MessageBoxOperations.ShowMessage("SENT BOX", "Sent Type : Rs. " + notevalincasset3 + "" + "\nSent Count : " + noteincasset3.ToString() +
                                                                                     "\nSent Amount : Rs. " + noteincasset3 * notevalincasset3, MessageBoxButtonSet.OK);
                 }
+                UpdValOnScr();
             }), DispatcherPriority.Background);
         }
 
@@ -433,9 +434,12 @@ namespace Kochi_TVM.Pages.Maintenance
 
                     if (noteincasset1 > 0 || noteincasset2 > 0 || noteincasset3 > 0)
                     {
+                        MessageBoxOperations.ShowMessage("ADD CASH", "Added Type : " + "Rs. " + (noteincasset1 > 0 ? notevalincasset1.ToString()+" And " : noteincasset2 > 0 ? notevalincasset2.ToString() + " And " : noteincasset3 > 0 ? notevalincasset3.ToString() : "") +
+                                                   "\nAdded Count : " + (noteincasset1 + noteincasset2 + noteincasset3) + "\nAdded Amount : " + "Rs. " + lblBNRAmount.Content + "\n", MessageBoxButtonSet.OK);
+
                         if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
                         {
-                            CustomTL60Printer.Instance.AddBanknotes(noteincasset1, notevalincasset1, noteincasset2, notevalincasset2, noteincasset2, notevalincasset2);
+                            CustomTL60Printer.Instance.AddBanknotes(noteincasset1, notevalincasset1, noteincasset2, notevalincasset2, noteincasset3, notevalincasset3);
                         }
                     }
                 }
@@ -565,8 +569,17 @@ namespace Kochi_TVM.Pages.Maintenance
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 lblBoxInfo.Content = String.Format("Box Amount : {0}", Conversion.MoneyFormat(MoneyOperations.box));
-                lblBoxCount.Content = String.Format("Box Count : {0}", StockOperations.box);               
-
+                lblBoxCount.Content = String.Format("Box Count : {0}", StockOperations.box);
+                if (StockOperations.box == 0)
+                {
+                    btnClearBox.IsEnabled = true;
+                    btnClearBox.Opacity = 1;
+                }
+                else
+                {
+                    btnClearBox.IsEnabled = false;
+                    btnClearBox.Opacity = 0.2;
+                }
             }));
         }
 

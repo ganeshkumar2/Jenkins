@@ -452,14 +452,41 @@ namespace Kochi_TVM.Pages
             {
                 if (StockOperations.coin1 <= Constants.NoChangeAvailable || StockOperations.coin2 <= Constants.NoChangeAvailable || StockOperations.coin1 <= Constants.NoChangeAvailable)
                 {
+                    bool isVisible = true;
                     if (StockOperations.coin5 <= Constants.NoChangeAvailable)
+                    {
                         lbl5RS.Visibility = Visibility.Collapsed;
+                        isVisible = false;
+                    }
+                    else
+                    {
+                        isVisible = true;
+                    }
 
                     if (StockOperations.coin2 <= Constants.NoChangeAvailable)
+                    {
                         lbl2RS.Visibility = Visibility.Collapsed;
+                        isVisible = false;
+                    }
+                    else
+                    {
+                        isVisible = true;
+                    }
 
                     if (StockOperations.coin1 <= Constants.NoChangeAvailable)
+                    {
                         lbl1RS.Visibility = Visibility.Collapsed;
+                        isVisible = false;
+                    }
+                    else
+                    {
+                        isVisible = true;
+                    }
+
+                    if (isVisible)
+                        stackCoin.Visibility = Visibility.Visible;
+                    else
+                        stackCoin.Visibility = Visibility.Collapsed;
 
                     grdNoChangeMode.Visibility = Visibility.Visible;
                 }
@@ -623,7 +650,7 @@ namespace Kochi_TVM.Pages
                 BNRManager.Instance.PollingAction();
                 StockOperations.SelStockStatus();
 
-                LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name);
+                LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
             }
             catch (Exception ex)
             {

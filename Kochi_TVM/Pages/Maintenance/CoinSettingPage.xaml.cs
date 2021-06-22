@@ -185,7 +185,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void lblTypeCoin1_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
+            int i = UserControlNumberPadOperations.GetNumber();
             if (i != 0)
             {
                 lblTypeCoin1.Text = i.ToString();
@@ -199,7 +199,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void lblTypeCoin2_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
+            int i = UserControlNumberPadOperations.GetNumber();
             if (i != 0)
             {
                 lblTypeCoin2.Text = i.ToString();
@@ -213,7 +213,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void lblTypeCoin3_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
+            int i = UserControlNumberPadOperations.GetNumber();
             if (i != 0)
             {
                 lblTypeCoin3.Text = i.ToString();

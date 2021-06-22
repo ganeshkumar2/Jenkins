@@ -143,10 +143,10 @@ namespace Kochi_TVM.Pages
                 for (var i = 1; i <= Stations.stationList.Count; i++)
                 {
 
-                    if (Stations.stationList[i].id == Convert.ToInt32(1) /*|| Stations.stationList[i].id == 22*/) continue;
+                    if (Stations.stationList[i].id == Convert.ToInt32(Parameters.TVMDynamic.GetParameter("stationId")) /*|| Stations.stationList[i].id == 22*/) continue;
                     var buttonTo = new Button
                     {
-                        Content = Stations.stationList[i].name,
+                        Content = MultiLanguage.GetText(Stations.stationList[i].name),
                         Name = "btnStation" + i,
                         Tag = Stations.stationList[i].id,
                         Style = style,
@@ -174,7 +174,7 @@ namespace Kochi_TVM.Pages
         {
             TVMUtility.PlayClick();
             int selectedStationId = 0;
-            selectedStationId = Stations.GetStation(((Button)sender).Content.ToString()).id;
+            selectedStationId = Convert.ToInt32(((Button)sender).Tag.ToString());//Stations.GetStation().id;
             //if (Stations.stationList.ContainsKey(selectedStationId))
             //    SetStation(selectedStationId);
             Ticket.endStation = Stations.GetStation(selectedStationId);

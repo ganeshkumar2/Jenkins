@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Management;
 using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,32 +67,61 @@ namespace Kochi_TVM.Printers
         {
             try
             {
+                string query = string.Format("SELECT * from Win32_Printer WHERE Name LIKE '%{0}'", PrinterName);
 
-                var server = new LocalPrintServer();
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+                using (ManagementObjectCollection coll = searcher.Get())
+                {
+                    try
+                    {
+                        foreach (ManagementObject printer in coll)
+                        {
+                            foreach (PropertyData property in printer.Properties)
+                            {
+                                if (property.Name == "WorkOffline")
+                                {
+                                    if ((bool)property.Value)
+                                    {
+                                        return Enums.PRINTER_STATE.ERROR;
+                                    }
+                                    else
+                                    {
+                                        var server = new LocalPrintServer();
 
-                PrintQueue queue = server.GetPrintQueue(PrinterName, new string[0] { });
+                                        PrintQueue queue = server.GetPrintQueue(PrinterName, new string[0] { });
 
-                queue.Refresh();
+                                        queue.Refresh();
 
-                if (queue.IsOffline)
-                    return Enums.PRINTER_STATE.ERROR;
-                
-                if (queue.IsPaused)
-                    return Enums.PRINTER_STATE.ERROR;
+                                        if (queue.IsOffline)
+                                            return Enums.PRINTER_STATE.ERROR;
 
-                if (queue.IsOutOfPaper)
-                    return Enums.PRINTER_STATE.NO_PAPER;
+                                        if (queue.IsPaused)
+                                            return Enums.PRINTER_STATE.ERROR;
 
-                if (queue.HasPaperProblem)
-                    return Enums.PRINTER_STATE.LOW_PAPER;
+                                        if (queue.IsOutOfPaper)
+                                            return Enums.PRINTER_STATE.NO_PAPER;
 
-                if (!queue.IsOffline)
-                    return Enums.PRINTER_STATE.OK;
+                                        if (queue.HasPaperProblem)
+                                            return Enums.PRINTER_STATE.LOW_PAPER;
 
-                if (!queue.IsOutOfPaper)
-                    return Enums.PRINTER_STATE.OK;
+                                        if (!queue.IsOffline)
+                                            return Enums.PRINTER_STATE.OK;
 
-                return Enums.PRINTER_STATE.OTHER;
+                                        if (!queue.IsOutOfPaper)
+                                            return Enums.PRINTER_STATE.OK;
+
+                                        return Enums.PRINTER_STATE.OTHER;
+                                    }
+                                }
+                            }
+                        }
+                        return Enums.PRINTER_STATE.ERROR;
+                    }
+                    catch (ManagementException ex)
+                    {
+                        return Enums.PRINTER_STATE.ERROR;
+                    }
+                }                
             }
             catch (Exception ex)
             {
@@ -199,7 +229,7 @@ namespace Kochi_TVM.Printers
             startPosition = ((pageSize - objectSize) / 2);
             return startPosition;
         }
-        public void PrintQRTicket(Bitmap imgPrint)//, TicketGrid ticketGrid)
+        public void PrintQRTicket(Bitmap imgPrint, string dt, string type, string from, string to, string count, string price, string no)//, TicketGrid ticketGrid)
         {
             try
             {
@@ -215,17 +245,17 @@ namespace Kochi_TVM.Printers
                 qrimg = new System.Drawing.Bitmap(qrimg, new System.Drawing.Size(100, 100));
                 AddImage(qrimg);
 
-                AddTextAfterImage("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
-                AddText("Type", Ticket.journeyType.ToString(), 80);
-                AddText("From", Ticket.startStation.name, 80);
-                AddText("To", Ticket.endStation.name, 80);
-                AddText("Price", Convert.ToString(Ticket.totalPrice), 80);
-                AddText("Ticket No", "000001111", 80);
-                AddText("Fare Mode","Normal", 80);
+                AddTextAfterImage("Date/Time", dt, 80);
+                AddText("Type", type, 80);
+                AddText("From", from, 80);
+                AddText("To", to, 80);
+                AddText("Price", price, 80);
+                AddText("Ticket No", no, 80);
+                AddText("Fare Mode", "Normal", 80);
                 AddTextFar("------------------------------------------------------------------------------");
-                AddTextBold("");
+                AddTextFar("Kochi1 card holder saved Rs");                
+                AddTextFar("on this trip.Get your card now!!");
                 AddTextBold("Please retain till the end of journey!");
-                AddTextBold("");
                 AddTextFar("------------------------------------------------------------------------------");
 
                 PrintDocument Document = new PrintDocument();

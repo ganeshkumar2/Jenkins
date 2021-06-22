@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
 using log4net;
 using System;
@@ -41,6 +42,8 @@ namespace Kochi_TVM.Pages
         {
             try
             {
+                LedOperations.Close();
+
                 checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
                 checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
             }

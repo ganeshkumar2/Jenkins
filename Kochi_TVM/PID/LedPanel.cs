@@ -117,7 +117,7 @@ namespace Kochi_TVM.PID
         byte[] data = new byte[99]; //max 100
         byte[] rcvData = new byte[2];
         byte[] sendData = new byte[512];
-        Color color = Color.Green;
+        Color color = Color.Red;
         #endregion
 
         #region interface functions
@@ -163,19 +163,26 @@ namespace Kochi_TVM.PID
                 return false;
             }
         }
-        public bool ChangeText(string Text, Kochi_TVM.PID.Speed spd, Color textcolor)
+        public bool ChangeText(string Text, Speed spd, Color textcolor)
         {
             speed = spd;
             color = textcolor;
             if (!String.IsNullOrEmpty(Text))
             {
                 text = Text.ToUpper();
-                if (PrepareBuff())
-                {                    
-                    log.Debug("LED Text " + text);
-                    //Fix me : Open serial plug
-                    //if(sp.SendReceive(sendData, ref rcvData, 100))
-                    return true;
+                try
+                {
+                    if (PrepareBuff())
+                    {
+                        log.Debug("LED Text " + text);
+                        //Fix me : Open serial plug
+                        //if(sp.SendReceive(sendData, ref rcvData, 100))
+                        return true;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    log.Error("LedPanel - ChangeText " + ex.ToString());
                 }
             }
 
@@ -266,12 +273,17 @@ namespace Kochi_TVM.PID
 
             Array.Resize(ref sendData, index);
 
+            port.DiscardInBuffer();
+            port.DiscardOutBuffer();
+            port.Write(sendData, 0, sendData.Length);
+            log.Debug("PrepareBuff :" + BitConverter.ToString(sendData));
+
             return true;
         }
 
         int PrepareShowData()
         {
-            data = new byte[99];
+            data = new byte[300];
 
             int index = 21;
             Brightness br = Brightness.Percent100;
@@ -279,12 +291,11 @@ namespace Kochi_TVM.PID
             Speed stay = (Speed)speed;
             
             Border border = Border.NoBorder;
-
             data[index++] = (byte)br;
             data[index++] = 0x00;
             data[index++] = (byte)action;
-            data[index++] = (byte)speed;
-            data[index++] = (byte)stay;
+            data[index++] = (byte)0x04;//speed;
+            data[index++] = (byte)0x00;//stay;
             data[index++] = (byte)border;
 
             for (int i = 0; i < text.Length; i++)

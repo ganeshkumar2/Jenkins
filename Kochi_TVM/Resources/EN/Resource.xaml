@@ -154,9 +154,29 @@
 	<system:String x:Key="areYouSureRestart">Are you sure you want to Restart the TVM?</system:String>
 	<system:String x:Key="areYouSureShutdown">Are you sure you want to Shutdown the TVM?</system:String>
     <system:String x:Key="ChangeAmt">Change Amount:</system:String>
-
-
-
-
-
+    <system:String x:Key="Aluva">Aluva</system:String>
+    <system:String x:Key="Pulinchodu">Pulinchodu</system:String>
+    <system:String x:Key="Companypady">Companypady</system:String>
+    <system:String x:Key="Ambattukavu">Ambattukavu</system:String>
+    <system:String x:Key="Muttom">Muttom</system:String>
+    <system:String x:Key="Kalamassery">Kalamassery</system:String>
+    <system:String x:Key="Cochin University">Cochin University</system:String>
+    <system:String x:Key="Pathadipalam">Pathadipalam</system:String>
+    <system:String x:Key="Edapally">Edapally</system:String>
+    <system:String x:Key="Changampuzha Park">Changampuzha Park</system:String>
+    <system:String x:Key="Palarivatom">Palarivatom</system:String>
+    <system:String x:Key="JL N Stadium">JL N Stadium</system:String>
+    <system:String x:Key="Kaloor">Kaloor</system:String>
+    <system:String x:Key="Town Hall">Town Hall</system:String>
+    <system:String x:Key="M.G Road">M.G Road</system:String>
+    <system:String x:Key="Maharajas College">Maharajas College</system:String>
+    <system:String x:Key="Ernakulam South">Ernakulam South</system:String>
+    <system:String x:Key="Kadavanthra">Kadavanthra</system:String>
+    <system:String x:Key="Elamkulam">Elamkulam</system:String>
+    <system:String x:Key="Vytila">Vytila</system:String>
+    <system:String x:Key="Thykkoodam">Thykkoodam</system:String>
+    <system:String x:Key="Petta">Petta</system:String>
+    <system:String x:Key="Kakkanad IWAI">Kakkanad IWAI</system:String>
+    <system:String x:Key="Eroor">Eroor</system:String>
+    <system:String x:Key="Vyttila">Vyttila</system:String>
 </ResourceDictionary>

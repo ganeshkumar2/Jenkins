@@ -226,13 +226,31 @@ namespace Kochi_TVM.Pages
                             if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
                             {
                                 var qr = TVMUtility.PrepareQRImage(t.TicketGUID);
-                                CustomKPM150HPrinter.Instance.PrintQRTicket(qr);
+                                CustomKPM150HPrinter.Instance.PrintQRTicket(qr,t.ticketDT.ToString("yyyy-MM-dd HH:mm"), t.explanation, t.From, t.To, Convert.ToString(t.peopleCount), Convert.ToString(t.price), String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
                             }
 
                             long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
                             int stock = StockOperations.qrSlip;
                             StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
                         }
+
+                        //Ticket.sellTicketCount = 0;
+                        //foreach (var t in Ticket.listTickets)
+                        //{
+                        //    string err = string.Empty;
+                        //    List<string> resultQr = QRPrinter.Instance.PrintQR(t.TicketGUID, t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
+
+                        //    log.Debug("LogTypes.Info : PrintQr result....");
+                        //    result = Convert.ToBoolean(resultQr[0]);
+                        //    foreach (var s in resultQr)
+                        //    {
+                        //        log.Debug("LogTypes.Warning : " + s);
+                        //    }
+
+                        //    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                        //    int stock = StockOperations.qrSlip;
+                        //    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                        //}
                     }
                 }
                 initialTimer();

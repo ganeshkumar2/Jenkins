@@ -60,9 +60,9 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                lblTypeCoin1.Text = Convert.ToString(StockOperations.coin1);
-                lblTypeCoin2.Text = Convert.ToString(StockOperations.coin2);
-                lblTypeCoin5.Text = Convert.ToString(StockOperations.coin5);
+                lblTypeCoin1.Text = Convert.ToString(0);
+                lblTypeCoin2.Text = Convert.ToString(0);
+                lblTypeCoin5.Text = Convert.ToString(0);
 
                 lblCoin1Info.Content = "₹" + Constants.HopperAddress1Coin + " Coin Count : " + StockOperations.coin1.ToString();
                 lblCoin2Info.Content = "₹" + Constants.HopperAddress2Coin + " Coin Count : " + StockOperations.coin2.ToString();
@@ -232,29 +232,33 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
-                if (StockOperations.coin1 == 0)
+                Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("ATTENTION!!", "Do you want empty the hopper. ₹" + Constants.HopperAddress1Coin, MessageBoxButtonSet.OKCancel);
+                if (messageBoxResult == Custom.MessageBoxResult.OK)
                 {
-                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
-                    return;
-                }
-                int stock = StockOperations.coin1;
+                    if (StockOperations.coin1 == 0)
+                    {
+                        MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
+                        return;
+                    }
+                    int stock = StockOperations.coin1;
 
-                CCTalkManager.Instance.coinHopperEV4000_1.EmptyHopper();
+                    CCTalkManager.Instance.coinHopperEV4000_1.EmptyHopper();
 
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN1);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, Convert.ToDecimal(stock) * Constants.HopperAddress1Coin))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN1);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, stock))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Empty, Convert.ToDecimal(stock) * Constants.HopperAddress1Coin))
+                            if (StockOperations.SelStockStatus())
                             {
-                                CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress1Coin, StockOperations.coin1);
+                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                {
+                                    CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress1Coin, StockOperations.coin1);
+                                }
+                                UpdValOnScr();
                             }
-                            UpdValOnScr();
-                        }
 
-                MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹\nRemoved Count : " + stock +
-                                            "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                    MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹"+Constants.HopperAddress1Coin +"\nRemoved Count : " + stock +
+                                                "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                }
             }
             catch (Exception ex)
             {
@@ -362,29 +366,33 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
-                if (StockOperations.coin2 == 0)
+                Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("ATTENTION!!", "Do you want empty the hopper. ₹" + Constants.HopperAddress2Coin, MessageBoxButtonSet.OKCancel);
+                if (messageBoxResult == Custom.MessageBoxResult.OK)
                 {
-                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
-                    return;
-                }
-                int stock = StockOperations.coin2;
+                    if (StockOperations.coin2 == 0)
+                    {
+                        MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
+                        return;
+                    }
+                    int stock = StockOperations.coin2;
 
-                CCTalkManager.Instance.coinHopperEV4000_2.EmptyHopper();
+                    CCTalkManager.Instance.coinHopperEV4000_2.EmptyHopper();
 
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN2);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, Convert.ToDecimal(stock) * Constants.HopperAddress2Coin))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN2);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, stock))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Empty, Convert.ToDecimal(stock) * Constants.HopperAddress2Coin))
+                            if (StockOperations.SelStockStatus())
                             {
-                                CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress2Coin, StockOperations.coin2);
+                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                {
+                                    CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress2Coin, StockOperations.coin2);
+                                }
+                                UpdValOnScr();
                             }
-                            UpdValOnScr();
-                        }
 
-                MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹\nRemoved Count : " + stock +
-                                            "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                    MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹ "+Constants.HopperAddress2Coin+"\nRemoved Count : " + stock +
+                                                "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                }
             }
             catch (Exception ex)
             {
@@ -491,29 +499,33 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
-                if (StockOperations.coin5 == 0)
+                Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("ATTENTION!!", "Do you want empty the hopper. ₹" + Constants.HopperAddress3Coin, MessageBoxButtonSet.OKCancel);
+                if(messageBoxResult == Custom.MessageBoxResult.OK)
                 {
-                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
-                    return;
-                }
-                int stock = StockOperations.coin5;
+                    if (StockOperations.coin5 == 0)
+                    {
+                        MessageBoxOperations.ShowMessage("ATTENTION!!", "Stock is already empty.", MessageBoxButtonSet.OKCancel);
+                        return;
+                    }
+                    int stock = StockOperations.coin5;
 
-                CCTalkManager.Instance.coinHopperEV4000_3.EmptyHopper();
+                    CCTalkManager.Instance.coinHopperEV4000_3.EmptyHopper();
 
-                decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN5);
-                if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Empty, stock))
-                    if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Empty, Convert.ToDecimal(stock) * 1))
-                        if (StockOperations.SelStockStatus())
-                        {
-                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_EMPTY_COIN5);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Empty, stock))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Empty, Convert.ToDecimal(stock) * 1))
+                            if (StockOperations.SelStockStatus())
                             {
-                                CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress3Coin, StockOperations.coin5);
+                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                {
+                                    CustomTL60Printer.Instance.CoinEmptyBoxPrint(stock, Constants.HopperAddress3Coin, StockOperations.coin5);
+                                }
+                                UpdValOnScr();
                             }
-                            UpdValOnScr();
-                        }
 
-                MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹" + "\nRemoved Count : " + stock +
-                                            "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                    MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹" + Constants.HopperAddress3Coin + "\nRemoved Count : " + stock +
+                                                "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                }
             }
             catch (Exception ex)
             {
@@ -535,43 +547,31 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void lblTypeCoin1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
+            int i = UserControlNumberPadOperations.GetNumber();
             if (i != 0)
             {
                 lblTypeCoin1.Text = i.ToString();
                 coin1 = true;
             }
-            else
-            {
-                lblTypeCoin1.Text = Convert.ToString(StockOperations.coin1);
-            }
         }
 
         private void lblTypeCoin2_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
+            int i = UserControlNumberPadOperations.GetNumber();
             if (i != 0)
             {
                 lblTypeCoin2.Text = i.ToString();
                 coin2 = true;
             }
-            else
-            {
-                lblTypeCoin2.Text = Convert.ToString(StockOperations.coin2);
-            }
         }
 
         private void lblTypeCoin5_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
+            int i = UserControlNumberPadOperations.GetNumber();
             if (i != 0)
             {
                 lblTypeCoin5.Text = i.ToString();
                 coin3 = true;
-            }
-            else
-            {
-                lblTypeCoin5.Text = Convert.ToString(StockOperations.coin5);
             }
         }
     }

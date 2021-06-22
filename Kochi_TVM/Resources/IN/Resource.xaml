@@ -154,9 +154,29 @@
 	<system:String x:Key="areYouSureRestart">Are you sure you want to Restart the TVM?</system:String>
 	<system:String x:Key="areYouSureShutdown">Are you sure you want to Shutdown the TVM?</system:String>
     <system:String x:Key="ChangeAmt">राशि बदलें:</system:String>
-
-
-
-
-
+    <system:String x:Key="Aluva">अलुवा</system:String>
+    <system:String x:Key="Pulinchodu">पुलिनचोडु</system:String>
+    <system:String x:Key="Companypady">कंपनीपैडी</system:String>
+    <system:String x:Key="Ambattukavu">अंबट्टुकावु</system:String>
+    <system:String x:Key="Muttom">मुत्तो</system:String>
+    <system:String x:Key="Kalamassery">कालामाश्री</system:String>
+    <system:String x:Key="Cochin University">कोचीन विश्वविद्यालय</system:String>
+    <system:String x:Key="Pathadipalam">पाथडीपालम</system:String>
+    <system:String x:Key="Edapally">एडापल्ली</system:String>
+    <system:String x:Key="Changampuzha Park">चंगमपुझा पार्क</system:String>
+    <system:String x:Key="Palarivatom">पलारीवतोम</system:String>
+    <system:String x:Key="JL N Stadium">जेएल एन स्टेडियम</system:String>
+    <system:String x:Key="Kaloor">कलूर</system:String>
+    <system:String x:Key="Town Hall">टाउन हॉल</system:String>
+    <system:String x:Key="M.G Road">एमजी रोड</system:String>
+    <system:String x:Key="Maharajas College">महाराजा कॉलेज</system:String>
+    <system:String x:Key="Ernakulam South">एर्नाकुलम साउथ</system:String>
+    <system:String x:Key="Kadavanthra">कदावनथरा</system:String>
+    <system:String x:Key="Elamkulam">एलमकुलम</system:String>
+    <system:String x:Key="Vytila">वैरिलि</system:String>
+    <system:String x:Key="Thykkoodam">थायक्कूडाम</system:String>
+    <system:String x:Key="Petta">पेट्टा</system:String>
+    <system:String x:Key="Kakkanad IWAI">कक्कनाड आईडब्ल्यूएआई</system:String>
+    <system:String x:Key="Eroor">एरोर</system:String>
+    <system:String x:Key="Vyttila">वैरिलि</system:String>
 </ResourceDictionary>

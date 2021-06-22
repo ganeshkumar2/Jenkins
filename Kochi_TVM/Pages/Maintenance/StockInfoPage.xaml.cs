@@ -155,14 +155,14 @@ namespace Kochi_TVM.Pages.Maintenance
                 #endregion
 
                 #region grandtotal
-                GrandTotalAmount.Content = Convert.ToString(Conversion.MoneyFormat((notevalincasset1 * noteincasset1) + (notevalincasset2 * noteincasset2) + (notevalincasset1 * noteincasset1) +
+                GrandTotalAmount.Content = Convert.ToString(Conversion.MoneyFormat((notevalincasset1 * noteincasset1) + (notevalincasset2 * noteincasset2) + (notevalincasset3 * noteincasset3) +
                                                             MoneyOperations.box + (StockOperations.coin1 * Constants.HopperAddress1Coin) + (StockOperations.coin2 * Constants.HopperAddress2Coin) +
                                                             (StockOperations.coin5 * Constants.HopperAddress3Coin)));
 
                 HopperGrandAmount.Content = Convert.ToString(Conversion.MoneyFormat((StockOperations.coin1 * Constants.HopperAddress1Coin) + (StockOperations.coin2 * Constants.HopperAddress2Coin) +
                                                             (StockOperations.coin5 * Constants.HopperAddress3Coin)));
 
-                BanknoteGrandAmount.Content = Convert.ToString(Conversion.MoneyFormat((notevalincasset1 * noteincasset1) + (notevalincasset2 * noteincasset2) + (notevalincasset1 * noteincasset1) +
+                BanknoteGrandAmount.Content = Convert.ToString(Conversion.MoneyFormat((notevalincasset1 * noteincasset1) + (notevalincasset2 * noteincasset2) + (notevalincasset3 * noteincasset3) +
                                                             MoneyOperations.box));
                 #endregion
             }), DispatcherPriority.Background);

@@ -54,10 +54,22 @@ namespace Kochi_TVM.Pages
                 {
                     Constants.NoReceiptMode = true;
                 }
+
+                var result = Parameters.TVMDynamic.GetAfcConnStatus();
+                if (!result)
+                {
+                    Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("Communication", "LAN communication Error.", MessageBoxButtonSet.OK);
+                    if (messageBoxResult == Custom.MessageBoxResult.OK)
+                        NavigationService.Navigate(new Pages.MainPage());
+                    return;
+                }
+
                 PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
                 if (QRPrinter != PRINTER_STATE.OK)
                 {
-                    MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
+                    Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
+                    if(messageBoxResult == Custom.MessageBoxResult.OK)
+                        NavigationService.Navigate(new Pages.MainPage());
                     return;
                 }
                 Dispatcher.BeginInvoke(new Action(() =>
@@ -137,7 +149,7 @@ namespace Kochi_TVM.Pages
                         lblLine6Key.Visibility = Visibility.Visible; lblLine6Value.Visibility = Visibility.Visible;
 
                         lblLine1Key.Content = Ticket.journeyTypeText;
-                        lblLine2Key.Content = "Origin Station :"; lblLine2Value.Content = Ticket.startStation.name;
+                        lblLine2Key.Content = "Origin Station :"; lblLine2Value.Content = MultiLanguage.GetText(Ticket.startStation.name);
                         lblLine3Key.Content = MultiLanguage.GetText("destination"); lblLine3Value.Content = Ticket.endStation.name;
                         lblLine4Key.Content = "Number Of Pass : "; lblLine4Value.Content = Ticket.passCount;
                         lblLine5Key.Content = "Validity : "; lblLine5Value.Content = Ticket.ticketExpiryDts.ToString("g");
@@ -151,7 +163,7 @@ namespace Kochi_TVM.Pages
                         lblLine5Key.Visibility = Visibility.Visible; lblLine5Value.Visibility = Visibility.Visible;
 
                         lblLine1Key.Content = Ticket.journeyTypeText;
-                        lblLine2Key.Content = MultiLanguage.GetText("destination"); lblLine2Value.Content = Ticket.endStation.name;
+                        lblLine2Key.Content = MultiLanguage.GetText("destination"); lblLine2Value.Content = MultiLanguage.GetText(Ticket.endStation.name);
                         lblLine3Key.Content = MultiLanguage.GetText("ticketType"); lblLine3Value.Content = Ticket.ticketTypeText;
                         lblLine4Key.Content = "Number Of Passenger : "; lblLine4Value.Content = Ticket.peopleCount;
                         lblLine5Key.Content = MultiLanguage.GetText("amount"); lblLine5Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
@@ -160,7 +172,7 @@ namespace Kochi_TVM.Pages
                     case JourneyType.RJT:
                     case JourneyType.SJT:                       
                         lblLine1Key.Content = Ticket.journeyTypeText;
-                        lblLine2Key.Content = MultiLanguage.GetText("destination"); lblLine2Value.Content = Stations.GetStation(Ticket.endStation.id).name;
+                        lblLine2Key.Content = MultiLanguage.GetText("destination"); lblLine2Value.Content = MultiLanguage.GetText(Stations.GetStation(Ticket.endStation.id).name);
                         //lblLine3Key.Content = "Ticket Type :"; lblLine3Value.Content = Ticket.ticketTypeText;
                         lblLine3Key.Content = MultiLanguage.GetText("numberOfTickets"); lblLine3Value.Content = Ticket.ticketCount;
                         lblLine4Key.Content = MultiLanguage.GetText("amount"); lblLine4Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
@@ -199,7 +211,42 @@ namespace Kochi_TVM.Pages
         private void btnCash_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
-            NavigationService.Navigate(new Pages.PayByCashPage());
+            PRINTER_STATE ReceiptPrinter = CustomTL60Printer.Instance.getStatusWithUsb();
+            if (ReceiptPrinter == PRINTER_STATE.OK)
+            {
+                Constants.NoReceiptMode = false;
+            }
+            else
+            {
+                Constants.NoReceiptMode = true;
+            }
+            PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
+            if (QRPrinter != PRINTER_STATE.OK)
+            {
+                Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
+                if (messageBoxResult == Custom.MessageBoxResult.OK)
+                {
+                    NavigationService.Navigate(new Pages.MainPage());
+                    return;
+                }
+            }
+            else
+            {
+                if (StockOperations.qrSlip >= Ticket.ticketCount)
+                {
+                    NavigationService.Navigate(new Pages.PayByCashPage());
+                }
+                else
+                {
+                    Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Low Paper.", MessageBoxButtonSet.OK);
+                    if (messageBoxResult == Custom.MessageBoxResult.OK)
+                    {
+                        NavigationService.Navigate(new Pages.MainPage());
+                        return;
+                    }
+                }
+            }
+            
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)

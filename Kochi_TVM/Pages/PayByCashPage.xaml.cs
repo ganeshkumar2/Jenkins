@@ -361,6 +361,17 @@ namespace Kochi_TVM.Pages
                             string str = extenedCassette[i];
                             string substr = str.Substring(str.Length - 1);
                             int bill = billTable.Where(x => x.BillType == Convert.ToInt16(substr)).Select(x => x.DigitBillType).FirstOrDefault();
+
+                            long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + bill)));
+                            if (StockOperations.InsStock(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Decrease, 1))
+                                if (MoneyOperations.InsMoney(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Decrease, bill * 1))
+                                {
+                                    long trxId2 = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_BOX));
+                                    if (StockOperations.InsStock(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Box, (int)UpdateType.Increase, 1))
+                                        MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Box, (int)UpdateType.Increase, bill * 1);
+
+                                }
+
                             noteunload.Add(bill);
                         }
 
