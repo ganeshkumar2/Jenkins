@@ -572,13 +572,13 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblBoxCount.Content = String.Format("Box Count : {0}", StockOperations.box);
                 if (StockOperations.box == 0)
                 {
-                    btnClearBox.IsEnabled = true;
-                    btnClearBox.Opacity = 1;
+                    btnClearBox.IsEnabled = false;
+                    btnClearBox.Opacity = 0.2;
                 }
                 else
                 {
-                    btnClearBox.IsEnabled = false;
-                    btnClearBox.Opacity = 0.2;
+                    btnClearBox.IsEnabled = true;
+                    btnClearBox.Opacity = 1;
                 }
             }));
         }

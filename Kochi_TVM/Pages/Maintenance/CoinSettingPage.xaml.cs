@@ -1,4 +1,5 @@
 ﻿using dk.CctalkLib.Devices;
+using Kochi_TVM.Business;
 using Kochi_TVM.CCTalk;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Utils;
@@ -22,6 +23,8 @@ namespace Kochi_TVM.Pages.Maintenance
         public CoinSettingPage()
         {
             InitializeComponent();
+            lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
             lblTypeCoin1.Text = Convert.ToString(Constants.HopperAddress1Coin);
             lblTypeCoin2.Text = Convert.ToString(Constants.HopperAddress2Coin);
             lblTypeCoin3.Text = Convert.ToString(Constants.HopperAddress3Coin);

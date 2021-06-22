@@ -1,4 +1,5 @@
-﻿using Kochi_TVM.Pages.Custom;
+﻿using Kochi_TVM.Business;
+using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
 using System;
@@ -26,6 +27,8 @@ namespace Kochi_TVM.Pages.Maintenance
         public PIDSettingPage()
         {
             InitializeComponent();
+            lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
             txtMessage.Text = PIDMessageLog.getMessage();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)

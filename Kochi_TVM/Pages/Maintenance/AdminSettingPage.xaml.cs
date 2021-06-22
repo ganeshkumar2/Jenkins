@@ -1,4 +1,5 @@
-﻿using Kochi_TVM.Utils;
+﻿using Kochi_TVM.Business;
+using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,8 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
+            lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
