@@ -417,9 +417,7 @@ namespace Kochi_TVM.Pages
                     if (count == 5)
                     {
                         if (Constants.BNRStatus == "IDLING")
-                            DisposePage();
-
-                        btnFinish.Visibility = Visibility.Visible;
+                            btnFinish.Visibility = Visibility.Visible;
                     }
                 };
                 ts(count);
@@ -438,6 +436,12 @@ namespace Kochi_TVM.Pages
                 {
                     try
                     {
+                        if (Constants.BNRStatus != "IDLING")
+                        {
+                            resetTimmer();
+                            return;
+                        }
+
                         log.Info("PayByCashOrCoinPage - dispatcherTimer_Tick");
                         DisposePage();
                         await Task.Delay(300);

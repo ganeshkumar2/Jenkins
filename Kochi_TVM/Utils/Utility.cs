@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Windows.Media;
 using ZXing.QrCode;
@@ -352,6 +353,28 @@ namespace Kochi_TVM.Utils
             {
                 log.Error("Error Utility -> PrepareQRImage() : " + ex.ToString());
                 return null;
+            }
+        }
+
+        public static void killExplorer()
+        {
+            try
+            {
+                var proc = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "taskkill.exe",
+                        Arguments = "/F /IM explorer.exe",
+                        UseShellExecute = true,
+                        CreateNoWindow = true
+                    }
+                };
+                proc.Start();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error Utility -> killExplorer() : " + ex.ToString());
             }
         }
     }

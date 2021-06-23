@@ -160,10 +160,7 @@ namespace Kochi_TVM.Pages
                 try
                 {
                     Constants.BNRStatus = Enum.GetName(typeof(BNRState), state);
-                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                    {
-                        outOfServiceLbl.Content = "BNR Status : " + Constants.BNRStatus;
-                    }));
+                    outOfServiceLbl.Content = "BNR Status : " + Constants.BNRStatus;
                     log.Debug("BNR Status : " + Constants.BNRStatus);
                     if (state == BNRState.DISABLED)
                     {

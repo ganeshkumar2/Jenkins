@@ -238,7 +238,7 @@ namespace Kochi_TVM.Printers
                 string headerAddress = "Images\\kmlr_QR_logo.png";
                 Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
                 System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
-                logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(200, 40));
+                logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(180, 40));
                 AddLogoImage(logo);
 
                 System.Drawing.Bitmap qrimg = new System.Drawing.Bitmap(imgPrint);
@@ -281,7 +281,7 @@ namespace Kochi_TVM.Printers
                 string headerAddress = "Images\\kmlr_QR_logo.png";
                 Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
                 System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
-                logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(200, 40));
+                logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(180, 40));
                 AddLogoImage(logo);
                 System.Drawing.Bitmap qrimg = new System.Drawing.Bitmap(imgPrint);
                 qrimg = new System.Drawing.Bitmap(qrimg, new System.Drawing.Size(100, 100));
