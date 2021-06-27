@@ -46,13 +46,22 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ESCPOSLib">
+      <HintPath>ExternalLibrary\QRPrinter\ESCPOSLib.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MessagingToolkit.QRCode">
+      <HintPath>ExternalLibrary\QRPrinter\MessagingToolkit.QRCode.dll</HintPath>
     </Reference>
     <Reference Include="pcsc-sharp">
       <HintPath>ExternalLibrary\Dispenser\pcsc-sharp.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
+    <Reference Include="QRCPrintLib">
+      <HintPath>ExternalLibrary\QRPrinter\QRCPrintLib.dll</HintPath>
+    </Reference>
     <Reference Include="RPTIssueLib">
       <HintPath>ExternalLibrary\Dispenser\RPTIssueLib.dll</HintPath>
     </Reference>
@@ -99,13 +108,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\NStationService\" />
+    <WCFMetadataStorage Include="Connected Services\OccSrv\" />
+    <WCFMetadataStorage Include="Connected Services\PayPointSrv\" />
+  </ItemGroup>
+  <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Business\LocalDBFuntions.cs" />
     <Compile Include="Business\MoneyOperations.cs" />
     <Compile Include="Business\OCCOperations.cs" />
     <Compile Include="Business\Parameters.cs" />
+    <Compile Include="Business\PeakTime.cs" />
     <Compile Include="Business\QROperations.cs" />
     <Compile Include="Business\Stations.cs" />
     <Compile Include="Business\StockOperations.cs" />
@@ -227,6 +243,9 @@
     <Compile Include="Models\sp_ControlAppLogon_Result.cs">
       <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_EmvDiscount1_Result.cs">
+      <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_SelEmvPassTypes_Result.cs">
       <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
     </Compile>
@@ -234,6 +253,9 @@
       <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_SelMoneyStatus_Result.cs">
+      <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_SelPeakTime_Result.cs">
       <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_SelQRCodeTicket_Result.cs">
@@ -437,8 +459,8 @@
     <Compile Include="PID\LedOperations.cs" />
     <Compile Include="PID\LedPanel.cs" />
     <Compile Include="PID\PIDMessageLog.cs" />
-    <Compile Include="Printers\CustomKPM150HPrinter.cs" />
     <Compile Include="Printers\CustomTL60Printer.cs" />
+    <Compile Include="Printers\QRPrinter.cs" />
     <Compile Include="RptDispenser\Dispenser.cs" />
     <Compile Include="RptDispenser\RPTOperations.cs" />
     <Compile Include="Utils\Constants.cs" />
@@ -455,7 +477,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Connected Services\PayPointSrv\Reference.cs">
+    <Compile Include="Connected Services\\PayPointSrv\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -721,11 +743,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\NStationService\" />
-    <WCFMetadataStorage Include="Connected Services\OccSrv\" />
-    <WCFMetadataStorage Include="Connected Services\PayPointSrv\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

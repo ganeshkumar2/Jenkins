@@ -69,9 +69,9 @@ namespace Kochi_TVM.Business
                     coin1 = (int)(data.hopper1);
                     coin2 = (int)(data.hopper2);
                     coin5 = (int)(data.hopper5);
-                    escrow = (int)(data.cassette1);
+                    escrow = (int)(data.cassette3);
                     banknote20 = (int)(data.cassette2);
-                    banknote10 = (int)(data.cassette3);
+                    banknote10 = (int)(data.cassette1);
                     box = (int)(data.box);
                     qrSlip = (int)(data.qrSlip);
                     receiptSlip = (int)(data.receiptSlip);

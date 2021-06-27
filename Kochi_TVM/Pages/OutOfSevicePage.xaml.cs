@@ -180,6 +180,8 @@ namespace Kochi_TVM.Pages
             {
                 Dispatcher.Invoke(DispatcherPriority.Background, new Action(async () =>
                 {
+                    BNRManager.Instance.GetCassetteStatus();
+
                     await Task.Delay(1000);                                       
 
                     CoinHopper1();

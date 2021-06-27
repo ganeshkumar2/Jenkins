@@ -3,6 +3,7 @@ using Kochi_TVM.Utils;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
@@ -62,7 +63,7 @@ namespace Kochi_TVM.Printers
         {
 
         }
-        string PrinterName = "CUSTOM KPM150H";//"Microsoft Print to PDF";
+        string PrinterName = ConfigurationManager.AppSettings["QRPrinterName"];//"CUSTOM KPM150";//"Microsoft Print to PDF";
         public Enums.PRINTER_STATE getStatusWithUsb()
         {
             try

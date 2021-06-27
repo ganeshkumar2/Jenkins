@@ -64,8 +64,8 @@ namespace Kochi_TVM.Pages
                     return;
                 }
 
-                PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
-                if (QRPrinter != PRINTER_STATE.OK)
+                PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
+                if (QRStatus != PRINTER_STATE.OK)
                 {
                     Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
                     if(messageBoxResult == Custom.MessageBoxResult.OK)
@@ -220,8 +220,8 @@ namespace Kochi_TVM.Pages
             {
                 Constants.NoReceiptMode = true;
             }
-            PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
-            if (QRPrinter != PRINTER_STATE.OK)
+            PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
+            if (QRStatus != PRINTER_STATE.OK)
             {
                 Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
                 if (messageBoxResult == Custom.MessageBoxResult.OK)

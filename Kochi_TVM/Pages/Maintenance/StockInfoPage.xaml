@@ -63,15 +63,15 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="12" Grid.RowSpan="2" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />

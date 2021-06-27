@@ -1,4 +1,5 @@
-﻿using Kochi_TVM.Business;
+﻿using Kochi_TVM.BNR;
+using Kochi_TVM.Business;
 using Kochi_TVM.CCTalk;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Printers;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Kochi_TVM.Pages.Maintenance
 {
@@ -25,6 +28,8 @@ namespace Kochi_TVM.Pages.Maintenance
     /// </summary>
     public partial class DeviceInfoPage : Page
     {
+        private static Timer checkDeviceTimer;
+        private static TimerCallback checkDeviceTimerDelegate;
         public DeviceInfoPage()
         {
             InitializeComponent();
@@ -32,6 +37,9 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
+            checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
+
             UpdDevStat();
 
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
@@ -40,8 +48,23 @@ namespace Kochi_TVM.Pages.Maintenance
 
         }
 
+        private void CheckDeviceAction(object o)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    UpdDevStat();
+                }
+                catch (Exception ex)
+                {
+                }
+            }), DispatcherPriority.Background);
+        }
+
         private void UpdDevStat()
         {
+            BNRManager.Instance.PollingAction();
             //add real value
             //receipt printer
             var printerReceipt = string.Empty;
@@ -65,7 +88,7 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 string status = "";
-                status = CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK ? "OK" : "ERROR";
+                status = QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK ? "OK" : "ERROR";
                 DeviceInfoControl qrPrinter = new DeviceInfoControl("QR Printer", status);
                 Grid.SetRow(qrPrinter, 2);
                 Grid.SetColumn(qrPrinter, 0);
@@ -163,7 +186,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            checkDeviceTimer.Dispose();
         }
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)

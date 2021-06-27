@@ -124,19 +124,5 @@ namespace Kochi_TVM.Pages.Custom
             number = 0;
             txtTypeNumber.Text = number.ToString();
         }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            TVMUtility.PlayClick();
-            Window parentWindow = (Window)this.Parent;
-            parentWindow.Close();
-        }
-
-        private void btnOK_Click(object sender, RoutedEventArgs e)
-        {
-            TVMUtility.PlayClick();
-            Window parentWindow = (Window)this.Parent;
-            parentWindow.Close();
-        }
     }
 }

@@ -5,6 +5,7 @@ using Kochi_TVM.Utils;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
@@ -63,7 +64,7 @@ namespace Kochi_TVM.Printers
         {
 
         }
-        string PrinterName = "CUSTOM TL60";//"Microsoft Print to PDF";
+        string PrinterName = ConfigurationManager.AppSettings["ReceiptPrinterName"];//"CUSTOM TL60";//"Microsoft Print to PDF";
         public Enums.PRINTER_STATE getStatusWithUsb()
         {
             try
@@ -389,9 +390,9 @@ namespace Kochi_TVM.Printers
             AddText("RPT Dispenser", Parameters.TVMStatic.GetParameter("rptDispenserStatus") == "1" ? "OK" : "Not Connected", 110);
             AddText("EMV POS", "Not Connected", 110);
             AddText("Card POS", "Not Connected", 110);
-            AddText("Hopper 5 Rs.", CCTalkManager.Instance.coinHopperEV4000_3.Manufacture != null ? "OK" : "Not Connected)", 110);
-            AddText("Hopper 2 Rs.", CCTalkManager.Instance.coinHopperEV4000_2.Manufacture != null ? "OK" : "Not Connected)", 110);
-            AddText("Hopper 1 Rs.", CCTalkManager.Instance.coinHopperEV4000_1.Manufacture != null ? "OK" : "Not Connected)", 110);
+            AddText("Hopper Rs.5", CCTalkManager.Instance.coinHopperEV4000_3.Manufacture != null ? "OK" : "Not Connected)", 110);
+            AddText("Hopper Rs.2", CCTalkManager.Instance.coinHopperEV4000_2.Manufacture != null ? "OK" : "Not Connected)", 110);
+            AddText("Hopper Rs.1", CCTalkManager.Instance.coinHopperEV4000_1.Manufacture != null ? "OK" : "Not Connected)", 110);
             //PrinterFunctions.AddText(string.Format("Hopper 5 Rs.: {0}", Devices.isInitHopper5 == true ? "OK" : "ERROR(Not Connected)"));
             //PrinterFunctions.AddText(string.Format("Hopper 2 Rs.: {0}", Devices.isInitHopper2 == true ? "OK" : "ERROR(Not Connected)"));
             //PrinterFunctions.AddText(string.Format("Hopper 1 Rs.: {0}", Devices.isInitHopper1 == true ? "OK" : "ERROR(Not Connected)"));
@@ -566,10 +567,10 @@ namespace Kochi_TVM.Printers
                 AddText("");
                 AddText("QR Sale(SJT Cash)");
                 AddText("Count", QRSJTCashCount.ToString(), 80);
-                AddText("Amount", QRSJTCashAmount.ToString() + "Rs.", 80);
+                AddText("Amount", "Rs."+QRSJTCashAmount.ToString(), 80);
                 AddText("QR Sale(RJT Cash)");
                 AddText("Count", QRRJTCashCount.ToString(), 80);
-                AddText("Amount", QRRJTCashAmount.ToString() + "Rs.", 80);
+                AddText("Amount", "Rs."+ QRRJTCashAmount.ToString(), 80);
                 //PrinterFunctions.AddText("QR Sale(SJT Non-Cash)");
                 //PrinterFunctions.AddText(string.Format("Count: {0}", QRSJTNonCashCount));
                 //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", QRSJTNonCashAmount)); 
@@ -591,9 +592,9 @@ namespace Kochi_TVM.Printers
                 //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", 0));
                 //PrinterFunctions.AddText(" ");
 
-                AddText("Cash Amount", (QRRJTCashAmount + QRSJTCashAmount).ToString() + "Rs" /*+ RPTSJTCashAmount*/, 80);
+                AddText("Cash Amount", "Rs."+(QRRJTCashAmount + QRSJTCashAmount).ToString() /*+ RPTSJTCashAmount*/, 80);
                 //PrinterFunctions.AddText(string.Format("Non-Cash Amount: {0} Rs.", QRRJTNonCashAmount + QRSJTNonCashAmount + RPTSJTNonCashAmount));
-                AddText("Total Amount", (QRRJTCashAmount + QRSJTCashAmount).ToString() + "Rs" /*+ RPTSJTCashAmount +
+                AddText("Total Amount", "Rs."+(QRRJTCashAmount + QRSJTCashAmount).ToString() /*+ RPTSJTCashAmount +
                                                                                     + QRRJTNonCashAmount + QRSJTNonCashAmount + RPTSJTNonCashAmount*/, 80);
 
                 //PrinterFunctions.AddText("--Transactions--");
@@ -665,9 +666,9 @@ namespace Kochi_TVM.Printers
 
             AddText("--Coin Replenish--");
             AddText("------------------------------------------------------------------------------");
-            AddText("Added Coin", coin.ToString() + "Rs.", 80);
+            AddText("Added Coin", "Rs."+coin.ToString(), 80);
             AddText("Added Count", count.ToString(), 80);
-            AddText("Added Amount", (count * coin).ToString() + "Rs.", 80);
+            AddText("Added Amount", "Rs."+(count * coin).ToString(), 80);
             AddText("Total Count", stock.ToString(), 80);
             AddText("------------------------------------------------------------------------------");
 
@@ -697,9 +698,9 @@ namespace Kochi_TVM.Printers
             AddText("--Coin Removing--");
             AddText("------------------------------------------------------------------------------");
             AddText(string.Format("Hopper: Hopper{0}.", coin));
-            AddText("Removed Coin", coin.ToString() + "Rs.", 110);
-            AddText("Removed Count", count.ToString() + "Rs.", 110);
-            AddText("Removed Amount", (count * coin).ToString() + "Rs.", 110);
+            AddText("Removed Coin", "Rs."+coin.ToString(), 110);
+            AddText("Removed Count", count.ToString(), 110);
+            AddText("Removed Amount", "Rs." + (count * coin).ToString(), 110);
             AddText("Total Count", stock.ToString(), 110);
             AddText("------------------------------------------------------------------------------");
 
@@ -728,9 +729,9 @@ namespace Kochi_TVM.Printers
 
             AddText("--Hopper Info--");
             AddText("------------------------------------------------------------------------------");
-            AddText(string.Format("Hopper: {0} Rs.", coin));
+            AddText(string.Format("Hopper: Rs. {0}", coin));
             AddText("Removed Count", count.ToString(), 100);
-            AddText("Removed Amount", (count * coin).ToString() + "Rs.", 100);
+            AddText("Removed Amount", "Rs." + (count * coin).ToString(), 100);
             //AddText(string.Format("Hopper: {0} Rs.", coin1));
             //AddText("Removed Count: {0}.", count1.ToString(), 100);
             //AddText("Removed Amount: {0} Rs.", (count1 * coin1).ToString() + "Rs.", 100);
@@ -755,6 +756,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -769,19 +771,19 @@ namespace Kochi_TVM.Printers
             //PrinterFunctions.AddText("Receipt Slip Count", receipt.ToString(), 120);
             //PrinterFunctions.AddText("RPT Count", rpt.ToString(), 120);
 
-            AddText(Constants.HopperAddress1Coin + " Rs. Coin Count", coin1.ToString(), 120);
-            AddText(Constants.HopperAddress2Coin+" Rs. Coin Count", coin2.ToString(), 120);
-            AddText(Constants.HopperAddress3Coin+" Rs. Coin Count", coin5.ToString(), 120);
-            AddText("Hoppers Amount", ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin)).ToString() + " Rs.", 120);
+            AddText("Rs." + Constants.HopperAddress1Coin + " Coin Count", coin1.ToString(), 120);
+            AddText("Rs." + Constants.HopperAddress2Coin+" Coin Count", coin2.ToString(), 120);
+            AddText("Rs." + Constants.HopperAddress3Coin+" Coin Count", coin5.ToString(), 120);
+            AddText("Hoppers Amount", ("Rs." + (coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin)).ToString(), 120);
 
-            AddText(billval1+" Rs. Banknote Count", banknote10.ToString(), 130);
-            AddText(billval2+" Rs. Banknote Count", banknote20.ToString(), 130);
-            AddText(billval3+" Rs. Banknote Count", bankescrow.ToString(), 130);
-            AddText("Box Amount", box.ToString() + " Rs.", 130);
-            AddText("Banknotes Amount", ((banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box).ToString() + " Rs.", 130);
+            AddText("Rs." + billval1 +" Banknote Count", banknote10.ToString(), 130);
+            AddText("Rs." + billval2 +" Banknote Count", banknote20.ToString(), 130);
+            AddText("Rs." + billval3 +" Banknote Count", bankescrow.ToString(), 130);
+            AddText("Box Amount", "Rs." + box.ToString() , 130);
+            AddText("Banknotes Amount", ("Rs." + ((banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box)).ToString(), 130);
 
 
-            AddText("Grand Total", ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin) + (banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box).ToString() + " Rs.", 130);
+            AddText("Grand Total", ("Rs." + ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin) + (banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box)).ToString(), 130);
 
             AddText("------------------------------------------------------------------------------");
 
@@ -799,6 +801,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -848,6 +851,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -896,6 +900,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -943,6 +948,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -953,9 +959,9 @@ namespace Kochi_TVM.Printers
 
             AddText("--Send Box--");
             AddText("------------------------------------------------------------------------------");
-            AddText("Sent Bill", billType + " Rs.", 110);
+            AddText("Sent Bill", "Rs." + billType, 110);
             AddText("Sent Count", count.ToString(), 110);
-            AddText("Sent Amount", count * billType + " Rs.", 110);
+            AddText("Sent Amount", "Rs." + (count * billType).ToString(), 110);
             AddText("------------------------------------------------------------------------------");
             AddText("");
 
@@ -973,6 +979,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -983,8 +990,8 @@ namespace Kochi_TVM.Printers
 
             AddText("--Cash Box Clear--");
             AddText("------------------------------------------------------------------------------");
-            AddText("Removed Count", count + " Rs.", 110);
-            AddText("Removed Amount", amount + " Rs.", 110);
+            AddText("Removed Count", count.ToString(), 110);
+            AddText("Removed Amount", "Rs." + amount, 110);
             AddText("------------------------------------------------------------------------------");
             AddText("");
 
@@ -1002,6 +1009,7 @@ namespace Kochi_TVM.Printers
             string headerAddress = "Images\\kmrl_icon.png";
             Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
             System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
             AddImage(logo);
 
             AddText("KOCHI METRO");
@@ -1012,19 +1020,19 @@ namespace Kochi_TVM.Printers
 
             AddText("--Banknote Replenish--");
             AddText("------------------------------------------------------------------------------");
-            AddText(string.Format("Added Notes: {0} Rs.", notes1));
-            AddText("Added Count", count1.ToString(), 80);
-            AddText("Added Amount", (count1 * notes1).ToString() + "Rs.", 80);
+            AddText(string.Format("Added Notes: Rs.{0}", notes1));
+            AddText("Added Count", count1.ToString(), 100);
+            AddText("Added Amount", "Rs." + (count1 * notes1).ToString(), 100);
             AddText("------------------------------------------------------------------------------");
-            AddText(string.Format("Added Notes: {0} Rs.", notes2));
-            AddText("Added Count", count2.ToString(), 80);
-            AddText("Added Amount", (count2 * notes2).ToString() + "Rs.", 80);
+            AddText(string.Format("Added Notes: Rs.{0}", notes2));
+            AddText("Added Count", count2.ToString(), 100);
+            AddText("Added Amount", "Rs." + (count2 * notes2).ToString(), 100);
             AddText("------------------------------------------------------------------------------");
-            AddText(string.Format("Added Notes: {0} Rs.", notes3));
-            AddText("Added Count", count3.ToString(), 80);
-            AddText("Added Amount", (count3 * notes3).ToString() + "Rs.", 80);
+            AddText(string.Format("Added Notes: Rs.{0}", notes3));
+            AddText("Added Count", count3.ToString(), 100);
+            AddText("Added Amount", "Rs." + (count3 * notes3).ToString(), 100);
             AddText("------------------------------------------------------------------------------");
-            AddText("Total Count", (count1 + count2 + notes3).ToString(), 80);
+            AddText("Total Count", (count1 + count2 + count3).ToString(), 100);
             AddText("------------------------------------------------------------------------------");
             AddText("");
 

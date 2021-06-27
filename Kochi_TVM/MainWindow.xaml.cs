@@ -27,6 +27,8 @@ namespace Kochi_TVM
             try
             {
                 ConfigLog4net();
+                log.Debug("***TVM Application Started***");
+                log.Debug("TVM App Version: " + Constants.appVersion);
                 MultiLanguage.Init("EN");
                 InitialTimer();
                 Stations.FillStationList();

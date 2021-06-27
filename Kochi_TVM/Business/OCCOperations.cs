@@ -236,8 +236,8 @@ namespace Kochi_TVM.Business
             long transactionId = 0;
             DataTable dt = null;
             try
-            {
-                if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+            {                
+                if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
                     result = true;
                 else
                     result = false;

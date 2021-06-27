@@ -65,5 +65,9 @@ namespace Kochi_TVM.PID
         {
             SendRedText(maintance);
         }
+        public static void DeviceError(string device)
+        {
+            SendRedText(device+" DEVICE ERROR");
+        }
     }
 }

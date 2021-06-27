@@ -544,35 +544,61 @@ namespace Kochi_TVM.Pages.Maintenance
             TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
         }
-
+        int selected = 0;
         private void lblTypeCoin1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            int i = UserControlNumberPadOperations.GetNumber();
-            if (i != 0)
-            {
-                lblTypeCoin1.Text = i.ToString();
-                coin1 = true;
-            }
+            grdUserControl.Visibility = Visibility.Visible;
+            selected = 1;
         }
 
         private void lblTypeCoin2_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            int i = UserControlNumberPadOperations.GetNumber();
-            if (i != 0)
-            {
-                lblTypeCoin2.Text = i.ToString();
-                coin2 = true;
-            }
+            grdUserControl.Visibility = Visibility.Visible;
+            selected = 2;
         }
 
         private void lblTypeCoin5_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            int i = UserControlNumberPadOperations.GetNumber();
-            if (i != 0)
+            grdUserControl.Visibility = Visibility.Visible;
+            selected = 3;
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            if (selected == 1 && numberpad.txtTypeNumber.Text != "0")
             {
-                lblTypeCoin5.Text = i.ToString();
+                lblTypeCoin1.Text = numberpad.txtTypeNumber.Text;
+                coin1 = true;
+            }
+            else if (selected == 1 && numberpad.txtTypeNumber.Text == "0")
+            {
+                lblTypeCoin1.Text = numberpad.txtTypeNumber.Text;
+            }
+
+            if (selected == 2 && numberpad.txtTypeNumber.Text != "0")
+            {
+                lblTypeCoin2.Text = numberpad.txtTypeNumber.Text;
+                coin2 = true;
+            }
+            else if (selected == 2 && numberpad.txtTypeNumber.Text == "0")
+            {
+                lblTypeCoin2.Text = numberpad.txtTypeNumber.Text;
+            }
+
+            if (selected == 3 && numberpad.txtTypeNumber.Text != "0")
+            {
+                lblTypeCoin5.Text = numberpad.txtTypeNumber.Text;
                 coin3 = true;
             }
+            else if (selected == 3 && numberpad.txtTypeNumber.Text == "0")
+            {
+                lblTypeCoin5.Text = numberpad.txtTypeNumber.Text;
+            }
+
+            selected = 0;
+            numberpad.number = 0;
+            numberpad.txtTypeNumber.Text = "0";
+            grdUserControl.Visibility = Visibility.Collapsed;
         }
     }
 }

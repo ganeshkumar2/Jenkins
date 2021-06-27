@@ -1,4 +1,6 @@
-﻿using MessagingToolkit.QRCode.Codec;
+﻿using Kochi_TVM.Utils;
+using log4net;
+using MessagingToolkit.QRCode.Codec;
 using QRCPrintLib;
 using SveltaLib;
 using System;
@@ -14,6 +16,8 @@ namespace Kochi_TVM.Printers
 {
     public class QRPrinter
     {
+        private static ILog log = LogManager.GetLogger(typeof(QRPrinter).Name);
+
         #region Defines
         string id = "QR";
         string name = "QR Printer";
@@ -83,7 +87,7 @@ namespace Kochi_TVM.Printers
             }
             catch (Exception ex)
             {
-
+                log.Error("Error QRPrinter -> Init() : " + ex.ToString());
                 result = false;
                 qrPrinterInit = false;
             }
@@ -91,27 +95,6 @@ namespace Kochi_TVM.Printers
             return result;
         }
 
-        public bool CheckQrPrinterStatus()
-        {
-            return qrPrinterInit;
-        }
-
-        public bool Check()
-        {
-            var server = new LocalPrintServer();
-            PrintQueue queue = server.DefaultPrintQueue;
-
-            if (queue.HasPaperProblem || queue.IsPaperJammed)
-                errCode = Printer_ErrorCodes.PaperError;
-            else if (queue.IsNotAvailable || queue.IsOffline)
-                errCode = Printer_ErrorCodes.NotAvailable;
-            else if (queue.IsBusy)
-                errCode = Printer_ErrorCodes.DeviceBussyError;
-            else
-                errCode = Printer_ErrorCodes.Success;
-
-            return errCode == Printer_ErrorCodes.Success;
-        }
         private void SetErrCode(PrinterStatus errStatus)
         {
             errCode = Printer_ErrorCodes.Success;
@@ -130,6 +113,7 @@ namespace Kochi_TVM.Printers
                 errCode = Printer_ErrorCodes.UnknownError;
             else if (errStatus == PrinterStatus.Unknown)
                 errCode = Printer_ErrorCodes.UnknownError;
+            log.Debug("Debug SetErrCode -> Init() : " + errCode.ToString());
         }
         public bool GetStatus(ref PrinterStatus status)
         {
@@ -145,6 +129,7 @@ namespace Kochi_TVM.Printers
                 {
                     result = false;
                     SetErrCode(printerStatus);
+                    log.Error("Exception Message : " + error);
                     errDesc = "Exception Message : " + error;
                 }
             }
@@ -153,89 +138,57 @@ namespace Kochi_TVM.Printers
                 result = false;
                 errCode = Printer_ErrorCodes.UnknownError;
                 errDesc = "Exception Message : " + ex.Message;
-                Console.WriteLine(errDesc);
+                log.Error("Error QRPrinter -> Init() : " + errDesc);
             }
             status = printerStatus;
             return result;
         }
 
+        public Enums.PRINTER_STATE CheckQrPrinterStatus()
+        {
+            bool result = false;
+            PrinterStatus getStat = PrinterStatus.Unknown;
+            result = GetStatus(ref getStat);
+            if (getStat == PrinterStatus.NoError)
+            {
+                result = true;
+                log.Debug("CheckQrPrinterStatus : " + result);
+                return Enums.PRINTER_STATE.OK;
+            }
+            else
+            {
+                return Enums.PRINTER_STATE.ERROR;
+            }
+        }
+
         #endregion
 
         #region PrinterBase
-        public bool Print()
-        {
-            return true;
-        }
 
-        public List<string> PrintQR(string ticketGUID, string journeyType, string startStation, string endStation, int peopleCount, decimal totalPrice, string ticketID)
+        public bool PrintQR(string ticketGUID, string journeyType, string startStation, string endStation, int peopleCount, decimal totalPrice, string ticketID)
         {
-            //bool result = false;
-            List<string> result = new List<string>();
-
+            bool result = false;
             try
             {
                 string err = String.Empty;
 
-                Bitmap imageOF = new Bitmap(new QRCodeEncoder().Encode(ticketGUID), new Size(180, 180));
+                //Bitmap imageOF = new Bitmap(new QRCodeEncoder().Encode(ticketGUID), new Size(180, 180));
 
-                bool resultQr = qrPrinter.PrintG(imageOF, "KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);//TVM'deki halin TOM'a benzetilmesi
+                //bool resultQr = qrPrinter.PrintG(imageOF, "KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);//TVM'deki halin TOM'a benzetilmesi
                 //qrPrinter.PrintK("KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, "Please retain till the end of journey!", ref err);//TVM'deki halin TOM'a benzetilmesi
-                //bool resultQr = qrPrinter.Print("KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, "Please retain till the end of journey!", ref err);//TVM orjinali
-                result.Add(resultQr.ToString());                                                                                                                                                                                                                                                                   //return qrPrinter.Print("KOCHI METRO", t.TicketGUID, PayPointConst.QRCodeCreateDate.ToString(), t.explanation, t.From, t.To, (t.count == 0) ? "" : t.count.ToString(), $"Rs.{t.price}", $"{PayPointConst.qrDayCount}.{unitParams.stationId.ToString("D2")}.{ unitParams.unitId.ToString("D2")}.{t.alias}", "Please retain till the end of journey!", ref err);//TOM'daki şekli
-                result.Add(err);                                                                                                                                                                                                                                                                   //return qrPrinter.Print("KOCHI METRO", t.TicketGUID, PayPointConst.QRCodeCreateDate.ToString(), t.explanation, t.From, t.To, (t.count == 0) ? "" : t.count.ToString(), $"Rs.{t.price}", $"{PayPointConst.qrDayCount}.{unitParams.stationId.ToString("D2")}.{ unitParams.unitId.ToString("D2")}.{t.alias}", "Please retain till the end of journey!", ref err);//TOM'daki şekli
+                result = qrPrinter.Print("KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, "Please retain till the end of journey!", ref err);//TVM orjinali
+                return result;                                                                                                                                                                                                                                    //return qrPrinter.Print("KOCHI METRO", t.TicketGUID, PayPointConst.QRCodeCreateDate.ToString(), t.explanation, t.From, t.To, (t.count == 0) ? "" : t.count.ToString(), $"Rs.{t.price}", $"{PayPointConst.qrDayCount}.{unitParams.stationId.ToString("D2")}.{ unitParams.unitId.ToString("D2")}.{t.alias}", "Please retain till the end of journey!", ref err);//TOM'daki şekli
 
             }
             catch (Exception ex)
             {
-                //result= false;
-                result.Add(false.ToString());                                                                                                                                                                                                                                                                   //return qrPrinter.Print("KOCHI METRO", t.TicketGUID, PayPointConst.QRCodeCreateDate.ToString(), t.explanation, t.From, t.To, (t.count == 0) ? "" : t.count.ToString(), $"Rs.{t.price}", $"{PayPointConst.qrDayCount}.{unitParams.stationId.ToString("D2")}.{ unitParams.unitId.ToString("D2")}.{t.alias}", "Please retain till the end of journey!", ref err);//TOM'daki şekli
-                result.Add(ex.Message + Environment.NewLine + ex.StackTrace);
-
+                log.Error("Error QRPrinter -> PrintQR() : " + ex.ToString());
+                result = false;
             }
 
             return result;
         }
 
-        public bool GetStatus(ref PrinterStatus status, ref string error)
-        {
-            bool result = false;
-            error = string.Empty;
-
-            result = qrPrinter.GetStatus(ref status, ref error);
-
-            return result;
-
-        }
-
-        public bool GetVersion(ref string info, ref string error)
-        {
-            return qrPrinter.GetVersion(ref info, ref error);
-        }
-
-        public bool GetFullStatus(ref List<FullStatus> fullStatus)
-        {
-            bool result = false;
-            string err = string.Empty;
-            List<UserStatus> userStatus = new List<UserStatus>();
-            List<RecoverebleErrorStatus> recoverebleErrorStatus = new List<RecoverebleErrorStatus>();
-            List<UnrecoverebleErrorStatus> unrecoverebleErrorStatus = new List<UnrecoverebleErrorStatus>();
-            try
-            {
-                result = qrPrinter.GetFullStatus(ref err, ref fullStatus, ref userStatus, ref recoverebleErrorStatus, ref unrecoverebleErrorStatus);
-                if (!result)
-                {
-                    errCode = Printer_ErrorCodes.UnknownError;
-                    errDesc = "Exception Message : " + err;
-                }
-            }
-            catch (Exception ex)
-            {
-                errCode = Printer_ErrorCodes.UnknownError;
-                errDesc = "Exception Message : " + ex.Message;
-            }
-
-            return result;
-        }
         #endregion
     }
 

@@ -112,16 +112,16 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnTestQrPrinter_Click(object sender, RoutedEventArgs e)
         {
-            PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
-            if (QRPrinter == PRINTER_STATE.OK)
+            PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();
+            if (QRStatus == PRINTER_STATE.OK)
             {
-                var qr = TVMUtility.PrepareQRImage("QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test QR Printer Test");
-                CustomKPM150HPrinter.Instance.PrintTestQRTicket(qr);
+                QRPrinter.Instance.PrintQR("Test", "Test", "Test", "Test", 0,0, "Test");
+                //CustomKPM150HPrinter.Instance.PrintTestQRTicket(qr);
                 MessageBoxOperations.ShowMessage("QR Printer Test", "Test is completed.", MessageBoxButtonSet.OK);
             }
             else
             {
-                MessageBoxOperations.ShowMessage("ERROR", "Qr Printer Error." + QRPrinter, MessageBoxButtonSet.OK);
+                MessageBoxOperations.ShowMessage("ERROR", "Qr Printer Error." + QRStatus, MessageBoxButtonSet.OK);
             }
         }
     }

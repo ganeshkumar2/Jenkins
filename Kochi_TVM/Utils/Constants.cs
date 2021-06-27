@@ -5,12 +5,16 @@ namespace Kochi_TVM.Utils
 {
     public static class Constants
     {
+        public static string appVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static int CheckDeviceTime = 20000;
 
         public static bool IsVoiceEnabled = false;
         //BNR
         public static string BNRStatus = "";
         public static bool IsBNRAvalable = false;
+        public static int Cassette1Note = 0;
+        public static int Cassette2Note = 0;
+        public static int Cassette3Note = 0;
         public static int Cassette1NoteCont = 0;
         public static int Cassette2NoteCont = 0;
         public static int Cassette3NoteCont = 0;

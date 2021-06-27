@@ -62,6 +62,7 @@ namespace Kochi_TVM.Pages
         {            
             myGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\getting_money.gif");
             returnCashImageGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\giving_money.gif");
+            returnCashImageGif1.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\giving_money.gif");
             loadingImageGif.Source = new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Images\Spinner.gif");
 
             lblTotalAmountKey.Content = MultiLanguage.GetText("totalPrice");
@@ -70,6 +71,8 @@ namespace Kochi_TVM.Pages
             lblNotes.Content = MultiLanguage.GetText("acceptableNotes");
             btnBack.Content = MultiLanguage.GetText("back");
             btnFinish.Content = MultiLanguage.GetText("cancel");
+            lblSaleUnSucc.Content = MultiLanguage.GetText("ticketSaleUnsucces");
+            lblPleaseCollect.Content = MultiLanguage.GetText("collectCash");
 
             lblTotalAmountValue.Content = String.Format("{0}", Conversion.MoneyFormat(Ticket.totalPrice));
             lblPaidAmountValue.Content = String.Format("{0}", Conversion.MoneyFormat(0));
@@ -143,8 +146,8 @@ namespace Kochi_TVM.Pages
             {
 
             }
-            PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
-            if (QRPrinter != PRINTER_STATE.OK)
+            PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
+            if (QRStatus != PRINTER_STATE.OK)
             {
                 MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
                 return;
@@ -441,7 +444,7 @@ namespace Kochi_TVM.Pages
                             resetTimmer();
                             return;
                         }
-
+                        await Task.Delay(3000);
                         log.Info("PayByCashOrCoinPage - dispatcherTimer_Tick");
                         DisposePage();
                         await Task.Delay(300);
@@ -456,7 +459,7 @@ namespace Kochi_TVM.Pages
                             {
                                 waitGrid.Visibility = Visibility.Hidden;
                                 mainGrid.Visibility = Visibility.Hidden;
-                                returnAmountTxt.Text = "₹" + Convert.ToString(receivedNote);
+                                returnAmountTxt.Content = "₹" + Convert.ToString(receivedNote);
                                 cashGrid.Visibility = Visibility.Visible;
                                 DispenseSeqBill(snd_arr);
                             }
@@ -790,14 +793,14 @@ namespace Kochi_TVM.Pages
                 {
                     waitGrid.Visibility = Visibility.Hidden;
                     mainGrid.Visibility = Visibility.Hidden;
-                    returnAmountTxt.Text = "₹" + Convert.ToString(balance);
+                    returnAmountTxt.Content = "₹" + Convert.ToString(balance);
                     cashGrid.Visibility = Visibility.Visible;
                 }
                 else if (isReturn && !isCancel)
                 {
                     waitGrid.Visibility = Visibility.Hidden;
                     mainGrid.Visibility = Visibility.Hidden;
-                    returnAmountTxt.Text = "₹" + Convert.ToString(receivedNote);
+                    returnAmountTxt.Content = "₹" + Convert.ToString(receivedNote);
                     cashGrid.Visibility = Visibility.Visible;
                 }
             }), DispatcherPriority.Background);
@@ -829,7 +832,7 @@ namespace Kochi_TVM.Pages
                     
                     waitGrid.Visibility = Visibility.Hidden;
                     mainGrid.Visibility = Visibility.Hidden;
-                    returnAmountTxt.Text = "₹" + Convert.ToString(balance);
+                    returnAmountTxt.Content = "₹" + Convert.ToString(balance);
                     cashGrid.Visibility = Visibility.Visible;
 
                     await Task.Delay(6000);
@@ -839,13 +842,17 @@ namespace Kochi_TVM.Pages
                 {
                     waitGrid.Visibility = Visibility.Hidden;
                     mainGrid.Visibility = Visibility.Hidden;
-                    returnAmountTxt.Text = "₹" + Convert.ToString(receivedNote);
+                    returnAmountTxt.Content = "₹" + Convert.ToString(receivedNote);
                     cashGrid.Visibility = Visibility.Visible;
                     await Task.Delay(8000);
                     acceptAgain();
                 }
                 else if (isReturn && isCancel)
                 {
+                    waitGrid.Visibility = Visibility.Hidden;
+                    mainGrid.Visibility = Visibility.Hidden;
+                    cashGrid.Visibility = Visibility.Hidden;
+                    TranUnSuccGrid.Visibility = Visibility.Visible;
                     await Task.Delay(5000);
                     NavigationService.Navigate(new Pages.MainPage());
                 }
@@ -1296,7 +1303,11 @@ namespace Kochi_TVM.Pages
             returnCashImageGif.Position = new TimeSpan(0, 0, 1);
             returnCashImageGif.Play();
         }
-
+        private void returnCashImageGif1_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            returnCashImageGif1.Position = new TimeSpan(0, 0, 1);
+            returnCashImageGif1.Play();
+        }
         private void loadingImageGif_MediaEnded(object sender, RoutedEventArgs e)
         {
             loadingImageGif.Position = new TimeSpan(0, 0, 1);

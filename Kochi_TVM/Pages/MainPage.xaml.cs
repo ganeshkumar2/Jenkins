@@ -31,7 +31,7 @@ namespace Kochi_TVM.Pages
 
         private static Timer checkDeviceTimer;
         private static TimerCallback checkDeviceTimerDelegate;
-
+        DispatcherTimer timerOccConnMsg;
         private readonly BackgroundWorker bwAfcStatus = null;
         private readonly BackgroundWorker bwSendSc = null;
         private readonly BackgroundWorker bwSendMonitoring = null;
@@ -41,35 +41,46 @@ namespace Kochi_TVM.Pages
         public MainPage()
         {
             InitializeComponent();
-            bwAfcStatus = new BackgroundWorker
+            try
             {
-                WorkerReportsProgress = true,
-                WorkerSupportsCancellation = true
-            };
+                timerOccConnMsg = new DispatcherTimer();
+                bwAfcStatus = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true
+                };
 
-            bwSendSc = new BackgroundWorker
+                bwSendSc = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true
+                };
+
+                bwSendMonitoring = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true
+                };
+
+                bwAfcStatus.ProgressChanged += bwAfcStatus_ProgressChanged;
+                bwAfcStatus.DoWork += bwAfcStatus_DoWork;
+                bwAfcStatus.RunWorkerAsync();
+
+                bwSendSc.DoWork += bwSendSc_DoWork;
+                bwSendSc.RunWorkerAsync();
+
+                bwSendMonitoring.DoWork += bwSendMonitoring_DoWork;
+                bwSendMonitoring.RunWorkerAsync();
+
+                btnLang1.IsEnabled = false;
+                btnLang1.Opacity = 0.5;
+
+                Ticket.Clear();
+            }
+            catch (Exception ex)
             {
-                WorkerReportsProgress = true,
-                WorkerSupportsCancellation = true
-            };
-
-            bwSendMonitoring = new BackgroundWorker
-            {
-                WorkerReportsProgress = true,
-                WorkerSupportsCancellation = true
-            };
-
-            bwAfcStatus.ProgressChanged += bwAfcStatus_ProgressChanged;
-            bwAfcStatus.DoWork += bwAfcStatus_DoWork;
-
-            bwSendSc.DoWork += bwSendSc_DoWork;
-            bwSendMonitoring.DoWork += bwSendMonitoring_DoWork;
-
-            bwSendSc.RunWorkerAsync();
-            btnLang1.IsEnabled = false;
-            btnLang1.Opacity = 0.5;
-
-            Ticket.Clear();
+                log.Error("MainPage() " + ex.ToString());
+            }
         }
         
         void Message()
@@ -175,11 +186,14 @@ namespace Kochi_TVM.Pages
                     if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
                     {
                         lblNoConnection.Content = "";
+                        btnSelectTicket.IsEnabled = true;
+                        btnSelectTicket.Opacity = 1;
                         //PageControl.ShowPage(Pages.journeyPage);
                     }
                     else
                     {
                         lblNoConnection.Content = "No Connection!";
+                        btnSelectTicket.IsEnabled = false;
                         btnSelectTicket.Opacity = 0.2;
                     }
                 }
@@ -213,7 +227,7 @@ namespace Kochi_TVM.Pages
                     if (StockOperations.coin1 == 0)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                            string.Format("Rs 1.00 stock is empty! Please refill."));
+                            string.Format("Rs "+ Constants.HopperAddress1Coin +" stock is empty! Please refill."));
 
                         //Log.log.Write("InsNStationAlarm coin1 --> result : " + (result == true ? "true" : "false"));
                     }
@@ -221,7 +235,7 @@ namespace Kochi_TVM.Pages
                     if (StockOperations.coin2 == 0)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                            string.Format("Rs 2.00 stock is empty! Please refill."));
+                            string.Format("Rs " + Constants.HopperAddress2Coin + " stock is empty! Please refill."));
 
                         //Log.log.Write("InsNStationAlarm coin2 --> result : " + (result == true ? "true" : "false"));
                     }
@@ -229,7 +243,7 @@ namespace Kochi_TVM.Pages
                     if (StockOperations.coin5 == 0)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                            string.Format("Rs 5.00 stock is empty! Please refill."));
+                            string.Format("Rs " + Constants.HopperAddress3Coin + " stock is empty! Please refill."));
 
                         //Log.log.Write("InsNStationAlarm coin5 --> result : " + (result == true ? "true" : "false"));
                     }
@@ -237,7 +251,7 @@ namespace Kochi_TVM.Pages
                     if (StockOperations.banknote10 <= 5)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                        string.Format("Rs 10.00 currency (Cassette 3) stock is less! Please add notes."));
+                        string.Format("Rs "+ TVMUtility.BillTypeToBillValue(Constants.Cassette1Note) + " currency (Cassette 1) stock is less! Please add notes."));
 
                         //Log.log.Write("InsNStationAlarm banknote10 --> result : " + (result == true ? "true" : "false"));
                     }
@@ -245,7 +259,15 @@ namespace Kochi_TVM.Pages
                     if (StockOperations.banknote20 <= 5)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                        string.Format("Rs 20.00 currency (Cassette 2) stock is less! Please add notes."));
+                        string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette2Note) + " currency (Cassette 2) stock is less! Please add notes."));
+
+                        //Log.log.Write("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
+                    }
+
+                    if (StockOperations.escrow <= 5)
+                    {
+                        bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                        string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette3Note)+ " currency (Cassette 3) stock is less! Please add notes."));
 
                         //Log.log.Write("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
                     }
@@ -351,22 +373,22 @@ namespace Kochi_TVM.Pages
                     Parameters.TvmMonitoringData.tvmId = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId"));
 
                     result = Parameters.insTVMMonitoring();
-
+                    log.Debug("--SC Conn insTVMMonitoring--" + result);
                     if (result)
                     {
-                        Parameters.TVMStatic.AddOrUpdateParameter("ScConn", "1");
+                        Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
                         Parameters.lastSync = DateTime.Now;
                     }
                     else
                     {
-                        Parameters.TVMStatic.AddOrUpdateParameter("ScConn", "0");
+                        Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
                         log.Debug("--SC Conn Error--");
                     }
                 }
                 catch (Exception ex)
                 {
                     log.Error(ex.ToString());
-                    Parameters.TVMStatic.AddOrUpdateParameter("ScConn", "0");
+                    Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
                 }
 
                 Thread.Sleep(30000);
@@ -397,8 +419,8 @@ namespace Kochi_TVM.Pages
                         }
                     }
 
-                    PRINTER_STATE QRPrinter = CustomKPM150HPrinter.Instance.getStatusWithUsb();
-                    if (QRPrinter == PRINTER_STATE.OK)
+                    PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
+                    if (QRStatus == PRINTER_STATE.OK)
                     {
                         Check_QRprinter = true;
                         btnSelectTicket.IsEnabled = true;
@@ -406,6 +428,7 @@ namespace Kochi_TVM.Pages
                     }
                     else
                     {
+                        LedOperations.DeviceError("QR Printer");
                         Check_QRprinter = false;
                         btnSelectTicket.IsEnabled = false;
                         btnSelectTicket.Opacity = 0.2;
@@ -420,6 +443,7 @@ namespace Kochi_TVM.Pages
                     }
                     else
                     {
+                        LedOperations.DeviceError("RECEIPT Printer");
                         Check_Receiptprinter = false;
                         Constants.NoReceiptMode = true;
                     }
@@ -651,6 +675,10 @@ namespace Kochi_TVM.Pages
                 StockOperations.SelStockStatus();
 
                 LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+
+                timerOccConnMsg.Tick += timerOccConnMsg_Tick;
+                timerOccConnMsg.Interval = TimeSpan.FromSeconds(1);
+                timerOccConnMsg.Start();
             }
             catch (Exception ex)
             {

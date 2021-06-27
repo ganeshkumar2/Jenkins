@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Kochi_TVM.Pages.Maintenance"
+      xmlns:local="clr-namespace:Kochi_TVM.Pages.Maintenance" xmlns:uc="clr-namespace:Kochi_TVM.Pages.Custom"
       mc:Ignorable="d" 
        d:DesignHeight="768"
       d:DesignWidth="1024"
@@ -71,6 +71,28 @@
 
             <Label x:Name="lblCardInfo" Content="Dispenser Card Count : 102" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Style="{StaticResource styleLabel1}" Height="75" Margin="0.2,0.2,0.4,0" VerticalAlignment="Top"/>
             <Label x:Name="lblQrInfo" Content="QR Ticket Count : 102" Grid.Row="3" Grid.ColumnSpan="4" Style="{StaticResource styleLabel1}" Height="75" Margin="24,94.2,1.4,0" VerticalAlignment="Top"/>
+        </Grid>
+
+        <Grid x:Name="grdUserControl" Grid.Column="1" Grid.Row="3" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="Black" Opacity="0.6">
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Gray">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.8*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <uc:NumberPadUserControl Grid.Row="0" x:Name="numberpad" Height="400" Width="300"></uc:NumberPadUserControl>
+                <Button x:Name="btnOK" Grid.Row="1" Content="OK"  Style="{StaticResource styleOkBtn}" Width="150" VerticalAlignment="Stretch" Click="btnOK_Click" />
+
+            </Grid>
         </Grid>
 
         <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">

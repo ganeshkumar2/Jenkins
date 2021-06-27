@@ -309,6 +309,18 @@ namespace Kochi_TVM.Utils
             public int BillType;
             public int BillNumber;
         }
+        public enum BNRBillType
+        {
+            T5 = 0,
+            T10 = 1,
+            T20 = 2,
+            T50 = 3,
+            T100 = 4,
+            T200 = 5,
+            T500 = 6,
+            T2000 = 7
+        }
+
         public enum PRINTER_STATE
         {
             OK = 0X0,
@@ -348,11 +360,17 @@ namespace Kochi_TVM.Utils
             JammedError = 100410,
             UnknownError = 100499
         }
-
         public enum PaymentType
         {
             card = 1,
             cash = 2
+        }
+        public enum ApplicationVersion
+        {
+            Rail = 1,
+            Water,
+            Amritsar,
+            Indore
         }
     }
 }

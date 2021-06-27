@@ -143,9 +143,9 @@ namespace Kochi_TVM.Pages.Maintenance
 
                 #region bna
                 bnaTotalValue.Content = String.Format("{0}", Conversion.MoneyFormat((notevalincasset1 * noteincasset1) + (notevalincasset2 * noteincasset2)+ (notevalincasset3 * noteincasset3) + MoneyOperations.box));
-                bnaCassette1Value.Content = String.Format(noteincasset1.ToString() + " x " + notevalincasset1 + " = {0}", Conversion.MoneyFormat(notevalincasset1 * noteincasset1));
-                bnaCassette2Value.Content = String.Format(noteincasset2.ToString() + " x " + notevalincasset2 + " = {0}", Conversion.MoneyFormat(notevalincasset2 * noteincasset2));
-                bnaCassette3Value.Content = String.Format(noteincasset3.ToString() + " x " + notevalincasset3 + " = {0}", Conversion.MoneyFormat(notevalincasset3 * noteincasset3));
+                bnaCassette1Value.Content = String.Format(noteincasset1.ToString() + "x" + notevalincasset1 + " = {0}", Conversion.MoneyFormat(notevalincasset1 * noteincasset1));
+                bnaCassette2Value.Content = String.Format(noteincasset2.ToString() + "x" + notevalincasset2 + " = {0}", Conversion.MoneyFormat(notevalincasset2 * noteincasset2));
+                bnaCassette3Value.Content = String.Format(noteincasset3.ToString() + "x" + notevalincasset3 + " = {0}", Conversion.MoneyFormat(notevalincasset3 * noteincasset3));
                 bnaBoxValue.Content = String.Format("{0}", Conversion.MoneyFormat(MoneyOperations.box));
                 #endregion
 

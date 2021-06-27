@@ -3,6 +3,7 @@ using KioskFramework.PayPointSrv;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -13,6 +14,7 @@ namespace Kochi_TVM.Business
 {
     public static class Parameters
     {
+        private static ILog log = LogManager.GetLogger(typeof(Parameters).Name);
         public static PayPointClient sr = new PayPointClient();
         public static OccClient occ = new OccClient();
         //public static Db db = new Db();
@@ -52,6 +54,39 @@ namespace Kochi_TVM.Business
             public const string VibTest = "Vibration Test";
             public const string RFIDRdTest = "RFID Reader Test";
         };
+
+        public static bool CheckScConnection()
+        {
+            bool retVal = false;
+            string ip = Properties.Settings.Default.ip;
+            var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
+            KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
+
+            try
+            {
+                var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+                {
+                    Username = "NServiceUser",
+                    Password = "n3ER7!cEn3Er"
+                };
+
+                DataSet ds = service.ExecuteNonQuery(requestHeader, "SELECT GETDATE()");
+                log.Debug(ds.Tables.ToString());
+                if (ds.Tables != null)
+                {
+                    return retVal=true;
+                }
+                else
+                {
+                    return retVal;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+                return retVal;
+            }
+        }
 
         public static bool InsNStationAlarm(int stationId, int deviceId, int alarmType, string message)
         {
@@ -124,7 +159,7 @@ namespace Kochi_TVM.Business
             }
             catch (Exception ex)
             {
-                //log.Write(ex.ToString());
+                log.Error(ex.ToString());
             }
 
             return retVal;
@@ -475,8 +510,8 @@ namespace Kochi_TVM.Business
             }
             catch (Exception ex)
             {
-                result = false;
-                //Log.log.Write(LogTypes.Error.ToString() + ": " + ex.Message);
+                log.Error("FillOrUpdateLocalParams() : " + ex.Message);
+                result = false;                
             }
 
             //Parameters.lastSync = DateTime.Now;
@@ -488,13 +523,19 @@ namespace Kochi_TVM.Business
             bool result = false;
             try
             {
-                //AddOrUpdateParameter("SCConn", "0");
-                result = false;
+                result = Parameters.CheckScConnection();
+                log.Debug("FillOrUpdateScConnStatus() : " + result);
+                if (result)
+                    AddOrUpdateParameter("SCConn", "1");
+                else
+                    AddOrUpdateParameter("SCConn", "0");
             }
             catch (Exception ex)
             {
+                result = false;
+                AddOrUpdateParameter("SCConn", "0");
+                log.Error("FillOrUpdateScConnStatus() : " + ex.Message);
             }
-
             //Parameters.lastSync = DateTime.Now;
             return result;
         }

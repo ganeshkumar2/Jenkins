@@ -501,11 +501,20 @@ namespace Kochi_TVM.BNR
                         {
                             cassettes[i].cassetteStatus = CassetteStatus.NORMAL;
                             if (i == 0)
+                            {
+                                Constants.Cassette1Note = cassettes[0].billType;
                                 Constants.Cassette1NoteCont = cassettes[0].billNumber;
+                            }
                             if (i == 1)
+                            {
+                                Constants.Cassette1Note = cassettes[1].billType;
                                 Constants.Cassette2NoteCont = cassettes[1].billNumber;
-                            if (i == 3)
+                            }
+                            if (i == 2)
+                            {
+                                Constants.Cassette1Note = cassettes[2].billType;
                                 Constants.Cassette3NoteCont = cassettes[2].billNumber;
+                            }
                         }
                     }
                 }

@@ -1179,6 +1179,9 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
         <Function Name="sp_SelEmvPassTypes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="def">
           <Parameter Name="ticketTypeId" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_SelPeakTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="def">
+          <Parameter Name="institutionId" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_SelSalePointByMac" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="def">
           <Parameter Name="macAddress" Type="nvarchar" Mode="In" />
         </Function>
@@ -2863,10 +2866,13 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
             <Parameter Name="alarmMessage" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_SelStockStatus" ReturnType="Collection(TVMModel.sp_SelStockStatus_Result)" />
-          <FunctionImport Name="sp_EmvDiscount">
+          <FunctionImport Name="sp_EmvDiscount" ReturnType="Collection(TVMModel.sp_EmvDiscount1_Result)">
             <Parameter Name="fareMediaType" Mode="In" Type="Int32" />
             <Parameter Name="ticketType" Mode="In" Type="String" />
             <Parameter Name="amount" Mode="In" Type="Decimal" />
+            <Parameter Name="institutionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SelPeakTime" ReturnType="Collection(TVMModel.sp_SelPeakTime_Result)">
             <Parameter Name="institutionId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -3413,6 +3419,26 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
           <Property Type="Int64" Name="shiftId" Nullable="true" />
           <Property Type="Decimal" Name="upiAmount" Nullable="false" Precision="15" Scale="2" />
           <Property Type="Decimal" Name="upiPayment" Nullable="false" Precision="15" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="sp_EmvDiscount1_Result">
+          <Property Type="Decimal" Name="amount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DefaultAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Multiplier" Nullable="true" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EmvMultiplier" Nullable="true" Precision="15" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="sp_SelPeakTime_Result">
+          <Property Type="Int32" Name="recId" Nullable="false" />
+          <Property Type="Byte" Name="PeakTypeId" Nullable="false" />
+          <Property Type="String" Name="PeakName" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="SpecialDayDate" Nullable="true" />
+          <Property Type="Time" Name="StartHour" Nullable="true" />
+          <Property Type="Time" Name="EndHour" Nullable="true" />
+          <Property Type="Decimal" Name="QR_SJT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="QR_RJT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RPT" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="EMV" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Byte" Name="DayTypeId" Nullable="false" />
+          <Property Type="Int32" Name="version" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4713,7 +4739,34 @@ warning 6002: The table/view 'TVM.trx.TVMAlarms' does not have a primary key def
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_EmvDiscount" FunctionName="TVMModel.Store.sp_EmvDiscount" />
+          <FunctionImportMapping FunctionImportName="sp_EmvDiscount" FunctionName="TVMModel.Store.sp_EmvDiscount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TVMModel.sp_EmvDiscount1_Result">
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="DefaultAmount" ColumnName="DefaultAmount" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="EmvMultiplier" ColumnName="EmvMultiplier" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_SelPeakTime" FunctionName="TVMModel.Store.sp_SelPeakTime">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TVMModel.sp_SelPeakTime_Result">
+                <ScalarProperty Name="recId" ColumnName="recId" />
+                <ScalarProperty Name="PeakTypeId" ColumnName="PeakTypeId" />
+                <ScalarProperty Name="PeakName" ColumnName="PeakName" />
+                <ScalarProperty Name="SpecialDayDate" ColumnName="SpecialDayDate" />
+                <ScalarProperty Name="StartHour" ColumnName="StartHour" />
+                <ScalarProperty Name="EndHour" ColumnName="EndHour" />
+                <ScalarProperty Name="QR_SJT" ColumnName="QR_SJT" />
+                <ScalarProperty Name="QR_RJT" ColumnName="QR_RJT" />
+                <ScalarProperty Name="RPT" ColumnName="RPT" />
+                <ScalarProperty Name="EMV" ColumnName="EMV" />
+                <ScalarProperty Name="DayTypeId" ColumnName="DayTypeId" />
+                <ScalarProperty Name="version" ColumnName="version" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -162,10 +162,9 @@
                 <RowDefinition Height="0.10*"/>
             </Grid.RowDefinitions>
             <MediaElement x:Name="returnCashImageGif" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" MediaEnded="returnCashImageGif_MediaEnded" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="None"/>
-            
-            <TextBlock Grid.Row="1" Style="{StaticResource MainInstructionTextblock}"
-                   Text="PLEASE COLLECT CASH/COINS"/>
-            <TextBlock Grid.Row="2" Style="{StaticResource ShowBalanceTextblock}" x:Name="returnAmountTxt"/>
+
+            <Label x:Name="lblPleaseCollect" Grid.Row="1" Style="{StaticResource styleLabelHeader3}" Content="Please collect your cash!"/>
+            <Label Grid.Row="2" Style="{StaticResource styleLabelHeader1}" x:Name="returnAmountTxt"/>
             <Grid Grid.Row="3">
 
             </Grid>
@@ -184,5 +183,17 @@
             <TextBlock Name="txtBNRStatus" Grid.Row="2" FontSize="25" Style="{StaticResource MainInstructionTextblock}"
                    Text="BNR Status"/>
         </Grid>
+        <Grid x:Name="TranUnSuccGrid" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <MediaElement x:Name="returnCashImageGif1" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" MediaEnded="returnCashImageGif1_MediaEnded" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="None"/>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Name="lblSaleUnSucc" Content="TICKET SALE IS UNSUCCESSFUL" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}"/>
+               </StackPanel>
+        </Grid>
+
     </Grid>    
 </Page>

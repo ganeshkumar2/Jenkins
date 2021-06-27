@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Windows.Media;
+using System.Windows.Threading;
 using ZXing.QrCode;
 
 namespace Kochi_TVM.Utils
@@ -20,6 +21,8 @@ namespace Kochi_TVM.Utils
         {
             try
             {
+                mplayer = new MediaPlayer();
+                mplayer.Stop();
                 mplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\SoundFiles\MouseClick.wav", UriKind.Relative));
                 mplayer.Play();
             }
@@ -53,6 +56,7 @@ namespace Kochi_TVM.Utils
 
         private static void VoieEndedLoop(object sender, SpeakCompletedEventArgs e)
         {
+            mplayer = new MediaPlayer();
             mplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\" + langVal + @"\" + langVal + voiceFile + ".mp3", UriKind.Relative));
             mplayer.Play();
         }
@@ -68,6 +72,7 @@ namespace Kochi_TVM.Utils
                     SpeechFirstMessage(voice,firstmessage, lang);
                     return;
                 }
+                mplayer = new MediaPlayer();
                 mplayer.MediaEnded -= new EventHandler(MediaEndedLoop);
                 mplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\"+ lang + @"\" + lang + voice + ".mp3", UriKind.Relative));
                 mplayer.Play();
@@ -80,7 +85,7 @@ namespace Kochi_TVM.Utils
             }
             catch (Exception ex)
             {
-                log.Error("Error Utility -> PlayClick() : " + ex.ToString());
+                log.Error("Error Utility -> PlayVoice() : " + ex.ToString());
             }
         }
 
@@ -355,7 +360,6 @@ namespace Kochi_TVM.Utils
                 return null;
             }
         }
-
         public static void killExplorer()
         {
             try
@@ -375,6 +379,19 @@ namespace Kochi_TVM.Utils
             catch (Exception ex)
             {
                 log.Error("Error Utility -> killExplorer() : " + ex.ToString());
+            }
+        }
+        public static int BillTypeToBillValue(int billtype)
+        {
+            try
+            {
+                string bNRBillType = ((Enums.BNRBillType)billtype).ToString().Substring(1);
+                return Convert.ToInt16(bNRBillType);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error Utility -> BillTypeToBillValue() : " + ex.ToString());
+                return 0;
             }
         }
     }

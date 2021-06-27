@@ -81,29 +81,36 @@ namespace Kochi_TVM.Pages
         }
         async void PrintReceipt()
         {
-            //foreach (var selectedTickets in Ticket.listTickets)
-            //{
-            //    var qr = Utility.PrepareQRImage(selectedTickets.TicketGUID);
-            //    CustomTL60Printer.Instance.PrintQRTicket(selectedTickets, qr);
-            //}
-            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+            try
             {
-                CustomTL60Printer.Instance.TicketReceipt(RecAmt, ChaAmt);
-            }
-            await Task.Delay(1000);
-            switch (Ticket.journeyType)
-            {
-                case JourneyType.Group_Ticket:
-                case JourneyType.SJT:
-                case JourneyType.RJT:
+                //foreach (var selectedTickets in Ticket.listTickets)
+                //{
+                //    var qr = Utility.PrepareQRImage(selectedTickets.TicketGUID);
+                //    CustomTL60Printer.Instance.PrintQRTicket(selectedTickets, qr);
+                //}
+                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                {
+                    CustomTL60Printer.Instance.TicketReceipt(RecAmt, ChaAmt);
+                }
+                await Task.Delay(1000);
+                switch (Ticket.journeyType)
+                {
+                    case JourneyType.Group_Ticket:
+                    case JourneyType.SJT:
+                    case JourneyType.RJT:
                         PrintQR();
-                    break;
-                case JourneyType.Day_Pass:
-                case JourneyType.Weekend_Pass:
+                        break;
+                    case JourneyType.Day_Pass:
+                    case JourneyType.Weekend_Pass:
                         RPT();
-                    break;
-                default:
-                    break;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error PrintReciptPage -> PrintReceipt() : " + ex.ToString());
             }
             //NavigationService.Navigate(new Pages.MainPage());
         }
@@ -172,30 +179,44 @@ namespace Kochi_TVM.Pages
 
         private void btnPrintReciptSkip_Click(object sender, RoutedEventArgs e)
         {
-            idleTimer.Dispose();
-            btnFinish.IsEnabled = false;
-            btnPrintReciptSkip.IsEnabled = false;
-            switch (Ticket.journeyType)
+            try
             {
-                case JourneyType.Group_Ticket:
-                case JourneyType.SJT:
-                case JourneyType.RJT:
-                    PrintQR();
-                    break;
-                case JourneyType.Day_Pass:
-                case JourneyType.Weekend_Pass:
-                    RPT();
-                    break;
-                default:
-                    break;
+                idleTimer.Dispose();
+                btnFinish.IsEnabled = false;
+                btnPrintReciptSkip.IsEnabled = false;
+                switch (Ticket.journeyType)
+                {
+                    case JourneyType.Group_Ticket:
+                    case JourneyType.SJT:
+                    case JourneyType.RJT:
+                        PrintQR();
+                        break;
+                    case JourneyType.Day_Pass:
+                    case JourneyType.Weekend_Pass:
+                        RPT();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error PrintReciptPage -> btnPrintReciptSkip_Click() : " + ex.ToString());
             }
         }
 
         private void btnPrintRecipt_Click(object sender, RoutedEventArgs e)
         {
-            idleTimer.Dispose();
-            btnPrintRecipt.IsEnabled = false;
-            PrintReceipt();
+            try
+            {
+                idleTimer.Dispose();
+                btnPrintRecipt.IsEnabled = false;
+                PrintReceipt();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error PrintReciptPage -> btnPrintRecipt_Click() : " + ex.ToString());
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -210,12 +231,12 @@ namespace Kochi_TVM.Pages
                 btnPrintReciptSkip.Content = MultiLanguage.GetText("skipReceipt");
                 btnFinish.Content = MultiLanguage.GetText("qrPrinter");
 
-                bool result = false;
-
-                result = OCCOperations.InsertQRTransaction();
+                bool result = false;               
 
                 if (result)
                 {
+                    result = OCCOperations.InsertQRTransaction();
+
                     log.Debug("LogTypes.Info : InsertQRTransaction return true");
 
                     if (StockOperations.qrSlip > 0)
@@ -223,15 +244,17 @@ namespace Kochi_TVM.Pages
                         Ticket.sellTicketCount = 0;
                         foreach (var t in Ticket.listTickets)
                         {
-                            if (CustomKPM150HPrinter.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                            if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
                             {
-                                var qr = TVMUtility.PrepareQRImage(t.TicketGUID);
-                                CustomKPM150HPrinter.Instance.PrintQRTicket(qr,t.ticketDT.ToString("yyyy-MM-dd HH:mm"), t.explanation, t.From, t.To, Convert.ToString(t.peopleCount), Convert.ToString(t.price), String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
-                            }
-
-                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                            int stock = StockOperations.qrSlip;
-                            StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                               bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
+                                
+                                if(flag)
+                                {
+                                    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                                    int stock = StockOperations.qrSlip;
+                                    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                                }
+                            }                            
                         }
 
                         //Ticket.sellTicketCount = 0;
@@ -257,7 +280,7 @@ namespace Kochi_TVM.Pages
             }
             catch (Exception ex)
             {
-                log.Error("Page_Loaded " + ex.ToString());
+                log.Error("PrintReciptPage -> Page_Loaded() : " + ex.ToString());
             }
         }
 

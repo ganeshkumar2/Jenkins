@@ -84,8 +84,7 @@ namespace Kochi_TVM.Pages.Maintenance
             operationGrid.Children.Add(OCC);
 
             //StationComputer
-            var scCon = Parameters.TVMStatic.GetParameter("ScConn");
-            DeviceInfoControl StationComputer = new DeviceInfoControl("Station Computer", scCon == "1" ? "Connect" : "Disconnect");
+            DeviceInfoControl StationComputer = new DeviceInfoControl("Station Computer", Parameters.TVMDynamic.GetParameter("SCConn") == "1" ? "Connect" : "Disconnect");
             Grid.SetRow(StationComputer, 2);
             Grid.SetColumn(StationComputer, 2);
             operationGrid.Children.Add(StationComputer);

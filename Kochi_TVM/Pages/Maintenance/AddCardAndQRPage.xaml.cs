@@ -51,35 +51,19 @@ namespace Kochi_TVM.Pages.Maintenance
         {
 
         }
-
+        int selected = 0;
         bool card = false;
         private void lblTypeCount_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
-            if (i != 0)
-            {
-                lblTypeCount.Text = i.ToString();
-                card = true;
-            }
-            else
-            {
-                lblTypeCount.Text = "0";
-            }
+            grdUserControl.Visibility = Visibility.Visible;
+            selected = 1;
         }
 
         bool qr = false;
         private void lblQrCount_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            int i = NumberPadOperations.GetNumber();
-            if (i != 0)
-            {
-                lblQrCount.Text = i.ToString();
-                qr = true;
-            }
-            else
-            {
-                lblQrCount.Text = "0";
-            }
+            grdUserControl.Visibility = Visibility.Visible;
+            selected = 2;
         }
 
         private void UpdValOnScr()
@@ -107,7 +91,10 @@ namespace Kochi_TVM.Pages.Maintenance
             if (StockOperations.InsStock(trxId, (int)StockType.Rpt, (int)DeviceType.Dispenser, (int)UpdateType.Increase, Convert.ToInt32(lblTypeCount.Text)))
                 if (StockOperations.SelStockStatus())
                 {
-                    CustomTL60Printer.Instance.AddPrintQRRPT(Convert.ToInt32(lblTypeCount.Text), TransactionType.TT_RPT, StockOperations.rpt);
+                    if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    {
+                        CustomTL60Printer.Instance.AddPrintQRRPT(Convert.ToInt32(lblTypeCount.Text), TransactionType.TT_RPT, StockOperations.rpt);
+                    }
                     UpdValOnScr();
                 }
         }
@@ -130,7 +117,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 if (StockOperations.InsStock(trxId, (int)StockType.Rpt, (int)DeviceType.Dispenser, (int)UpdateType.Decrease, Convert.ToInt32(lblTypeCount.Text)))
                     if (StockOperations.SelStockStatus())
                     {
-                        CustomTL60Printer.Instance.DispatchQRRPT(Convert.ToInt32(lblTypeCount.Text), TransactionType.TT_RPT, StockOperations.rpt);
+                        if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                        {
+                            CustomTL60Printer.Instance.DispatchQRRPT(Convert.ToInt32(lblTypeCount.Text), TransactionType.TT_RPT, StockOperations.rpt);
+                        }
                         UpdValOnScr();
                     }
             }
@@ -160,7 +150,10 @@ namespace Kochi_TVM.Pages.Maintenance
             if (StockOperations.InsStock((Int64)trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Increase, Convert.ToInt32(lblQrCount.Text)))
                 if (StockOperations.SelStockStatus())
                 {
-                    CustomTL60Printer.Instance.AddPrintQRRPT(Convert.ToInt32(lblQrCount.Text), TransactionType.TT_QR, StockOperations.qrSlip);
+                    if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    {
+                        CustomTL60Printer.Instance.AddPrintQRRPT(Convert.ToInt32(lblQrCount.Text), TransactionType.TT_QR, StockOperations.qrSlip);
+                    }
                     MessageBoxOperations.ShowMessage("ADD QR", "Added Type : QR" + "\nAdded Count : " + lblQrCount.Text.ToString(), MessageBoxButtonSet.OK);
                     UpdValOnScr();
                 }
@@ -190,7 +183,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 if (StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Convert.ToInt32(lblQrCount.Text)))
                     if (StockOperations.SelStockStatus())
                     {
-                        CustomTL60Printer.Instance.DispatchQRRPT(Convert.ToInt32(lblQrCount.Text), TransactionType.TT_QR, StockOperations.qrSlip);
+                        if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                        {
+                            CustomTL60Printer.Instance.DispatchQRRPT(Convert.ToInt32(lblQrCount.Text), TransactionType.TT_QR, StockOperations.qrSlip);
+                        }
                         MessageBoxOperations.ShowMessage("LESS QR", "Less Type : QR" + "\nLess Count : " + lblQrCount.Text.ToString(), MessageBoxButtonSet.OK);
                         UpdValOnScr();
                     }
@@ -210,7 +206,10 @@ namespace Kochi_TVM.Pages.Maintenance
             if (StockOperations.InsStock(trxId, (int)StockType.Rpt, (int)DeviceType.Dispenser, (int)UpdateType.Empty, StockOperations.rpt))
                 if (StockOperations.SelStockStatus())
                 {
-                    CustomTL60Printer.Instance.EmptyQRRPT(stock, TransactionType.TT_RPT);
+                    if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    {
+                        CustomTL60Printer.Instance.EmptyQRRPT(stock, TransactionType.TT_RPT);
+                    }
                     UpdValOnScr();
                 }
         }
@@ -228,7 +227,10 @@ namespace Kochi_TVM.Pages.Maintenance
             if (StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Empty, StockOperations.qrSlip))
                 if (StockOperations.SelStockStatus())
                 {
-                    CustomTL60Printer.Instance.EmptyQRRPT(stock, TransactionType.TT_QR);
+                    if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                    {
+                        CustomTL60Printer.Instance.EmptyQRRPT(stock, TransactionType.TT_QR);
+                    }
                     UpdValOnScr();
                 }
         }
@@ -243,6 +245,32 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             TVMUtility.PlayClick();
             NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            if (selected == 1 && numberpad.txtTypeNumber.Text != "0")
+            {
+                lblTypeCount.Text = numberpad.txtTypeNumber.Text;
+            }
+            else if (selected == 1 && numberpad.txtTypeNumber.Text == "0")
+            {
+                lblTypeCount.Text = numberpad.txtTypeNumber.Text;
+            }
+
+            if (selected == 2 && numberpad.txtTypeNumber.Text != "0")
+            {
+                lblQrCount.Text = numberpad.txtTypeNumber.Text;
+            }
+            else if (selected == 2 && numberpad.txtTypeNumber.Text == "0")
+            {
+                lblQrCount.Text = numberpad.txtTypeNumber.Text;
+            }
+
+            selected = 0;
+            numberpad.number = 0;
+            numberpad.txtTypeNumber.Text = "0";
+            grdUserControl.Visibility = Visibility.Collapsed;
         }
     }
 }

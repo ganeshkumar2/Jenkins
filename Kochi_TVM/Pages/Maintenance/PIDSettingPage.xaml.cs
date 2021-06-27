@@ -36,7 +36,6 @@ namespace Kochi_TVM.Pages.Maintenance
             if (txtMessage.Text != "" && txtMessage.Text != null)
             {
                 PIDMessageLog.setMessage(txtMessage.Text);
-                txtMessage.Text = "";
                 MessageBoxOperations.ShowMessage("PID", "Default Message Saved.", MessageBoxButtonSet.OK);
             }
             else
