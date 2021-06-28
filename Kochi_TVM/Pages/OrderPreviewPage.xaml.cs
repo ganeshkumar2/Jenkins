@@ -68,27 +68,40 @@ namespace Kochi_TVM.Pages
                 if (QRStatus != PRINTER_STATE.OK)
                 {
                     Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
-                    if(messageBoxResult == Custom.MessageBoxResult.OK)
+                    if (messageBoxResult == Custom.MessageBoxResult.OK)
                         NavigationService.Navigate(new Pages.MainPage());
                     return;
                 }
-                Dispatcher.BeginInvoke(new Action(() =>
+                else
                 {
-                    try
+                    if (StockOperations.qrSlip > Ticket.ticketCount || StockOperations.qrSlip > Ticket.peopleCount)
                     {
-                        if (Ticket.PrepareTicket())
+                        Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            DefaultTicketInfo();
-                            ArrangTicketInfo();
-                            btnCash.Visibility = Visibility.Visible;
-                            Message();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
+                            try
+                            {
+                                if (Ticket.PrepareTicket())
+                                {
+                                    DefaultTicketInfo();
+                                    ArrangTicketInfo();
+                                    btnCash.Visibility = Visibility.Visible;
+                                    Message();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
 
+                            }
+                        }), DispatcherPriority.Background);
                     }
-                }), DispatcherPriority.Background);
+                    else
+                    {
+                        Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Paper Less.", MessageBoxButtonSet.OK);
+                        if (messageBoxResult == Custom.MessageBoxResult.OK)
+                            NavigationService.Navigate(new Pages.MainPage());
+                        return;
+                    }
+                }
                 BNRManager.Instance.PollingAction();
             }
             catch (Exception ex)

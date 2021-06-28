@@ -43,7 +43,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="txtTypeNumber" Text="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Style="{StaticResource styleCountText}" FontSize="55" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <TextBox x:Name="txtTypeNumber" Text="0" IsReadOnly="True" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Style="{StaticResource styleCountText}" FontSize="55" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             <Border x:Name="btn1" Grid.Row="2" Grid.Column="0" Style="{StaticResource NumberButton}" MouseLeftButtonDown="btn1_Click">
                 <Label Content="1"></Label>
             </Border>

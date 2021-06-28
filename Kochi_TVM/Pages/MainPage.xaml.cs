@@ -44,11 +44,11 @@ namespace Kochi_TVM.Pages
             try
             {
                 timerOccConnMsg = new DispatcherTimer();
-                bwAfcStatus = new BackgroundWorker
-                {
-                    WorkerReportsProgress = true,
-                    WorkerSupportsCancellation = true
-                };
+                //bwAfcStatus = new BackgroundWorker
+                //{
+                //    WorkerReportsProgress = true,
+                //    WorkerSupportsCancellation = true
+                //};
 
                 bwSendSc = new BackgroundWorker
                 {
@@ -62,9 +62,9 @@ namespace Kochi_TVM.Pages
                     WorkerSupportsCancellation = true
                 };
 
-                bwAfcStatus.ProgressChanged += bwAfcStatus_ProgressChanged;
-                bwAfcStatus.DoWork += bwAfcStatus_DoWork;
-                bwAfcStatus.RunWorkerAsync();
+                //bwAfcStatus.ProgressChanged += bwAfcStatus_ProgressChanged;
+                //bwAfcStatus.DoWork += bwAfcStatus_DoWork;
+                //bwAfcStatus.RunWorkerAsync();
 
                 bwSendSc.DoWork += bwSendSc_DoWork;
                 bwSendSc.RunWorkerAsync();
@@ -221,7 +221,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                             string.Format("QR PAPER STOCK IS LESS! Please ADD PAPER"));
 
-                        //Log.log.Write("InsNStationAlarm qr --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm qr --> result : " + (result == true ? "true" : "false"));
                     }
 
                     if (StockOperations.coin1 == 0)
@@ -229,7 +229,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                             string.Format("Rs "+ Constants.HopperAddress1Coin +" stock is empty! Please refill."));
 
-                        //Log.log.Write("InsNStationAlarm coin1 --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm coin1 --> result : " + (result == true ? "true" : "false"));
                     }
 
                     if (StockOperations.coin2 == 0)
@@ -237,7 +237,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                             string.Format("Rs " + Constants.HopperAddress2Coin + " stock is empty! Please refill."));
 
-                        //Log.log.Write("InsNStationAlarm coin2 --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm coin2 --> result : " + (result == true ? "true" : "false"));
                     }
 
                     if (StockOperations.coin5 == 0)
@@ -245,7 +245,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                             string.Format("Rs " + Constants.HopperAddress3Coin + " stock is empty! Please refill."));
 
-                        //Log.log.Write("InsNStationAlarm coin5 --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm coin5 --> result : " + (result == true ? "true" : "false"));
                     }
 
                     if (StockOperations.banknote10 <= 5)
@@ -253,7 +253,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                         string.Format("Rs "+ TVMUtility.BillTypeToBillValue(Constants.Cassette1Note) + " currency (Cassette 1) stock is less! Please add notes."));
 
-                        //Log.log.Write("InsNStationAlarm banknote10 --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm banknote10 --> result : " + (result == true ? "true" : "false"));
                     }
 
                     if (StockOperations.banknote20 <= 5)
@@ -261,7 +261,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                         string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette2Note) + " currency (Cassette 2) stock is less! Please add notes."));
 
-                        //Log.log.Write("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
                     }
 
                     if (StockOperations.escrow <= 5)
@@ -269,7 +269,7 @@ namespace Kochi_TVM.Pages
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                         string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette3Note)+ " currency (Cassette 3) stock is less! Please add notes."));
 
-                        //Log.log.Write("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
+                        log.Debug("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
                     }
 
                 }
@@ -407,31 +407,58 @@ namespace Kochi_TVM.Pages
                     if (!((startDate <= DateTime.Now) && (endDate >= DateTime.Now)))
                     {
                         NavigationService.Navigate(new Pages.StationClosedPage());
-                        btnSelectTicket.Opacity = 0.2;
+                    }
+                    int i = 0;
+                    if (Parameters.TVMDynamic.GetAfcConnStatus())
+                    {
+                        Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
+                        Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
+                        i = 1;
+                        lblNoConnection.Content = "";
+                        btnSelectTicket.IsEnabled = true;
+                        btnSelectTicket.Opacity = 1;
+                        if (i == 1)
+                        {
+                            i = 2;
+                            LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                        }
                     }
                     else
                     {
-                        if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
-                        {
-                            lblNoConnection.Content = "";
-                            //btnSelectTicket.Visibility = Visibility.Visible;
-                            btnSelectTicket.Opacity = 1;
-                        }
+                        Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "0");
+                        Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
+                        i = 0;
+                        LedOperations.Close();
+                        lblNoConnection.Content = "No Connection!";
+                        btnSelectTicket.IsEnabled = false;
+                        btnSelectTicket.Opacity = 0.2;
+                        return;
                     }
 
+                    int j = 0;
                     PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
                     if (QRStatus == PRINTER_STATE.OK)
                     {
+                        j = 1;
                         Check_QRprinter = true;
                         btnSelectTicket.IsEnabled = true;
+                        lblNoConnection.Content = "";
                         btnSelectTicket.Opacity = 1;
+                        if (j == 1)
+                        {
+                            j = 2;
+                            LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                        }
                     }
                     else
                     {
-                        LedOperations.DeviceError("QR Printer");
+                        j = 0;
+                        LedOperations.DeviceError("");
                         Check_QRprinter = false;
                         btnSelectTicket.IsEnabled = false;
+                        lblNoConnection.Content = "Device Error";
                         btnSelectTicket.Opacity = 0.2;
+                        return;
                     }
 
 

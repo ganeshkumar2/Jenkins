@@ -230,52 +230,6 @@ namespace Kochi_TVM.Pages
                 btnPrintRecipt.Content = MultiLanguage.GetText("printReceipt");
                 btnPrintReciptSkip.Content = MultiLanguage.GetText("skipReceipt");
                 btnFinish.Content = MultiLanguage.GetText("qrPrinter");
-
-                bool result = false;               
-
-                if (result)
-                {
-                    result = OCCOperations.InsertQRTransaction();
-
-                    log.Debug("LogTypes.Info : InsertQRTransaction return true");
-
-                    if (StockOperations.qrSlip > 0)
-                    {
-                        Ticket.sellTicketCount = 0;
-                        foreach (var t in Ticket.listTickets)
-                        {
-                            if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
-                            {
-                               bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
-                                
-                                if(flag)
-                                {
-                                    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                                    int stock = StockOperations.qrSlip;
-                                    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
-                                }
-                            }                            
-                        }
-
-                        //Ticket.sellTicketCount = 0;
-                        //foreach (var t in Ticket.listTickets)
-                        //{
-                        //    string err = string.Empty;
-                        //    List<string> resultQr = QRPrinter.Instance.PrintQR(t.TicketGUID, t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
-
-                        //    log.Debug("LogTypes.Info : PrintQr result....");
-                        //    result = Convert.ToBoolean(resultQr[0]);
-                        //    foreach (var s in resultQr)
-                        //    {
-                        //        log.Debug("LogTypes.Warning : " + s);
-                        //    }
-
-                        //    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                        //    int stock = StockOperations.qrSlip;
-                        //    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
-                        //}
-                    }
-                }
                 initialTimer();
             }
             catch (Exception ex)

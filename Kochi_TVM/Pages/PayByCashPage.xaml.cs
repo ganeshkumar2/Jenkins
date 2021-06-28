@@ -364,17 +364,6 @@ namespace Kochi_TVM.Pages
                             string str = extenedCassette[i];
                             string substr = str.Substring(str.Length - 1);
                             int bill = billTable.Where(x => x.BillType == Convert.ToInt16(substr)).Select(x => x.DigitBillType).FirstOrDefault();
-
-                            long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + bill)));
-                            if (StockOperations.InsStock(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Decrease, 1))
-                                if (MoneyOperations.InsMoney(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Cassette1, (int)UpdateType.Decrease, bill * 1))
-                                {
-                                    long trxId2 = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_BOX));
-                                    if (StockOperations.InsStock(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Box, (int)UpdateType.Increase, 1))
-                                        MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + bill), (int)DeviceType.Box, (int)UpdateType.Increase, bill * 1);
-
-                                }
-
                             noteunload.Add(bill);
                         }
 
@@ -386,6 +375,19 @@ namespace Kochi_TVM.Pages
 
                 if (unloadbillNumber > 0)
                 {
+                    foreach (var billVal in noteunload)
+                    {
+                        long trxId1 = Convert.ToInt64(TransactionInfo.SelTrxId((long)(TransactionType)Enum.Parse(typeof(TransactionType), "TT_REMOVE_BANKNOTE" + billVal)));
+                        if (StockOperations.InsStock(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + billVal), (int)(Constants.EscrowCassetteNo == 3 ? DeviceType.Cassette3 : (Constants.EscrowCassetteNo == 2 ? DeviceType.Cassette2 : (Constants.EscrowCassetteNo == 3 ? DeviceType.Cassette3 : 0))), (int)UpdateType.Decrease, 1))
+                            if (MoneyOperations.InsMoney(trxId1, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + billVal), (int)(Constants.EscrowCassetteNo == 3 ? DeviceType.Cassette3 : (Constants.EscrowCassetteNo == 2 ? DeviceType.Cassette2 : (Constants.EscrowCassetteNo == 3 ? DeviceType.Cassette3 : 0))), (int)UpdateType.Decrease, billVal * 1))
+                            {
+                                long trxId2 = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_ADD_BOX));
+                                if (StockOperations.InsStock(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + billVal), (int)DeviceType.Box, (int)UpdateType.Increase, 1))
+                                    MoneyOperations.InsMoney(trxId2, (int)(StockType)Enum.Parse(typeof(StockType), "Banknote" + billVal), (int)DeviceType.Box, (int)UpdateType.Increase, billVal * 1);
+
+                            }
+                    }
+
                     BNRManager.Instance.UnloadCassette(Constants.EscrowCassetteNo, unloadbillNumber);                  
                 }
                 else
@@ -422,6 +424,15 @@ namespace Kochi_TVM.Pages
                         if (Constants.BNRStatus == "IDLING")
                             btnFinish.Visibility = Visibility.Visible;
                     }
+
+                    if (count <= 2)
+                    {
+                        if (Constants.BNRStatus != "IDLING")
+                        {
+                            resetTimmer();
+                            return;
+                        }
+                    }
                 };
                 ts(count);
                 dt.Start();
@@ -438,12 +449,7 @@ namespace Kochi_TVM.Pages
                 this.Dispatcher.Invoke(async () =>
                 {
                     try
-                    {
-                        if (Constants.BNRStatus != "IDLING")
-                        {
-                            resetTimmer();
-                            return;
-                        }
+                    {                       
                         await Task.Delay(3000);
                         log.Info("PayByCashOrCoinPage - dispatcherTimer_Tick");
                         DisposePage();
@@ -563,11 +569,12 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(250);
                         if (((Convert.ToDecimal(receivedCash)) - TotalAmountToCollect) > 0)
                         {
+                            DisposePage();
                             checkTranTimer.Dispose();
                             BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                            await Task.Delay(4000);
                             mainGrid.Visibility = Visibility.Hidden;
-                            waitGrid.Visibility = Visibility.Visible;
-                            DisposePage();
+                            waitGrid.Visibility = Visibility.Visible;                            
                             log.Debug("Debug PayByCashOrCoinPage ->  receivedCashTxtBox.Text : " + receivedCash);
                             await Task.Delay(200);
                             BNRManager.Instance.GetCassetteStatus();
@@ -579,14 +586,89 @@ namespace Kochi_TVM.Pages
                             {
                                 Constants.Change = balance;
                                 isReturn = false;
-                                await Task.Delay(200);
-                                BNRManager.Instance.GetExtendedCassetteStatus();
-                                await Task.Delay(1000);                                
+                                try
+                                {
+                                    bool result = false;
+                                    result = OCCOperations.InsertQRTransaction();
+                                    if (result)
+                                    {
+                                        log.Debug("LogTypes.Info : InsertQRTransaction return true");
+                                        if (StockOperations.qrSlip > Ticket.listTickets.Count)
+                                        {
+                                            bool print_result = false;
+                                            Ticket.sellTicketCount = 0;
+                                            foreach (var t in Ticket.listTickets)
+                                            {
+                                                if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
+                                                {
+                                                    bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
+
+                                                    if (flag)
+                                                    {
+                                                        print_result = true;
+                                                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                                                        int stock = StockOperations.qrSlip;
+                                                        StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                                                    }
+                                                    else
+                                                    {
+                                                        print_result = false;
+                                                    }
+                                                }
+                                            }
+
+                                            if (print_result)
+                                            {
+                                                await Task.Delay(200);
+                                                BNRManager.Instance.GetExtendedCassetteStatus();
+                                                await Task.Delay(1000);
+                                            }
+                                            else
+                                            {
+                                                BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                await Task.Delay(4000);
+                                                mainGrid.Visibility = Visibility.Visible;
+                                                waitGrid.Visibility = Visibility.Hidden;
+                                                lblPaidAmountValue.Content = "";
+                                                lblChangeAmountValue.Content = "";
+                                                isCancel = true;
+                                                returncash(false, false);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                            await Task.Delay(4000);
+                                            mainGrid.Visibility = Visibility.Visible;
+                                            waitGrid.Visibility = Visibility.Hidden;
+                                            lblPaidAmountValue.Content = "";
+                                            lblChangeAmountValue.Content = "";
+                                            isCancel = true;
+                                            returncash(false, false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                        await Task.Delay(4000);
+                                        mainGrid.Visibility = Visibility.Visible;
+                                        waitGrid.Visibility = Visibility.Hidden;
+                                        lblPaidAmountValue.Content = "";
+                                        lblChangeAmountValue.Content = "";
+                                        isCancel = true;
+                                        returncash(false, false);
+                                    }
+                                }
+                                catch(Exception ex)
+                                {
+                                    log.Error("PayByCashOrCoinPage -> CashRecevied : " + ex.ToString());
+                                }                                                                
                                 return;
                             }
                             else
                             {
                                 BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                await Task.Delay(4000);
                                 mainGrid.Visibility = Visibility.Visible;
                                 waitGrid.Visibility = Visibility.Hidden;
                                 lblPaidAmountValue.Content = "";
@@ -596,19 +678,91 @@ namespace Kochi_TVM.Pages
                         }
                         else if (((Convert.ToDecimal(receivedCash)) - TotalAmountToCollect) == 0)
                         {
+                            DisposePage();
                             checkTranTimer.Dispose();
                             BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
-
+                            await Task.Delay(4000);
                             mainGrid.Visibility = Visibility.Hidden;
                             waitGrid.Visibility = Visibility.Visible;
-
                             balance = 0;
-                            DisposePage();
-                            await Task.Delay(200);
-                            BNRManager.Instance.GetExtendedCassetteStatus();
-                            await Task.Delay(1000);                            
-                            return;
+                            try
+                            {
+                                bool result = false;
+                                result = OCCOperations.InsertQRTransaction();
+                                if (result)
+                                {
+                                    log.Debug("LogTypes.Info : InsertQRTransaction return true");
+                                    if (StockOperations.qrSlip > Ticket.listTickets.Count)
+                                    {
+                                        bool print_result = false;
+                                        Ticket.sellTicketCount = 0;
+                                        foreach (var t in Ticket.listTickets)
+                                        {
+                                            if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
+                                            {
+                                                bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
 
+                                                if (flag)
+                                                {
+                                                    print_result = true;
+                                                    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                                                    int stock = StockOperations.qrSlip;
+                                                    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                                                }
+                                                else
+                                                {
+                                                    print_result = false;
+                                                }
+                                            }
+                                        }
+
+                                        if (print_result)
+                                        {
+                                            await Task.Delay(200);
+                                            BNRManager.Instance.GetExtendedCassetteStatus();
+                                            await Task.Delay(1000);
+                                        }
+                                        else
+                                        {
+                                            BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                            await Task.Delay(4000);
+                                            mainGrid.Visibility = Visibility.Visible;
+                                            waitGrid.Visibility = Visibility.Hidden;
+                                            lblPaidAmountValue.Content = "";
+                                            lblChangeAmountValue.Content = "";
+                                            isCancel = true;
+                                            returncash(false, false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                        await Task.Delay(4000);
+                                        mainGrid.Visibility = Visibility.Visible;
+                                        waitGrid.Visibility = Visibility.Hidden;
+                                        lblPaidAmountValue.Content = "";
+                                        lblChangeAmountValue.Content = "";
+                                        isCancel = true;
+                                        returncash(false, false);
+                                    }
+                                }
+                                else
+                                {
+                                    BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                    await Task.Delay(4000);
+                                    mainGrid.Visibility = Visibility.Visible;
+                                    waitGrid.Visibility = Visibility.Hidden;
+                                    lblPaidAmountValue.Content = "";
+                                    lblChangeAmountValue.Content = "";
+                                    isCancel = true;
+                                    returncash(false, false);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                log.Error("PayByCashOrCoinPage -> CashRecevied : " + ex.ToString());
+                            }
+                            return;
                         }
 
                         if (noteCount == maxNoteAccept)
@@ -849,6 +1003,7 @@ namespace Kochi_TVM.Pages
                 }
                 else if (isReturn && isCancel)
                 {
+                    LedOperations.GreenText("PAYMENT UNSUCCESSFUL");
                     waitGrid.Visibility = Visibility.Hidden;
                     mainGrid.Visibility = Visibility.Hidden;
                     cashGrid.Visibility = Visibility.Hidden;
@@ -871,7 +1026,8 @@ namespace Kochi_TVM.Pages
                 }
                 else
                 {
-                    acceptAgain();
+                    if (lowbalance)
+                        acceptAgain();
                 }
 
                 if (note)

@@ -774,7 +774,7 @@ namespace Kochi_TVM.Printers
             AddText("Rs." + Constants.HopperAddress1Coin + " Coin Count", coin1.ToString(), 120);
             AddText("Rs." + Constants.HopperAddress2Coin+" Coin Count", coin2.ToString(), 120);
             AddText("Rs." + Constants.HopperAddress3Coin+" Coin Count", coin5.ToString(), 120);
-            AddText("Hoppers Amount", ("Rs." + (coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin)).ToString(), 120);
+            AddText("Hoppers Amount", ("Rs." + ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin))).ToString(), 120);
 
             AddText("Rs." + billval1 +" Banknote Count", banknote10.ToString(), 130);
             AddText("Rs." + billval2 +" Banknote Count", banknote20.ToString(), 130);

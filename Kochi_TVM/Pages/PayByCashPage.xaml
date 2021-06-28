@@ -191,8 +191,17 @@
             <MediaElement x:Name="returnCashImageGif1" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" MediaEnded="returnCashImageGif1_MediaEnded" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="None"/>
 
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Name="lblSaleUnSucc" Content="TICKET SALE IS UNSUCCESSFUL" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}"/>
-               </StackPanel>
+                <Label Name="lblSaleUnSucc" Content="TICKET SALE IS UNSUCCESSFUL" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,-80,0,100"/>
+                <Label Name="lblCollect"   HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,0,0,20"/>
+                <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label   HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,0,0,20"/>
+                    <Label  HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,0,0,20"/>
+                </StackPanel>
+                <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label  HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,0,0,20"/>
+                    <Label  HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}" Margin="0,0,0,20"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
 
     </Grid>    

@@ -45,6 +45,10 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             try
             {
+                lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
+                lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+                btnFinish.Content = "Cancel";
+
                 using (var context = new TVM_Entities())
                 {
                     DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));

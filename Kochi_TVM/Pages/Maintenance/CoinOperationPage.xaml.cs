@@ -64,9 +64,9 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCoin2.Text = Convert.ToString(0);
                 lblTypeCoin5.Text = Convert.ToString(0);
 
-                lblCoin1Info.Content = "₹" + Constants.HopperAddress1Coin + " Coin Count : " + StockOperations.coin1.ToString();
-                lblCoin2Info.Content = "₹" + Constants.HopperAddress2Coin + " Coin Count : " + StockOperations.coin2.ToString();
-                lblCoin5Info.Content = "₹" + Constants.HopperAddress3Coin + " Coin Count : " + StockOperations.coin5.ToString();
+                lblCoin1Info.Content = "₹ " + Constants.HopperAddress1Coin + " Coin Count : " + StockOperations.coin1.ToString();
+                lblCoin2Info.Content = "₹ " + Constants.HopperAddress2Coin + " Coin Count : " + StockOperations.coin2.ToString();
+                lblCoin5Info.Content = "₹ " + Constants.HopperAddress3Coin + " Coin Count : " + StockOperations.coin5.ToString();
             }), DispatcherPriority.Background);
         }
 
@@ -163,7 +163,7 @@ namespace Kochi_TVM.Pages.Maintenance
                             }
                             UpdValOnScr();
                             MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress1Coin + "\n" + "Added Count : " + count +
-                                                    "\nAdded Amount : " + "₹" + StockOperations.coin1 * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                                                    "\nAdded Amount : " + "₹ " + count * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
                         }
 
                 coin1 = false;
@@ -216,7 +216,7 @@ namespace Kochi_TVM.Pages.Maintenance
                                 }
                                 UpdValOnScr();
                                 MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress1Coin + "\nRemoved Count : " + count +
-                                                "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                                                "\nRemoved Amount : " + "₹ " + count * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
                             }
                 }
                 coin1 = false;
@@ -256,8 +256,8 @@ namespace Kochi_TVM.Pages.Maintenance
                                 UpdValOnScr();
                             }
 
-                    MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹"+Constants.HopperAddress1Coin +"\nRemoved Count : " + stock +
-                                                "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                    MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹ "+Constants.HopperAddress1Coin +"\nRemoved Count : " + stock +
+                                                "\nRemoved Amount : " + "₹ " + stock * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
                 }
             }
             catch (Exception ex)
@@ -299,7 +299,7 @@ namespace Kochi_TVM.Pages.Maintenance
                             }
                             UpdValOnScr();
                             MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress2Coin + "\n" + "Added Count : " + count +
-                                                    "\nAdded Amount : " + "₹" + StockOperations.coin2 * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                                                    "\nAdded Amount : " + "₹ " + count * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
                         }
 
                 coin2 = false;
@@ -350,7 +350,7 @@ namespace Kochi_TVM.Pages.Maintenance
                                 }
                                 UpdValOnScr();
                                 MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress2Coin + "\nRemoved Count : " + count +
-                                                "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                                                "\nRemoved Amount : " + "₹ " + count * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
                             }
                 }
                 coin2 = false;
@@ -391,7 +391,7 @@ namespace Kochi_TVM.Pages.Maintenance
                             }
 
                     MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹ "+Constants.HopperAddress2Coin+"\nRemoved Count : " + stock +
-                                                "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                                                "\nRemoved Amount : " + "₹ " + stock * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
                 }
             }
             catch (Exception ex)
@@ -432,7 +432,7 @@ namespace Kochi_TVM.Pages.Maintenance
                             }
                             UpdValOnScr();
                             MessageBoxOperations.ShowMessage("ADD COIN", "Added Type : ₹ " + Constants.HopperAddress3Coin + "\n" + "Added Count : " + count +
-                                                    "\nAdded Amount : " + "₹" + StockOperations.coin5 * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                                                    "\nAdded Amount : " + "₹ " + count * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
                         }
 
                 coin3 = false;
@@ -483,7 +483,7 @@ namespace Kochi_TVM.Pages.Maintenance
                                 }
                                 UpdValOnScr();
                                 MessageBoxOperations.ShowMessage("LESS COIN", "Removed Type : ₹ " + Constants.HopperAddress3Coin + "\nRemoved Count : " + count +
-                                                "\nRemoved Amount : " + "₹" + count * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                                                "\nRemoved Amount : " + "₹ " + count * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
                             }
                 }
                 coin3 = false;
@@ -524,7 +524,7 @@ namespace Kochi_TVM.Pages.Maintenance
                             }
 
                     MessageBoxOperations.ShowMessage("EMPTY COIN", "Removed Type :₹" + Constants.HopperAddress3Coin + "\nRemoved Count : " + stock +
-                                                "\nRemoved Amount : " + "₹" + stock * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                                                "\nRemoved Amount : " + "₹ " + stock * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
                 }
             }
             catch (Exception ex)

@@ -42,7 +42,7 @@ namespace Kochi_TVM.Pages
         {
             try
             {
-                LedOperations.Close();
+                LedOperations.StationClose();
 
                 checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
                 checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);

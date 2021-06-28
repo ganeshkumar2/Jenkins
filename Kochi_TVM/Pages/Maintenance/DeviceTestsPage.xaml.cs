@@ -115,7 +115,7 @@ namespace Kochi_TVM.Pages.Maintenance
             PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();
             if (QRStatus == PRINTER_STATE.OK)
             {
-                QRPrinter.Instance.PrintQR("Test", "Test", "Test", "Test", 0,0, "Test");
+                QRPrinter.Instance.PrintQR("Test", "Test","Test", "Test", "Test", 0,0, "Test");
                 //CustomKPM150HPrinter.Instance.PrintTestQRTicket(qr);
                 MessageBoxOperations.ShowMessage("QR Printer Test", "Test is completed.", MessageBoxButtonSet.OK);
             }

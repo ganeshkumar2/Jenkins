@@ -13,7 +13,7 @@ namespace Kochi_TVM.PID
         static string closed = "Out Of Service";
         static string emergency = "Emergency";
         static string stationClosed = "Station Closed";
-        static string maintance = "Maintance";
+        static string maintance = "Maintenance";
 
         static bool SendGreenText(string text)
         {

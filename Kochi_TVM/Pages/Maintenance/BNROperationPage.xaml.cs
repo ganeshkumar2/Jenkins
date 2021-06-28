@@ -397,6 +397,11 @@ namespace Kochi_TVM.Pages.Maintenance
             {
                 try
                 {
+                    lblAddCount1.Content = "";
+                    lblAddCount2.Content = "";
+                    lblAddCount3.Content = "";
+                    lblBNRAmount.Content = "";
+
                     TVMUtility.PlayClick();
                     grdMoneyAccept.Visibility = Visibility.Hidden;
                     BNRManager.Instance.StopProcess();
