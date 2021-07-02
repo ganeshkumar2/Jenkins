@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using static Kochi_TVM.Utils.Enums;
 
 namespace Kochi_TVM.Utils
 {
     public static class Constants
     {
+        public static string BaseAddress = AppDomain.CurrentDomain.BaseDirectory;
         public static string appVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static int CheckDeviceTime = 20000;
 

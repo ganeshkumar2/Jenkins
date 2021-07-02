@@ -1,6 +1,8 @@
-﻿using log4net;
+﻿using Kochi_TVM.Business;
+using log4net;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Speech.Synthesis;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -142,7 +144,7 @@ namespace Kochi_TVM.Utils
             // for accepting all
             //1111 1111 -> FF
 
-            if (Constants.NoChangeMode)
+            if ((Constants.Cassette1NoteCont <= Constants.NoChangeAvailable && Constants.Cassette2NoteCont <= Constants.NoChangeAvailable && Constants.Cassette3NoteCont <= Constants.NoChangeAvailable) || (StockOperations.coin1 <= Constants.NoChangeAvailable && StockOperations.coin2 <= Constants.NoChangeAvailable && StockOperations.coin1 <= Constants.NoChangeAvailable))
             {
                 if (Amount <= 5)
                     ivar = ivar & 0x01;
@@ -156,179 +158,23 @@ namespace Kochi_TVM.Utils
                     ivar = ivar & 0x1F;
                 if (Amount > 100 && Amount <= 200)
                     ivar = ivar & 0x3F;
-                if (Amount > 200 && Amount <= 500)
+                if (Amount > 200 && Amount <= 1500)
                     ivar = ivar & 0x7F;
-                if (Amount > 500 && Amount < 2000)
-                    ivar = ivar & 0xFF;
-                if (Amount > 2000)
+                if (Amount > 1500)
                     ivar = ivar & 0xFF;
             }
             else
             {
                 if (Amount < 50)
                     ivar = ivar & 0x0F;
-                if (Amount > 50 && Amount <= 100)
+                if (Amount >= 50 && Amount <= 100)
                     ivar = ivar & 0x1E;
                 else if (Amount > 100 && Amount <= 200)
                     ivar = ivar & 0x3E;
-                else if (Amount > 200 && Amount <= 1000)
+                else if (Amount > 200 && Amount <= 1500)
                     ivar = ivar & 0x7E;
-                else if (Amount > 1000 && Amount < 1500)
+                else if (Amount > 1500)
                     ivar = ivar & 0xFE;
-                else if (Amount >= 1500)
-                    ivar = ivar & 0xFF;
-
-                //    bool Note5 = false, Note10 = false, Note20 = false, Note50 = false, Note100 = false, Note200 = false, Note500 = false, Note2000 = false;
-
-                //    foreach (string val in Constants.BankNotesAllowed)
-                //    {
-                //        switch (Convert.ToInt32(val))
-                //        {
-                //            case 5:
-                //                Note5 = true;
-                //                break;
-                //            case 10:
-                //                Note10 = true;
-                //                break;
-                //            case 20:
-                //                Note20 = true;
-                //                break;
-                //            case 50:
-                //                Note50 = true;
-                //                break;
-                //            case 100:
-                //                Note100 = true;
-                //                break;
-                //            case 200:
-                //                Note200 = true;
-                //                break;
-                //            case 500:
-                //                Note500 = true;
-                //                break;
-                //            case 2000:
-                //                Note2000 = true;
-                //                break;
-                //            default:
-                //                break;
-                //        }
-                //    }
-
-                //    if (Amount <= 100)
-                //    {
-                //        if (Note5 && Note10 && Note20 && Note50 && Note100)
-                //        {
-                //            ivar = ivar & 0x1F;
-                //        }
-                //        else if (Note10 && Note20 && Note50 && Note100)
-                //        {
-                //            ivar = ivar & 0x1E;
-                //        }
-                //        else if (Note20 && Note50 && Note100)
-                //        {
-                //            ivar = ivar & 0x1C;
-                //        }
-                //        else if (Note50 && Note100)
-                //        {
-                //            ivar = ivar & 0x18;
-                //        }
-                //        else if (Note100)
-                //        {
-                //            ivar = ivar & 0x10;
-                //        }
-                //    }
-                //    else if (Amount > 100 && Amount <= 200)
-                //    {
-                //        if (Note5 && Note10 && Note20 && Note50 && Note100 && Note200)
-                //        {
-                //            ivar = ivar & 0x3F;
-                //        }
-                //        else if (Note10 && Note20 && Note50 && Note100 && Note200)
-                //        {
-                //            ivar = ivar & 0x3E;
-                //        }
-                //        else if (Note20 && Note50 && Note100 && Note200)
-                //        {
-                //            ivar = ivar & 0x3C;
-                //        }
-                //        else if (Note50 && Note100 && Note200)
-                //        {
-                //            ivar = ivar & 0x38;
-                //        }
-                //        else if (Note100 && Note200)
-                //        {
-                //            ivar = ivar & 0x30;
-                //        }
-                //        else if (Note200)
-                //        {
-                //            ivar = ivar & 0x20;
-                //        }
-                //    }
-                //    else if (Amount > 200 && Amount < 1500)
-                //    {
-                //        if (Note5 && Note10 && Note20 && Note50 && Note100 && Note200 && Note500)
-                //        {
-                //            ivar = ivar & 0x7F;
-                //        }
-                //        else if (Note10 && Note20 && Note50 && Note100 && Note200 && Note500)
-                //        {
-                //            ivar = ivar & 0x7E;
-                //        }
-                //        else if (Note20 && Note50 && Note100 && Note200 && Note500)
-                //        {
-                //            ivar = ivar & 0x7C;
-                //        }
-                //        else if (Note50 && Note100 && Note200 && Note500)
-                //        {
-                //            ivar = ivar & 0x78;
-                //        }
-                //        else if (Note100 && Note200 && Note500)
-                //        {
-                //            ivar = ivar & 0x70;
-                //        }
-                //        else if (Note200 && Note500)
-                //        {
-                //            ivar = ivar & 0x60;
-                //        }
-                //        else if (Note500)
-                //        {
-                //            ivar = ivar & 0x40;
-                //        }
-                //    }
-                //    else if (Amount >= 1500)
-                //    {
-                //        if (Note5 && Note10 && Note20 && Note50 && Note100 && Note200 && Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xFF;
-                //        }
-                //        else if (Note10 && Note20 && Note50 && Note100 && Note200 && Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xFE;
-                //        }
-                //        else if (Note20 && Note50 && Note100 && Note200 && Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xFC;
-                //        }
-                //        else if (Note50 && Note100 && Note200 && Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xF8;
-                //        }
-                //        else if (Note100 && Note200 && Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xF0;
-                //        }
-                //        else if (Note200 && Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xE0;
-                //        }
-                //        else if (Note500 && Note2000)
-                //        {
-                //            ivar = ivar & 0xC0;
-                //        }
-                //        else if (Note2000)
-                //        {
-                //            ivar = ivar & 0x80;
-                //        }
-                //    }
             }
 
             /// for not accepting 10/-
@@ -391,6 +237,109 @@ namespace Kochi_TVM.Utils
             catch (Exception ex)
             {
                 log.Error("Error Utility -> BillTypeToBillValue() : " + ex.ToString());
+                return 0;
+            }
+        }
+        public static string TransactionSequenceFile = "tsid.sis";
+        public static byte[] GetByteValue(long intValue, int byteCount)
+        {
+            byte[] intBytes = BitConverter.GetBytes(intValue);
+            Array.Reverse(intBytes);
+            byte[] ret = new byte[byteCount];
+            for (int i = byteCount - 1, j = 0; i >= 0; i--, j++)
+                ret[j] = intBytes[intBytes.Length - i - 1];
+            return ret;
+        }
+        private static int LoadTransactionFileSequenceID()
+        {
+            int tsid = 0;
+            try
+            {
+                FileStream tw1 = null;
+                if (!File.Exists(Constants.BaseAddress + TransactionSequenceFile))
+                {
+                    tw1 = new FileStream(Constants.BaseAddress + TransactionSequenceFile, FileMode.Create, FileAccess.Write);
+
+                    tw1.Write(GetByteValue(0, 4), 0, 4);
+                    tw1.Flush();
+                }
+                else
+                {
+                    tw1 = new FileStream(Constants.BaseAddress + TransactionSequenceFile, FileMode.Open, FileAccess.Read);
+                    tsid = (int)GetValue(new byte[] { (byte)tw1.ReadByte(), (byte)tw1.ReadByte(), (byte)tw1.ReadByte(), (byte)tw1.ReadByte() }, 0, 4);
+                }
+                tw1.Close();
+            }
+            catch (Exception)
+            {
+            }
+            return tsid;
+        }
+        public static ulong GetValue(byte[] bytes, int start, int len)
+        {
+            ulong val = 0;
+            for (int i = 0; i < len; i++)
+            {
+                val = (val * 256) + bytes[start + i];
+            }
+            return val;
+        }
+
+        public static string GenerateTransactionNumber()
+        {
+            try
+            {
+                return IncreamentTransactionFileSequenceID(LoadTransactionFileSequenceID()).ToString();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return "";
+        }
+        public static int IncreamentTransactionFileSequenceID(int tranid)
+        {
+            try
+            {
+                try
+                {
+                    tranid = (tranid + 1) % 100000000;
+
+                    FileStream tw1 = new FileStream(Constants.BaseAddress + TransactionSequenceFile, FileMode.OpenOrCreate, FileAccess.Write);
+                    tw1.Write(GetByteValue(tranid, 4), 0, 4);
+                    tw1.Flush();
+                    tw1.Close();
+                }
+                catch (FileNotFoundException)
+                {
+                }
+                return tranid;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+        public static int ResetTransactionFileSequenceID(int tranid)
+        {
+            try
+            {
+                try
+                {
+                    tranid = (tranid) % 100000000;
+
+                    FileStream tw1 = new FileStream(Constants.BaseAddress + TransactionSequenceFile, FileMode.OpenOrCreate, FileAccess.Write);
+                    tw1.Write(GetByteValue(tranid, 4), 0, 4);
+                    tw1.Flush();
+                    tw1.Close();
+                }
+                catch (FileNotFoundException)
+                {
+                }
+                return tranid;
+            }
+            catch (Exception)
+            {
                 return 0;
             }
         }

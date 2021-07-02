@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Utils;
 using System;
@@ -296,6 +297,7 @@ namespace Kochi_TVM.Pages
                     //if (count <= StockOperations.qrSlip)
                     //{
                         Ticket.peopleCount = count;
+                    ElectronicJournal.NumberOfTicket(count.ToString());
                     NavigationService.Navigate(new Pages.OrderPreviewPage());
                     //    PageControl.ShowPage(Pages.paymentTypePage);
                     //}
@@ -318,6 +320,7 @@ namespace Kochi_TVM.Pages
                     //    if (count <= StockOperations.qrSlip)
                     //    {
                     Ticket.ticketCount = count;
+                ElectronicJournal.NumberOfTicket(count.ToString());
                 NavigationService.Navigate(new Pages.OrderPreviewPage());
                 //PageControl.ShowPage(Pages.paymentTypePage);
                 //    }
@@ -345,6 +348,7 @@ namespace Kochi_TVM.Pages
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderCancelled();
             NavigationService.Navigate(new Pages.MainPage());
         }
     }

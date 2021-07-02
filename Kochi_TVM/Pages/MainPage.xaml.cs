@@ -1,5 +1,6 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.Models;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
@@ -31,7 +32,7 @@ namespace Kochi_TVM.Pages
 
         private static Timer checkDeviceTimer;
         private static TimerCallback checkDeviceTimerDelegate;
-        DispatcherTimer timerOccConnMsg;
+        //DispatcherTimer timerOccConnMsg;
         private readonly BackgroundWorker bwAfcStatus = null;
         private readonly BackgroundWorker bwSendSc = null;
         private readonly BackgroundWorker bwSendMonitoring = null;
@@ -43,7 +44,7 @@ namespace Kochi_TVM.Pages
             InitializeComponent();
             try
             {
-                timerOccConnMsg = new DispatcherTimer();
+                //timerOccConnMsg = new DispatcherTimer();
                 //bwAfcStatus = new BackgroundWorker
                 //{
                 //    WorkerReportsProgress = true,
@@ -111,10 +112,10 @@ namespace Kochi_TVM.Pages
 
                     if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
                     {
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            lblNoConnection.Content = "";
-                        });
+                        //this.Dispatcher.Invoke(() =>
+                        //{
+                        //    lblNoConnection.Content = "";
+                        //});
                     }
                 }
             }
@@ -279,7 +280,7 @@ namespace Kochi_TVM.Pages
                 }
 
                 Parameters.lastSync = DateTime.Now;
-                Thread.Sleep(60000 * 5);
+                Thread.Sleep(60000 * 1);
             }
 
         }
@@ -394,6 +395,9 @@ namespace Kochi_TVM.Pages
                 Thread.Sleep(30000);
             }
         }
+
+        int i = 0;
+        int j = 0;
         private void CheckDeviceAction(object o)
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -408,18 +412,19 @@ namespace Kochi_TVM.Pages
                     {
                         NavigationService.Navigate(new Pages.StationClosedPage());
                     }
-                    int i = 0;
+                   
                     if (Parameters.TVMDynamic.GetAfcConnStatus())
                     {
                         Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
                         Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
-                        i = 1;
-                        lblNoConnection.Content = "";
+                        if (i == 0)
+                            i = 1;                        
                         btnSelectTicket.IsEnabled = true;
                         btnSelectTicket.Opacity = 1;
                         if (i == 1)
                         {
                             i = 2;
+                            lblNoConnection.Content = "";
                             LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                         }
                     }
@@ -434,19 +439,20 @@ namespace Kochi_TVM.Pages
                         btnSelectTicket.Opacity = 0.2;
                         return;
                     }
-
-                    int j = 0;
+                   
                     PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
                     if (QRStatus == PRINTER_STATE.OK)
                     {
-                        j = 1;
+                        if (j == 0)
+                            j = 1;
+
                         Check_QRprinter = true;
-                        btnSelectTicket.IsEnabled = true;
-                        lblNoConnection.Content = "";
+                        btnSelectTicket.IsEnabled = true;                        
                         btnSelectTicket.Opacity = 1;
                         if (j == 1)
                         {
                             j = 2;
+                            lblNoConnection.Content = "";
                             LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                         }
                     }
@@ -470,7 +476,6 @@ namespace Kochi_TVM.Pages
                     }
                     else
                     {
-                        LedOperations.DeviceError("RECEIPT Printer");
                         Check_Receiptprinter = false;
                         Constants.NoReceiptMode = true;
                     }
@@ -501,7 +506,7 @@ namespace Kochi_TVM.Pages
             TVMUtility.PlayClick();
             try
             {
-                if (StockOperations.coin1 <= Constants.NoChangeAvailable || StockOperations.coin2 <= Constants.NoChangeAvailable || StockOperations.coin1 <= Constants.NoChangeAvailable)
+                if ((Constants.Cassette1NoteCont <= Constants.NoChangeAvailable && Constants.Cassette2NoteCont <= Constants.NoChangeAvailable && Constants.Cassette3NoteCont <= Constants.NoChangeAvailable) || (StockOperations.coin1 <= Constants.NoChangeAvailable && StockOperations.coin2 <= Constants.NoChangeAvailable && StockOperations.coin1 <= Constants.NoChangeAvailable))
                 {
                     bool isVisible = true;
                     if (StockOperations.coin5 <= Constants.NoChangeAvailable)
@@ -547,6 +552,7 @@ namespace Kochi_TVM.Pages
                 }
                 else
                 {
+                    ElectronicJournal.OrderStarted();
                     NavigationService.Navigate(new Pages.JourneyTypePage());
                 }
             }
@@ -683,6 +689,20 @@ namespace Kochi_TVM.Pages
             btnNoChangeYes.Content = MultiLanguage.GetText("Ok");
             btnReceiptCancel.Content = MultiLanguage.GetText("Exit");
             btnReceiptOK.Content = MultiLanguage.GetText("Ok");
+
+            if (Ticket.language == Languages.English)
+            {
+                btnSelectCard.FontSize = 38;
+            }
+            else if (Ticket.language == Languages.Malayalam)
+            {
+                btnSelectCard.FontSize = 25;
+            }
+            else if (Ticket.language == Languages.Hint)
+            {
+                btnSelectCard.FontSize = 25;
+            }
+
             //btnLang1.Content = "മലയാളം";
             //btnLang2.Content = "हिन्दी";
         }
@@ -703,9 +723,9 @@ namespace Kochi_TVM.Pages
 
                 LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
 
-                timerOccConnMsg.Tick += timerOccConnMsg_Tick;
-                timerOccConnMsg.Interval = TimeSpan.FromSeconds(1);
-                timerOccConnMsg.Start();
+                //timerOccConnMsg.Tick += timerOccConnMsg_Tick;
+                //timerOccConnMsg.Interval = TimeSpan.FromSeconds(1);
+                //timerOccConnMsg.Start();
             }
             catch (Exception ex)
             {
@@ -715,6 +735,7 @@ namespace Kochi_TVM.Pages
         private void btnReceiptOK_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderStarted();
             NavigationService.Navigate(new Pages.JourneyTypePage());
         }
 
@@ -752,6 +773,7 @@ namespace Kochi_TVM.Pages
             }
             else
             {
+                ElectronicJournal.OrderStarted();
                 NavigationService.Navigate(new Pages.JourneyTypePage());
             }
         }

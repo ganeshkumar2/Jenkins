@@ -372,5 +372,34 @@ namespace Kochi_TVM.Utils
             Amritsar,
             Indore
         }
+        public enum ElectronicJournalRecordType
+        {
+            OrderStarted,
+            ItemSelected,
+            Destinationselected,
+            NumberOfTickets,
+            AmountPayable,
+            MediaSelected,
+            MediaPaid,
+            QRPrintStarted,
+            QRPrintOver,
+            ReceiptPrintStarted,
+            ReceiptPrintOver,
+            OrderFinalised,
+            TopupStarted,
+            TopupAmount,
+            TopupCompleted,
+            BalanceCheckStarted,
+            BalanceCheckCompleted,
+            BalanceSyncStarted,
+            BalanceSyncCompleted,
+            NoteInserted,
+            CoinInserted,
+            NoteReturned,
+            CoinReturned,
+            BalanceNoteReturned,
+            BalanceCoinReturned,
+            OrderCancelled
+        }
     }
 }

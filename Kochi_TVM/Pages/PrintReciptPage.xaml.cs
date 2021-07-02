@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.PID;
 using Kochi_TVM.Printers;
@@ -90,7 +91,9 @@ namespace Kochi_TVM.Pages
                 //}
                 if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
                 {
+                    ElectronicJournal.ReceiptPrintStarted();
                     CustomTL60Printer.Instance.TicketReceipt(RecAmt, ChaAmt);
+                    ElectronicJournal.ReceiptPrintOver();
                 }
                 await Task.Delay(1000);
                 switch (Ticket.journeyType)
@@ -223,6 +226,28 @@ namespace Kochi_TVM.Pages
         {
             try
             {
+                if (Ticket.language == Languages.English)
+                {
+                    lblChaAmt.FontSize = 24;
+                    lblSaleSucc.FontSize = 24;
+                    lblCollect.FontSize = 24;
+                    lblNoOfTick.FontSize = 24;
+                    btnPrintRecipt.FontSize = 24;
+                    btnPrintReciptSkip.FontSize = 24;
+                    btnFinish.FontSize = 24;
+                }
+                else
+                {
+                    lblChaAmt.FontSize = 14;
+                    lblSaleSucc.FontSize = 14;
+                    lblCollect.FontSize = 14;
+                    lblNoOfTick.FontSize = 14;
+                    btnPrintRecipt.FontSize = 14;
+                    btnPrintReciptSkip.FontSize = 14;
+                    btnFinish.FontSize = 14;
+                }
+                lblTicketCount.FontSize = 24;
+                lblChange.FontSize = 24;
                 lblChaAmt.Content = MultiLanguage.GetText("ChangeAmt");
                 lblSaleSucc.Content = MultiLanguage.GetText("ticketSaleSucces");
                 lblCollect.Content = MultiLanguage.GetText("collectTicketChange");
@@ -240,7 +265,7 @@ namespace Kochi_TVM.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            
+            ElectronicJournal.OrderFinalised();
         }
         private void initialTimer()
         {

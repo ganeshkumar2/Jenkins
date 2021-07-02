@@ -1,5 +1,6 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.PID;
@@ -58,6 +59,7 @@ namespace Kochi_TVM.Pages
                 var result = Parameters.TVMDynamic.GetAfcConnStatus();
                 if (!result)
                 {
+                    ElectronicJournal.OrderCancelled();
                     Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("Communication", "LAN communication Error.", MessageBoxButtonSet.OK);
                     if (messageBoxResult == Custom.MessageBoxResult.OK)
                         NavigationService.Navigate(new Pages.MainPage());
@@ -67,6 +69,7 @@ namespace Kochi_TVM.Pages
                 PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
                 if (QRStatus != PRINTER_STATE.OK)
                 {
+                    ElectronicJournal.OrderCancelled();
                     Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
                     if (messageBoxResult == Custom.MessageBoxResult.OK)
                         NavigationService.Navigate(new Pages.MainPage());
@@ -96,6 +99,7 @@ namespace Kochi_TVM.Pages
                     }
                     else
                     {
+                        ElectronicJournal.OrderCancelled();
                         Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Paper Less.", MessageBoxButtonSet.OK);
                         if (messageBoxResult == Custom.MessageBoxResult.OK)
                             NavigationService.Navigate(new Pages.MainPage());
@@ -239,6 +243,7 @@ namespace Kochi_TVM.Pages
                 Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Error.", MessageBoxButtonSet.OK);
                 if (messageBoxResult == Custom.MessageBoxResult.OK)
                 {
+                    ElectronicJournal.OrderCancelled();
                     NavigationService.Navigate(new Pages.MainPage());
                     return;
                 }
@@ -247,6 +252,7 @@ namespace Kochi_TVM.Pages
             {
                 if (StockOperations.qrSlip >= Ticket.ticketCount)
                 {
+                    ElectronicJournal.MediaSelected("CASH");
                     NavigationService.Navigate(new Pages.PayByCashPage());
                 }
                 else
@@ -254,6 +260,7 @@ namespace Kochi_TVM.Pages
                     Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("QR Printer", "QR Printer Low Paper.", MessageBoxButtonSet.OK);
                     if (messageBoxResult == Custom.MessageBoxResult.OK)
                     {
+                        ElectronicJournal.OrderCancelled();
                         NavigationService.Navigate(new Pages.MainPage());
                         return;
                     }
@@ -265,6 +272,7 @@ namespace Kochi_TVM.Pages
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderCancelled();
             NavigationService.Navigate(new Pages.MainPage());
         }
 

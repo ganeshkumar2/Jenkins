@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
@@ -150,7 +151,7 @@ namespace Kochi_TVM.Pages
                         Name = "btnStation" + i,
                         Tag = Stations.stationList[i].id,
                         Style = style,
-                        FontSize = 20,
+                        FontSize = Ticket.language == Languages.English ? 20 : 13,
                         VerticalAlignment = VerticalAlignment.Stretch,
                         HorizontalAlignment = HorizontalAlignment.Stretch
                     };
@@ -178,7 +179,8 @@ namespace Kochi_TVM.Pages
             //if (Stations.stationList.ContainsKey(selectedStationId))
             //    SetStation(selectedStationId);
             Ticket.endStation = Stations.GetStation(selectedStationId);
-            Ticket.startStation = Stations.currentStation;           
+            Ticket.startStation = Stations.currentStation;
+            ElectronicJournal.DestinationSelected(Ticket.endStation.name.ToString());
             NavigationService.Navigate(new Pages.TicketCountPage());
             //PageControl.ShowPage(Pages.journeyPage);
         }
@@ -234,6 +236,7 @@ namespace Kochi_TVM.Pages
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderCancelled();
             NavigationService.Navigate(new Pages.MainPage());
         }
 

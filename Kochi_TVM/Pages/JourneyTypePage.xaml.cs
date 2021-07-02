@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
@@ -58,6 +59,7 @@ namespace Kochi_TVM.Pages
         {
             TVMUtility.PlayClick();
             Ticket.journeyType = JourneyType.SJT;
+            ElectronicJournal.ItemSelected("SJT");
             GoToNextStep();
             NavigationService.Navigate(new Pages.StationPage());
         }
@@ -66,6 +68,7 @@ namespace Kochi_TVM.Pages
         {
             TVMUtility.PlayClick();
             Ticket.journeyType = JourneyType.RJT;
+            ElectronicJournal.ItemSelected("RJT");
             GoToNextStep();
             NavigationService.Navigate(new Pages.StationPage());
         }
@@ -73,12 +76,14 @@ namespace Kochi_TVM.Pages
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderCancelled();
             NavigationService.Navigate(new Pages.MainPage());
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderCancelled();
             NavigationService.Navigate(new Pages.MainPage());
         }
         private void GoToNextStep()
@@ -102,6 +107,7 @@ namespace Kochi_TVM.Pages
         {
             TVMUtility.PlayClick();
             Ticket.journeyType = JourneyType.Group_Ticket;
+            ElectronicJournal.ItemSelected("GROUP");
             GoToNextStep();
             NavigationService.Navigate(new Pages.StationPage());
         }

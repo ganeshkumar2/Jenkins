@@ -1,4 +1,5 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
@@ -28,8 +29,58 @@ namespace Kochi_TVM.Pages
     {
         private static ILog log = LogManager.GetLogger(typeof(StationMapPage).Name);
         public StationMapPage()
-        {
+        {            
             InitializeComponent();
+            if (Ticket.language == Languages.English)
+            {
+                btnStation1.FontSize = 14;
+                btnStation2.FontSize = 14;
+                btnStation3.FontSize = 14;
+                btnStation4.FontSize = 14;
+                btnStation5.FontSize = 14;
+                btnStation6.FontSize = 14;
+                btnStation7.FontSize = 14;
+                btnStation8.FontSize = 14;
+                btnStation9.FontSize = 14;
+                btnStation10.FontSize = 14;
+                btnStation11.FontSize = 14;
+                btnStation12.FontSize = 14;
+                btnStation13.FontSize = 14;
+                btnStation14.FontSize = 14;
+                btnStation15.FontSize = 14;
+                btnStation16.FontSize = 14;
+                btnStation17.FontSize = 14;
+                btnStation18.FontSize = 14;
+                btnStation19.FontSize = 14;
+                btnStation20.FontSize = 14;
+                btnStation21.FontSize = 14;
+                btnStation22.FontSize = 14;
+            }
+            else
+            {
+                btnStation1.FontSize = 12;
+                btnStation2.FontSize = 12;
+                btnStation3.FontSize = 12;
+                btnStation4.FontSize = 12;
+                btnStation5.FontSize = 12;
+                btnStation6.FontSize = 12;
+                btnStation7.FontSize = 12;
+                btnStation8.FontSize = 12;
+                btnStation9.FontSize = 12;
+                btnStation10.FontSize = 12;
+                btnStation11.FontSize = 12;
+                btnStation12.FontSize = 12;
+                btnStation13.FontSize = 12;
+                btnStation14.FontSize = 12;
+                btnStation15.FontSize = 12;
+                btnStation16.FontSize = 12;
+                btnStation17.FontSize = 12;
+                btnStation18.FontSize = 12;
+                btnStation19.FontSize = 12;
+                btnStation20.FontSize = 12;
+                btnStation21.FontSize = 12;
+                btnStation22.FontSize = 12;
+            }
         }
         void Message()
         {
@@ -61,6 +112,7 @@ namespace Kochi_TVM.Pages
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            ElectronicJournal.OrderCancelled();
             NavigationService.Navigate(new Pages.MainPage());
         }
 
@@ -86,7 +138,7 @@ namespace Kochi_TVM.Pages
                 SetHeaderText();
                 SetDefaultStatus();
                 ListStationsInGrid();
-
+                                
                 btnStation1.Content = MultiLanguage.GetText(Stations.GetStation(1).description);
                 btnStation2.Content = MultiLanguage.GetText(Stations.GetStation(2).description);
                 btnStation3.Content = MultiLanguage.GetText(Stations.GetStation(3).description);
@@ -109,6 +161,7 @@ namespace Kochi_TVM.Pages
                 btnStation20.Content = MultiLanguage.GetText(Stations.GetStation(20).description);
                 btnStation21.Content = MultiLanguage.GetText(Stations.GetStation(21).description);
                 btnStation22.Content = MultiLanguage.GetText(Stations.GetStation(22).description);
+
             }
             catch (Exception ex)
             {
@@ -175,7 +228,8 @@ namespace Kochi_TVM.Pages
             if (selectedStationId != Stations.currentStation.id)
             {
                 Ticket.endStation = Stations.GetStation(selectedStationId);
-                Ticket.startStation = Stations.currentStation;                
+                Ticket.startStation = Stations.currentStation;
+                ElectronicJournal.DestinationSelected(Ticket.endStation.name.ToString());
                 NavigationService.Navigate(new Pages.TicketCountPage());
                 //PageControl.ShowPage(Pages.journeyPage);
             }

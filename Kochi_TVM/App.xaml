@@ -72,7 +72,15 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <Style x:Key="styleLabelPrint" TargetType="{x:Type Label}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Label x:Name="lblHeader1" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{StaticResource MainFontColor}" FontSize="{TemplateBinding Property=FontSize}" FontFamily="Titillium" FontWeight="Bold"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="styleLabel1" TargetType="{x:Type Label}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -86,7 +94,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Label}">
-                        <Label x:Name="lblHeader1" Content="{TemplateBinding Content}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{StaticResource MainFontColor}" FontSize="24" FontFamily="Titillium" />
+                        <Label x:Name="lblHeader1" Content="{TemplateBinding Content}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{StaticResource MainFontColor}" FontSize="{TemplateBinding Property=FontSize}" FontFamily="Titillium" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -97,7 +105,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Label}">
-                        <Label x:Name="lblHeader1" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{StaticResource MainFontColor}" FontSize="22" FontFamily="Titillium" FontWeight="Bold"/>
+                        <Label x:Name="lblHeader1" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{StaticResource MainFontColor}" FontSize="{TemplateBinding Property=FontSize}" FontFamily="Titillium" FontWeight="Bold"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -436,7 +444,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Label x:Name="labelBtn" Grid.Column="0" Grid.Row="0"  Content="{TemplateBinding Content}" Foreground="{StaticResource MainFontColor}" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="Titillium"/>
+                            <Label x:Name="labelBtn" Grid.Column="0" Grid.Row="0"  Content="{TemplateBinding Content}" Foreground="{StaticResource MainFontColor}" FontSize="{TemplateBinding Property=FontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="Titillium"/>
                             <Image x:Name="imageBtn" Grid.Column="0" Grid.Row="0" />
                         </Grid>
 

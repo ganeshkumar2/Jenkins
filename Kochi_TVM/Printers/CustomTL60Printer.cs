@@ -1043,6 +1043,40 @@ namespace Kochi_TVM.Printers
             Document1.PrinterSettings.PrinterName = PrinterName;
             Document1.Print();
         }
+
+        public void UnableToPrintQR(string ticketActivateDts,string explanation,string From,string to,string count)
+        {
+            lineY = 2;
+            printList = new List<PrintObject>();
+            string headerAddress = "Images\\kmrl_icon.png";
+            Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
+            System.Drawing.Bitmap logo = new System.Drawing.Bitmap(img);
+            logo = new System.Drawing.Bitmap(logo, new System.Drawing.Size(120, 49));
+            AddImage(logo);
+
+            AddText("KOCHI METRO");
+            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
+            AddText("Station", Stations.currentStation.name, 80);
+            AddText("User", Parameters.userId, 80);
+
+            AddText("--Unable To Print QR--");
+            AddText("------------------------------------------------------------------------------");
+            AddText("Date ", ticketActivateDts, 100);
+            AddText("Type ", explanation, 100);
+            AddText("From ", From, 100);
+            AddText("To ", to, 100);
+            AddText("Count ", count, 100);
+            AddText("------------------------------------------------------------------------------");
+            AddText("");
+
+            PrintDocument Document1 = new PrintDocument();
+            PrintController printController = new StandardPrintController();
+            Document1.PrintController = printController;
+            Document1.PrintPage += new PrintPageEventHandler(printDocumentPrintPage);
+            Document1.PrinterSettings.PrinterName = PrinterName;
+            Document1.Print();
+        }
         void printDocumentPrintPage(object sender, PrintPageEventArgs e)
         {
             printGraphics = e.Graphics;

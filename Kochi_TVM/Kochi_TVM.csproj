@@ -61,10 +61,6 @@
       <HintPath>ExternalLibrary\Dispenser\pcsc-sharp.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
-    <Reference Include="QRCPrintLib, Version=1.3.1.17, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ExternalLibrary\QRPrinter\QRCPrintLib.dll</HintPath>
-    </Reference>
     <Reference Include="RPTIssueLib">
       <HintPath>ExternalLibrary\Dispenser\RPTIssueLib.dll</HintPath>
     </Reference>
@@ -112,6 +108,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AFCDataTransactionService\" />
     <WCFMetadataStorage Include="Connected Services\NStationService\" />
     <WCFMetadataStorage Include="Connected Services\OccSrv\" />
     <WCFMetadataStorage Include="Connected Services\PayPointSrv\" />
@@ -133,6 +130,12 @@
     <Compile Include="Business\TransactionInfo.cs" />
     <Compile Include="Business\Validation.cs" />
     <Compile Include="CCTalk\CCTalkManager.cs" />
+    <Compile Include="Connected Services\AFCDataTransactionService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Logs\ElectronicJournal.cs" />
     <Compile Include="Models\Account.cs">
       <DependentUpon>DatabaseFirstModel.tt</DependentUpon>
     </Compile>
@@ -470,6 +473,7 @@
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Conversion.cs" />
     <Compile Include="Utils\Enums.cs" />
+    <Compile Include="Utils\QRCPrint.cs" />
     <Compile Include="Utils\Utility.cs" />
     <Compile Include="Connected Services\NStationService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -486,10 +490,86 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.CommandsResponseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.DailyReconciliationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.GetDbVersionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.GetOccUrlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.InsEmvSettlementResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.InsLogResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.InsUpdShiftSummaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.LogRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.ReturnPackage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.RfIdInitReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.SelectTopupInstructionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.SmartCardInitBeginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.SmartCardInitDoneResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.StatusReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.TokenInitBeginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.TokenInitDoneResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.TransferTransactionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.TransferTransactionV2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.UpdateTopupInstructionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.UpdCommandStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Kochi_TVM.AFCDataTransactionService.UpdUserCommandResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AFCDataTransactionService\Service.disco" />
+    <None Include="Connected Services\AFCDataTransactionService\configuration91.svcinfo" />
+    <None Include="Connected Services\AFCDataTransactionService\configuration.svcinfo" />
+    <None Include="Connected Services\AFCDataTransactionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Images\kmlr_QR_logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\kmrl_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\kmrl_reve_logo.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\NoCoin.png">
@@ -770,10 +850,12 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DatabaseFirstModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Connected Services\AFCDataTransactionService\Service.wsdl" />
     <None Include="Models\DatabaseFirstModel.edmx.diagram">
       <DependentUpon>DatabaseFirstModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
