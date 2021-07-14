@@ -23,7 +23,6 @@ namespace Kochi_TVM.Utils
         {
             try
             {
-                mplayer = new MediaPlayer();
                 mplayer.Stop();
                 mplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\SoundFiles\MouseClick.wav", UriKind.Relative));
                 mplayer.Play();
@@ -58,7 +57,6 @@ namespace Kochi_TVM.Utils
 
         private static void VoieEndedLoop(object sender, SpeakCompletedEventArgs e)
         {
-            mplayer = new MediaPlayer();
             mplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\" + langVal + @"\" + langVal + voiceFile + ".mp3", UriKind.Relative));
             mplayer.Play();
         }
@@ -74,7 +72,6 @@ namespace Kochi_TVM.Utils
                     SpeechFirstMessage(voice,firstmessage, lang);
                     return;
                 }
-                mplayer = new MediaPlayer();
                 mplayer.MediaEnded -= new EventHandler(MediaEndedLoop);
                 mplayer.Open(new Uri(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\"+ lang + @"\" + lang + voice + ".mp3", UriKind.Relative));
                 mplayer.Play();
@@ -82,6 +79,10 @@ namespace Kochi_TVM.Utils
                 if (lastmessage != null)
                 {
                     lastMessage = lastmessage;
+                }
+                else
+                {
+                    lastMessage = "";
                 }
 
             }
@@ -226,6 +227,15 @@ namespace Kochi_TVM.Utils
             {
                 log.Error("Error Utility -> killExplorer() : " + ex.ToString());
             }
+        }
+        public static void RestartExplorer()
+        {
+            string strCmdText;
+            strCmdText = "/c taskkill /f /im explorer.exe";
+
+            System.Diagnostics.Process.Start("cmd.exe", strCmdText);
+            System.Threading.Thread.Sleep(500);
+            Process.Start(Environment.SystemDirectory + "\\..\\explorer.exe");
         }
         public static int BillTypeToBillValue(int billtype)
         {

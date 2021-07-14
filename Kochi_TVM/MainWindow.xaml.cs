@@ -29,6 +29,7 @@ namespace Kochi_TVM
                 ConfigLog4net();
                 log.Debug("***TVM Application Started***");
                 log.Debug("TVM App Version: " + Constants.appVersion);
+                TVMUtility.killExplorer();
                 MultiLanguage.Init("EN");
                 InitialTimer();
                 Stations.FillStationList();
@@ -36,7 +37,7 @@ namespace Kochi_TVM
                 //Parameters.TVMDynamic.FillOrUpdateParameters();
                 DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
                 DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
-                lStation.Content = "You are at : [" + Stations.currentStation.name + "] Station";
+                lStation.Content = Stations.currentStation.name.ToUpper();
 
                 if (ConfigurationManager.AppSettings["VoiceEnable"].ToString() == "True")
                     Constants.IsVoiceEnabled = true;
@@ -73,7 +74,7 @@ namespace Kochi_TVM
             {
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
-                    lDate.Content = String.Format("{0}", DateTime.Now.ToString("dddd, dd MMMM yyyy - HH:mm:ss", new CultureInfo("en-GB")));
+                    lDate.Content = String.Format("{0}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss", new CultureInfo("en-GB")));
                 }));
             }
             catch (Exception ex)

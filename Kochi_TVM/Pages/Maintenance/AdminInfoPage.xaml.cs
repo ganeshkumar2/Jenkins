@@ -66,13 +66,19 @@ namespace Kochi_TVM.Pages.Maintenance
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void btnDoorStatus_Click(object sender, RoutedEventArgs e)
+        {
+            TVMUtility.PlayClick();
+            NavigationService.Navigate(new Pages.Maintenance.DoorStatusPage());
         }
     }
 }

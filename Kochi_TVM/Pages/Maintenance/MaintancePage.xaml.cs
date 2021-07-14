@@ -48,7 +48,7 @@ namespace Kochi_TVM.Pages.Maintenance
             }
 
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
         }
 

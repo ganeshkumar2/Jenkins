@@ -63,7 +63,7 @@ namespace Kochi_TVM.Pages.Maintenance
                         Parameters.menuItems.Add(row2.explanation.ToString());
                     }
                 }
-
+                TVMUtility.RestartExplorer();
                 NavigationService.Navigate(new Pages.Maintenance.AdminMainPage());
             }
             else
@@ -82,6 +82,7 @@ namespace Kochi_TVM.Pages.Maintenance
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
+            TVMUtility.killExplorer();
             NavigationService.Navigate(new Pages.MainPage());
         }
         public bool Login(string userName, string password, int stationId, ref bool notAuthorized)

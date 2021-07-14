@@ -28,7 +28,7 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             InitializeComponent();
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             txtMessage.Text = PIDMessageLog.getMessage();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)

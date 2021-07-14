@@ -11,158 +11,181 @@
       Loaded="Page_Loaded"
       Unloaded="Page_Unloaded"
       Title="MainPage">
-
-    <Grid x:Name="mainGrid" Background="Transparent">
-        <Grid.RowDefinitions>
-            <!--Top space -->
-            <RowDefinition Height="*"/>
-            <!--Header -->
-            <RowDefinition Height="3*"/>
-            <!--Top space -->
-            <RowDefinition Height="*"/>
-            <!--Operation Area -->
-            <RowDefinition Height="24*"/>
-            <!--Top space -->
-            <RowDefinition Height="*"/>
-            <!--Navigate -->
-            <RowDefinition Height="3*"/>
-            <!--Bottom space -->
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <!--Left space -->
-            <ColumnDefinition Width="*"/>
-            <!--Operation -->
-            <ColumnDefinition Width="19*"/>
-            <!--Right space -->
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Label Name="lblHeader" Content="Welcome to Kochi Metro!" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader1}"/>
-        <!--<Label Name="lblHeader" Content="Service is not available. Please try again later!" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader1}"/>-->
-
-        <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3" >
+    <Grid>
+        <Grid x:Name="mainGrid" Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Header -->
+                <RowDefinition Height="3*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Operation Area -->
+                <RowDefinition Height="24*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Navigate -->
+                <RowDefinition Height="3*"/>
+                <!--Bottom space -->
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
+                <!--Left space -->
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5*"/>
+                <!--Operation -->
+                <ColumnDefinition Width="19*"/>
+                <!--Right space -->
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Label Name="lblHeader" Content="Welcome to Kochi Metro!" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader1}"/>
+            <!--<Label Name="lblHeader" Content="Service is not available. Please try again later!" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader1}"/>-->
 
-            <Button x:Name="btnSelectTicket"  Panel.ZIndex="1" Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Content="Buy Ticket "  Style="{StaticResource styleSelectionBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Top"   FontSize="38" Height="181" Margin="0.2,0.2,10.4,0" Click="btnSelectTicket_Click" />
-            <Label Name="lblNoConnection" Opacity="1" Panel.ZIndex="1"  Grid.Row="3" Grid.Column="0"  Grid.RowSpan="2" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Top"  Style="{StaticResource styleLabelComingSoon}"/>
-
-            <Image  x:Name="imgFingerLeft" Visibility="Hidden" Panel.ZIndex="1" Grid.Row="3" Grid.Column="0"    Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  Source="/Kochi_TVM;component/images/startHandIcon.png" />
-
-
-            <Grid Name="seperatorLineGrid" Grid.Column="1" Grid.Row="0"  Grid.RowSpan="6" >
+            <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="8*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource WhiteFontColor}" CornerRadius="5" BorderThickness="3"/>
+
+
+                <Button x:Name="btnSelectTicket"   Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Content="Buy Ticket "  Style="{StaticResource styleSelectionQRBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Top"  VerticalContentAlignment="Center" FontSize="38" Height="181" Margin="0.2,0.2,10.4,0" Click="btnSelectTicket_Click" />
+                <Label Name="lblNoConnection" Opacity="1" Panel.ZIndex="1" Visibility="Collapsed"  Grid.Row="3" Grid.Column="0"  Grid.RowSpan="2" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Top"  Style="{StaticResource styleLabelComingSoon}"/>
+
+                <Image  x:Name="imgFingerLeft" Visibility="Hidden" Panel.ZIndex="1" Grid.Row="3" Grid.Column="0"    Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  Source="/Kochi_TVM;component/images/startHandIcon.png" />
+
+
+                <Grid Name="seperatorLineGrid" Grid.Column="1" Grid.Row="0"  Grid.RowSpan="6" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="8*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource WhiteFontColor}" CornerRadius="5" BorderThickness="3"/>
+                </Grid>
+                <Button x:Name="btnSelectCard" Opacity="0.2" Panel.ZIndex="1" Grid.Row="2" Grid.Column="2" Grid.RowSpan="3"  Content="Kochi-1 Card Operation "  Style="{StaticResource styleSelectionBtn}" VerticalAlignment="Top"  FontSize="38" Height="181" Click="btnSelectCard_Click" Margin="0.2,0.2,10.4,0"/>
+                <Label Name="lblComingSoon" Opacity="1" Panel.ZIndex="1"  Grid.Row="3" Grid.Column="2"  Grid.RowSpan="2" Content="Coming Soon " HorizontalAlignment="Stretch" VerticalAlignment="Top"  Style="{StaticResource styleLabelComingSoon}"/>
+                <Image x:Name="imgFingerRight" Visibility="Hidden" Panel.ZIndex="1"  Grid.Row="3" Grid.Column="2"  Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  Source="/Kochi_TVM;component/images/startHandIcon.png" />
+                <TextBlock Name="txtInfo" Panel.ZIndex="1" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"  Text="No receipt!" Visibility="Hidden" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextAlignment="Center" FontFamily="Titillium" FontSize="48" Foreground="{StaticResource RedColor}" />
+
             </Grid>
-            <Button x:Name="btnSelectCard" Opacity="0.2" Panel.ZIndex="1" Grid.Row="2" Grid.Column="2" Grid.RowSpan="3"  Content="Kochi-1 Card Operation "  Style="{StaticResource styleSelectionBtn}" VerticalAlignment="Top"  FontSize="38" Height="181" Click="btnSelectCard_Click" Margin="0.2,0.2,10.4,0"/>
-            <Label Name="lblComingSoon" Opacity="1" Panel.ZIndex="1"  Grid.Row="3" Grid.Column="2"  Grid.RowSpan="2" Content="Coming Soon " HorizontalAlignment="Stretch" VerticalAlignment="Top"  Style="{StaticResource styleLabelComingSoon}"/>
-            <Image x:Name="imgFingerRight" Visibility="Hidden" Panel.ZIndex="1"  Grid.Row="3" Grid.Column="2"  Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  Source="/Kochi_TVM;component/images/startHandIcon.png" />
-            <TextBlock Name="txtInfo" Panel.ZIndex="1" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"  Text="No receipt!" Visibility="Hidden" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextAlignment="Center" FontFamily="Titillium" FontSize="48" Foreground="{StaticResource RedColor}" />
 
-        </Grid>
-
-        <Grid Name="languageGrid" Grid.Row="5" Grid.Column="1" Visibility="Visible" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="13*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="185*" />
-                <ColumnDefinition Width="280*" />
-                <ColumnDefinition Width="32*" />
-                <ColumnDefinition Width="160*" />
-                <ColumnDefinition Width="32*" />
-                <ColumnDefinition Width="159*" />
-                <ColumnDefinition Width="32*" />
-                <ColumnDefinition Width="159*" />
-            </Grid.ColumnDefinitions>
-            <Label Name="lblSelectLanguage" Content="Select Your Language" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader4}" Grid.Column="0" Grid.ColumnSpan="2"/>
-            <Button x:Name="btnLang1" Grid.Row="1" Grid.Column="3" Content="English"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang1_Click"/>
-            <Button x:Name="btnLang3" Grid.Row="1" Grid.Column="7" Content="हिन्दी"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang3_Click"/>
-            <Button x:Name="btnLang2" Grid.Row="1" Grid.Column="5" Content="മലയാളം"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnLang2_Click"/>
-        </Grid>
-
-        <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoChangeMode" Visibility="Hidden">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.6*"/>
-                    <RowDefinition Height="0.2*"/>
-                    <RowDefinition Height="0.2*"/>
-                </Grid.RowDefinitions>
+            <Grid Name="languageGrid" Grid.Row="5" Grid.Column="1">         
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Row="0" Source="..\Images\NoCoin.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="200"></Image>
-                <Label Name="lblNoChange" Grid.Row="1" Content="NO CHANGE MODE" Style="{StaticResource styleLabelHeader1}"  />
-                <Button x:Name="btnNoChangeExit" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnNoChangeExit_Click" />
-                <Button x:Name="btnNoChangeYes" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnNoChangeYes_Click" />
-                <StackPanel Name="stackCoin" Orientation="Horizontal" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
-                    <Label Name="lblAvailable"  Content="Available Coins : " Style="{StaticResource styleLabelHeader2}" />
-                   
-                    <Border Name="lbl5RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                        <Label  Content="₹5" Style="{StaticResource styleLabelHeader2}" />
-                    </Border>
-                    <Border Name="lbl2RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                        <Label  Content="₹2" Style="{StaticResource styleLabelHeader2}" />
-                    </Border>
-                    <Border Name="lbl1RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                        <Label  Content="₹1" Style="{StaticResource styleLabelHeader2}" />
-                    </Border>
+                <Label Name="lblSelectLanguage" Content="Select Your Language" Grid.Row="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader2}" Grid.Column="0"/>
+                <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button x:Name="btnLang1" Grid.Row="1" Grid.Column="2" Content="English" Visibility="Collapsed" Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="180" Margin="0,0,20,0" Click="btnLang1_Click"/>
+                    <Button x:Name="btnLang3" Grid.Row="1" Grid.Column="2" Content="हिन्दी"  Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="180"  Margin="0,0,20,0" Click="btnLang3_Click"/>
+                    <Button x:Name="btnLang2" Grid.Row="1" Grid.Column="2" Content="മലയാളം" Style="{StaticResource styleLanguageSetBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="180"  Margin="0,0,20,0" Click="btnLang2_Click"/>
                 </StackPanel>
-            </Grid>
-        </Grid>
 
-        <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoReceiptPrinterMode" Visibility="Hidden">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
+            </Grid>
+
+            <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoChangeMode" Visibility="Hidden">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.6*"/>
-                    <RowDefinition Height="0.2*"/>
-                    <RowDefinition Height="0.2*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <Image Grid.Row="0" Source="..\Images\NoReceipt.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="300" Width="300"></Image>
-                <Label Name="lblNoReceipt" Grid.Row="1" Content="NO RECEIPT MODE" Style="{StaticResource styleLabelHeader1}"  />
-                <Button x:Name="btnReceiptCancel" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnReceiptCancel_Click" />
-                <Button x:Name="btnReceiptOK" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnReceiptOK_Click" />
-                
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Source="..\Images\NoCoin.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="200"></Image>
+                    <Label Name="lblNoChange" Grid.Row="1" Content="NO CHANGE MODE" Style="{StaticResource styleLabelHeader1}"  />
+                    <Button x:Name="btnNoChangeExit" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnNoChangeExit_Click" />
+                    <Button x:Name="btnNoChangeYes" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnNoChangeYes_Click" />
+                    <StackPanel Name="stackCoin" Orientation="Horizontal" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                        <Label Name="lblAvailable"  Content="Available Coins : " Style="{StaticResource styleLabelHeader2}" />
+
+                        <Border Name="lbl5RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
+                            <Label  Content="₹5" Style="{StaticResource styleLabelHeader2}" />
+                        </Border>
+                        <Border Name="lbl2RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
+                            <Label  Content="₹2" Style="{StaticResource styleLabelHeader2}" />
+                        </Border>
+                        <Border Name="lbl1RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
+                            <Label  Content="₹1" Style="{StaticResource styleLabelHeader2}" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
             </Grid>
+
+            <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoReceiptPrinterMode" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Source="..\Images\NoReceipt.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="300" Width="300"></Image>
+                    <Label Name="lblNoReceipt" Grid.Row="1" Content="NO RECEIPT MODE" Style="{StaticResource styleLabelHeader1}"  />
+                    <Button x:Name="btnReceiptCancel" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnReceiptCancel_Click" />
+                    <Button x:Name="btnReceiptOK" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnReceiptOK_Click" />
+
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="outofservice" HorizontalAlignment="Stretch" Visibility="Collapsed" VerticalAlignment="Stretch" Background="Red">
+            <Grid.RowDefinitions>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Header -->
+                <RowDefinition Height="3*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Operation Area -->
+                <RowDefinition Height="24*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Navigate -->
+                <RowDefinition Height="3*"/>
+                <!--Bottom space -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!--Left space -->
+                <ColumnDefinition Width="*"/>
+                <!--Operation -->
+                <ColumnDefinition Width="19*"/>
+                <!--Right space -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Name="imgStationClosedMode" Grid.Row="3" Grid.Column="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/images/station_closed.jpg" />
+            <TextBlock Name="txtErrorMode" Grid.Row="1" Grid.Column="1" Text="OUT OF SERVICE" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontFamily="Titillium" FontSize="45" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}" />
+            <TextBlock Name="txtErrorCode" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" FontFamily="Titillium" FontSize="25" Foreground="{StaticResource WhiteFontColor}" />
         </Grid>
     </Grid>
 </Page>

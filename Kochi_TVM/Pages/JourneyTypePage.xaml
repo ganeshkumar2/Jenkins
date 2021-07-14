@@ -133,7 +133,7 @@
                 <Label Name="lblRJT" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Return Journey" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
-            <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridGrp_MouseLeftButtonDown">
+            <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridGrp_MouseLeftButtonDown" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="8*"/>

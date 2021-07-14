@@ -80,7 +80,7 @@
                 <Label Name="lblLine6Key" Content="Amount " Grid.Row="5" Grid.Column="1" Visibility="Hidden" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
 
                 <!--<Label Name="lblLine1Value" Content=" Aluva" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>-->
-                <Label Name="lblLine2Value" Content=" Changampuzha Park" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine2Value" Content=" Changampuzha Park" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
                 <Label Name="lblLine3Value" Content=" QR Ticket" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
                 <Label Name="lblLine4Value" Content=" 5" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
                 <Label Name="lblLine5Value" Content=": 300" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>

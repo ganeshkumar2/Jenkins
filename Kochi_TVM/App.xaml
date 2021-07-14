@@ -369,6 +369,27 @@
             </Setter>
         </Style>
 
+        <Style x:Key="styleSelectionQRBtn" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid" Background="Transparent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Background="{StaticResource MainColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="5"/>
+                            <Label x:Name="labelBtn" Grid.Row="0" Grid.RowSpan="2" Content="{TemplateBinding Content}" Foreground="{StaticResource WhiteFontColor}" FontSize="{TemplateBinding Property=FontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Titillium"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="styleLabelComingSoon" TargetType="{x:Type Label}">
             <Setter Property="Template">
                 <Setter.Value>

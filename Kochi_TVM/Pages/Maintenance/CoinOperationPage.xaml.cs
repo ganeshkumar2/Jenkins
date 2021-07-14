@@ -40,7 +40,7 @@ namespace Kochi_TVM.Pages.Maintenance
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
             CoinHopperEV4000.ResponseReceivedInputEvent += new CoinHopperEV4000.ResponseReceivedEventHandler(HooperManager_HopperStateInputEvent);
             loadValues();
@@ -78,6 +78,7 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 log.Debug("Debug  HooperManager_HopperStateInputEvent : " + sentCommand);
+                log.Debug("Debug  HooperManager_HopperStateInputEvent = res : " + res.Length);
                 if (sentCommand == CoinHopperCommands.REQUEST_PAYOUT_HIGH_LOW_STATUS)
                 {
                     var data = res;
@@ -179,9 +180,15 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                //if ( == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
 
                 if (!coin1)
-                    return;
+                   return;
 
                 int count = Convert.ToInt32(lblTypeCoin1.Text);
 
@@ -232,6 +239,12 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_1.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
                 Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("ATTENTION!!", "Do you want empty the hopper. ₹" + Constants.HopperAddress1Coin, MessageBoxButtonSet.OKCancel);
                 if (messageBoxResult == Custom.MessageBoxResult.OK)
                 {
@@ -315,6 +328,12 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_2.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
                 if (!coin2)
                     return;
                 int count = Convert.ToInt32(lblTypeCoin2.Text);
@@ -366,6 +385,12 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_2.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
                 Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("ATTENTION!!", "Do you want empty the hopper. ₹" + Constants.HopperAddress2Coin, MessageBoxButtonSet.OKCancel);
                 if (messageBoxResult == Custom.MessageBoxResult.OK)
                 {
@@ -448,6 +473,12 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_3.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
                 if (!coin3)
                     return;
                 int count = Convert.ToInt32(lblTypeCoin5.Text);
@@ -499,6 +530,12 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_3.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_3.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
                 Custom.MessageBoxResult messageBoxResult = MessageBoxOperations.ShowMessage("ATTENTION!!", "Do you want empty the hopper. ₹" + Constants.HopperAddress3Coin, MessageBoxButtonSet.OKCancel);
                 if(messageBoxResult == Custom.MessageBoxResult.OK)
                 {

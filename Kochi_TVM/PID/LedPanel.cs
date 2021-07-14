@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Kochi_TVM.Business;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -93,7 +94,7 @@ namespace Kochi_TVM.PID
             {
                 if (_instance == null)
                 {
-                    string LED_COMPort = ConfigurationManager.AppSettings["PID_PORT_NAME"];
+                    string LED_COMPort = Parameters.TVMConst.LedPort;//ConfigurationManager.AppSettings["PID_PORT_NAME"];
                     _instance = new LedPanel(LED_COMPort);
                 }
                 return _instance;
@@ -174,7 +175,6 @@ namespace Kochi_TVM.PID
                 {
                     if (PrepareBuff())
                     {
-                        log.Debug("LED Text " + text);
                         //Fix me : Open serial plug
                         //if(sp.SendReceive(sendData, ref rcvData, 100))
                         return true;
@@ -275,8 +275,7 @@ namespace Kochi_TVM.PID
 
             port.DiscardInBuffer();
             port.DiscardOutBuffer();
-            port.Write(sendData, 0, sendData.Length);
-            log.Debug("PrepareBuff :" + BitConverter.ToString(sendData));
+            port.Write(sendData, 0, sendData.Length);           
 
             return true;
         }

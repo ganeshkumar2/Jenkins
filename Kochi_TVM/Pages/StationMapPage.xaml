@@ -39,7 +39,6 @@
         <Label Name="lblHeader" Content="" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Style="{StaticResource styleLabelHeader2}"/>
         <Label Name="lblWarning" Content="" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Style="{StaticResource styleLabel4}"/>
 
-
         <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3" Height="550" Width="880">
 
             <Grid.RowDefinitions>
@@ -281,7 +280,7 @@
 
 
 
-            <Button x:Name="btnStation17" Tag="17"  Content="Ernakulam South" Grid.Row="82" Grid.Column="85" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
+            <Button x:Name="btnStation17" Tag="17"  Content="Ernakulam South" Grid.Row="82" Grid.Column="85" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" Margin="-18,3,0,0" />
             <Image  Grid.Row="86" Grid.Column="88" Grid.ColumnSpan="4" Grid.RowSpan="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="27" Source="/Kochi_TVM;component/images/train.png"  />
             <Image  Grid.Row="86" Grid.Column="93" Grid.ColumnSpan="4" Grid.RowSpan="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="36" Source="/Kochi_TVM;component/images/big_bus.png" />
 

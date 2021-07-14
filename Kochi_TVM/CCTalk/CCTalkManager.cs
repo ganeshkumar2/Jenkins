@@ -1,4 +1,5 @@
 ﻿using dk.CctalkLib.Devices;
+using Kochi_TVM.Business;
 using log4net;
 using System;
 using System.Configuration;
@@ -27,7 +28,7 @@ namespace Kochi_TVM.CCTalk
             {
                 port = new SerialPort();
                 port.BaudRate = 9600;
-                port.PortName = ConfigurationManager.AppSettings["CoinHopper_Port_Name"];
+                port.PortName = Parameters.TVMConst.Hopper1Port;//ConfigurationManager.AppSettings["CoinHopper_Port_Name"];
                 port.ReadTimeout = 3000;
                 port.Open();
             }

@@ -62,6 +62,7 @@
 	<system:String x:Key="info">Info</system:String>
 	<system:String x:Key="operationControl">Operation Control</system:String>
 	<system:String x:Key="deficitAmount">Deficit Amount</system:String>
+    <system:String x:Key="balanceAmount">Balance Amount</system:String>
 	<system:String x:Key="maintenance">Maintenance</system:String>
 	<system:String x:Key="appVersion">App Version: </system:String>
 	<system:String x:Key="equipmentId">Equipment Id: </system:String>
@@ -179,4 +180,6 @@
     <system:String x:Key="Kakkanad IWAI">Kakkanad IWAI</system:String>
     <system:String x:Key="Eroor">Eroor</system:String>
     <system:String x:Key="Vyttila">Vyttila</system:String>
+    <system:String x:Key="nobalance">Insufficient balance</system:String>
+    <system:String x:Key="maxnotes">Maximum notes accepted</system:String>
 </ResourceDictionary>

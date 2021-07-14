@@ -254,7 +254,7 @@ namespace Kochi_TVM.Pages
                 lblNoOfTick.Content = MultiLanguage.GetText("numberOfTickets");
                 btnPrintRecipt.Content = MultiLanguage.GetText("printReceipt");
                 btnPrintReciptSkip.Content = MultiLanguage.GetText("skipReceipt");
-                btnFinish.Content = MultiLanguage.GetText("qrPrinter");
+                btnFinish.Content = MultiLanguage.GetText("Ok");
                 initialTimer();
             }
             catch (Exception ex)
@@ -265,6 +265,9 @@ namespace Kochi_TVM.Pages
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            returnCashImageGif.Stop();
+            returnCashImageGif.Close();
+            returnCashImageGif.Source = null;
             ElectronicJournal.OrderFinalised();
         }
         private void initialTimer()

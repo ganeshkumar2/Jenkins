@@ -83,9 +83,18 @@
             <Button x:Name="btnClearBox" Content="Clear Box" Grid.Row="7" Grid.Column="5" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnClearBox_Click" />
 
             <!--Cassette1 is escrow-->
-            <Label x:Name="lblCassette1Info" Content="Box Count : 10" Grid.Row="9" Grid.Column="1" Style="{StaticResource styleLabel2}"/>
-            <Label x:Name="lblCassette2Info" Content="20 Rs Amount : 0 Rs" Grid.Row="9" Grid.Column="3" Style="{StaticResource styleLabel2}"/>
-            <Label x:Name="lblCassette3Info" Content="10 Rs Amount : 0 Rs" Grid.Row="9" Grid.Column="5" Style="{StaticResource styleLabel2}"/>
+            <StackPanel Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Denomination/Amount" Style="{StaticResource styleLabel2}"/>
+                <Label x:Name="lblCassette1Info" Content="Box Count : 10"  Style="{StaticResource styleLabel2}"/>           
+            </StackPanel>
+            <StackPanel Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Denomination/Amount" Style="{StaticResource styleLabel2}"/>
+                <Label x:Name="lblCassette2Info" Content="20 Rs Amount : 0 Rs" Style="{StaticResource styleLabel2}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="9" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Denomination/Amount" Style="{StaticResource styleLabel2}"/>
+                <Label x:Name="lblCassette3Info" Content="10 Rs Amount : 0 Rs"  Style="{StaticResource styleLabel2}"/>
+            </StackPanel>               
             
         </Grid>
 

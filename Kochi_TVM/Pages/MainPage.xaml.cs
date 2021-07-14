@@ -7,6 +7,7 @@ using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.PID;
 using Kochi_TVM.Printers;
 using Kochi_TVM.RptDispenser;
+using Kochi_TVM.Sensors;
 using Kochi_TVM.Utils;
 using log4net;
 using RPTIssueLib;
@@ -19,6 +20,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml;
 using static Kochi_TVM.Utils.Enums;
 
 namespace Kochi_TVM.Pages
@@ -43,7 +45,7 @@ namespace Kochi_TVM.Pages
         {
             InitializeComponent();
             try
-            {
+            {                
                 //timerOccConnMsg = new DispatcherTimer();
                 //bwAfcStatus = new BackgroundWorker
                 //{
@@ -184,19 +186,19 @@ namespace Kochi_TVM.Pages
 
                     Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", status.ToString());
 
-                    if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
-                    {
-                        lblNoConnection.Content = "";
-                        btnSelectTicket.IsEnabled = true;
-                        btnSelectTicket.Opacity = 1;
-                        //PageControl.ShowPage(Pages.journeyPage);
-                    }
-                    else
-                    {
-                        lblNoConnection.Content = "No Connection!";
-                        btnSelectTicket.IsEnabled = false;
-                        btnSelectTicket.Opacity = 0.2;
-                    }
+                    //if (Parameters.TVMDynamic.GetParameter("AfcConn") == "1")
+                    //{
+                    //    lblNoConnection.Content = "";
+                    //    btnSelectTicket.IsEnabled = true;
+                    //    btnSelectTicket.Opacity = 1;
+                    //    //PageControl.ShowPage(Pages.journeyPage);
+                    //}
+                    //else
+                    //{
+                    //    lblNoConnection.Content = "No Connection!";
+                    //    btnSelectTicket.IsEnabled = false;
+                    //    btnSelectTicket.Opacity = 0.2;
+                    //}
                 }
                 else
                 {
@@ -216,21 +218,23 @@ namespace Kochi_TVM.Pages
                 try
                 {
                     StockOperations.SelStockStatus();
-
+                    //string qrSlip = "", coin1 = "", coin2 = "", coin5 = "", banknote10 = "", banknote20 = "", escrow = "";
                     if (StockOperations.qrSlip <= 10)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
                             string.Format("QR PAPER STOCK IS LESS! Please ADD PAPER"));
 
                         log.Debug("InsNStationAlarm qr --> result : " + (result == true ? "true" : "false"));
+                        //qrSlip = "QR PAPER STOCK IS LESS! Please ADD PAPER";
                     }
 
                     if (StockOperations.coin1 == 0)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                            string.Format("Rs "+ Constants.HopperAddress1Coin +" stock is empty! Please refill."));
+                            string.Format("Rs " + Constants.HopperAddress1Coin + " stock is empty! Please refill."));
 
                         log.Debug("InsNStationAlarm coin1 --> result : " + (result == true ? "true" : "false"));
+                        //coin1 = string.Format("Rs " + Constants.HopperAddress1Coin + " stock is empty! Please refill.");
                     }
 
                     if (StockOperations.coin2 == 0)
@@ -239,6 +243,7 @@ namespace Kochi_TVM.Pages
                             string.Format("Rs " + Constants.HopperAddress2Coin + " stock is empty! Please refill."));
 
                         log.Debug("InsNStationAlarm coin2 --> result : " + (result == true ? "true" : "false"));
+                        //coin2 = string.Format("Rs " + Constants.HopperAddress2Coin + " stock is empty! Please refill.");
                     }
 
                     if (StockOperations.coin5 == 0)
@@ -247,14 +252,16 @@ namespace Kochi_TVM.Pages
                             string.Format("Rs " + Constants.HopperAddress3Coin + " stock is empty! Please refill."));
 
                         log.Debug("InsNStationAlarm coin5 --> result : " + (result == true ? "true" : "false"));
+                        //coin5 = string.Format("Rs " + Constants.HopperAddress3Coin + " stock is empty! Please refill.");
                     }
 
                     if (StockOperations.banknote10 <= 5)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                        string.Format("Rs "+ TVMUtility.BillTypeToBillValue(Constants.Cassette1Note) + " currency (Cassette 1) stock is less! Please add notes."));
+                        string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette1Note) + " currency (Cassette 1) stock is less! Please add notes."));
 
                         log.Debug("InsNStationAlarm banknote10 --> result : " + (result == true ? "true" : "false"));
+                        //banknote10 = string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette1Note) + " currency (Cassette 1) stock is less! Please add notes.");
                     }
 
                     if (StockOperations.banknote20 <= 5)
@@ -263,15 +270,20 @@ namespace Kochi_TVM.Pages
                         string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette2Note) + " currency (Cassette 2) stock is less! Please add notes."));
 
                         log.Debug("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
+                        //banknote20 = string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette2Note) + " currency (Cassette 2) stock is less! Please add notes.");
                     }
 
                     if (StockOperations.escrow <= 5)
                     {
                         bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
-                        string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette3Note)+ " currency (Cassette 3) stock is less! Please add notes."));
+                        string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette3Note) + " currency (Cassette 3) stock is less! Please add notes."));
+                        //escrow = string.Format("Rs " + TVMUtility.BillTypeToBillValue(Constants.Cassette3Note) + " currency (Cassette 3) stock is less! Please add notes.");
 
                         log.Debug("InsNStationAlarm banknote20 --> result : " + (result == true ? "true" : "false"));
                     }
+
+                    //bool result = Parameters.InsNStationAlarm(Stations.currentStation.id, Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId")), 1,
+                    //    string.Format(qrSlip + coin1 + coin2 + coin5 + banknote10 + banknote20 + escrow));
 
                 }
                 catch (Exception ex)
@@ -280,10 +292,14 @@ namespace Kochi_TVM.Pages
                 }
 
                 Parameters.lastSync = DateTime.Now;
-                Thread.Sleep(60000 * 1);
+                Thread.Sleep(60000 * 5);
             }
 
         }
+
+        string cmdAfc = "";
+        Int32 recId = 0;
+        string refNo = "";
         private void bwSendMonitoring_DoWork(object sender, DoWorkEventArgs e)
         {
             int QRSJTCashCount = 0;
@@ -299,7 +315,7 @@ namespace Kochi_TVM.Pages
             int RPTSJTNonCashCount = 0;
             int RPTSJTNonCashAmount = 0;
 
-            bool result = false;
+            string result = "";
 
             while (true)
             {
@@ -351,7 +367,7 @@ namespace Kochi_TVM.Pages
                     Parameters.TvmMonitoringData.banknote10 = StockOperations.banknote10.ToString();
                     Parameters.TvmMonitoringData.banknote20 = StockOperations.banknote20.ToString();
                     Parameters.TvmMonitoringData.bnrStatus = Parameters.TVMStatic.GetParameter("bnaStatus");
-                    Parameters.TvmMonitoringData.doorSensorStatus = " ";
+                    Parameters.TvmMonitoringData.doorSensorStatus = "OK";
                     Parameters.TvmMonitoringData.hopperCoins1 = StockOperations.coin1.ToString();
                     Parameters.TvmMonitoringData.hopperCoins2 = StockOperations.coin2.ToString();
                     Parameters.TvmMonitoringData.hopperCoins5 = StockOperations.coin5.ToString();
@@ -359,7 +375,7 @@ namespace Kochi_TVM.Pages
                     Parameters.TvmMonitoringData.hopperStatus2 = Parameters.TVMStatic.GetParameter("hopper2Status");
                     Parameters.TvmMonitoringData.hopperStatus5 = Parameters.TVMStatic.GetParameter("hopper5Status");
                     Parameters.TvmMonitoringData.lastTransactionDate = DateTime.Now;
-                    Parameters.TvmMonitoringData.ledPanelStatus = " ";
+                    Parameters.TvmMonitoringData.ledPanelStatus = "OK";
                     Parameters.TvmMonitoringData.numberOfQr = StockOperations.qrSlip;
                     Parameters.TvmMonitoringData.qrPrinterStatus = Check_QRprinter == true ? "OK" : "ERROR";
                     Parameters.TvmMonitoringData.QRRJT_Amount = QRRJTCashAmount;
@@ -367,18 +383,256 @@ namespace Kochi_TVM.Pages
                     Parameters.TvmMonitoringData.QRSJT_Amount = QRSJTCashAmount;
                     Parameters.TvmMonitoringData.QRSJT_Count = QRSJTCashCount;
                     Parameters.TvmMonitoringData.receiptPrinterStatus = Check_Receiptprinter == true ? "OK" : "ERROR";
-                    Parameters.TvmMonitoringData.speakerStatus = " ";
+                    Parameters.TvmMonitoringData.speakerStatus = "OK";
                     Parameters.TvmMonitoringData.stationId = Stations.currentStation.id;
                     Parameters.TvmMonitoringData.Total_Amount = QRRJTCashAmount + QRSJTCashAmount;
                     Parameters.TvmMonitoringData.Total_Count = QRRJTCashCount + QRSJTCashCount;
                     Parameters.TvmMonitoringData.tvmId = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("unitId"));
+                    Parameters.TvmMonitoringData.SpecialMode = "Normal";
+
+                    result = Parameters.insTVMStatusReport();
+                    log.Debug("--TVMStatusReport-- Resp : " + result);
+                    if (result != "")
+                    {
+                        XmlDocument xml = new XmlDocument();
+                        xml.LoadXml(result);
+
+                        if (cmdAfc != "")
+                        {
+                            log.Debug("INFO" + $"cmdAfc : {cmdAfc}");
+                            try
+                            {
+                                
+                            }
+                            catch (Exception Ex)
+                            {
+                                log.Error("ERROR "+ Ex.Message);
+                            }
+                        }
+
+                        for (var ii = 0; ii < xml.ChildNodes.Count; ii++)
+                        {
+                            string cmd = xml.ChildNodes[ii].Attributes[1].Value;
+
+                            if (cmd != "")
+                            {
+                                try
+                                {
+                                    refNo = xml.ChildNodes[ii].Attributes[3].Value;
+                                }
+                                catch (Exception Ex)
+                                {
+                                    log.Error("ERROR " + Ex.Message);
+                                }
+                            }
+                            switch (cmd)
+                            {
+                                case "EnterFareBypassMode1":
+
+                                    break;
+                                case "ExitFareBypassMode1":
+
+                                    break;
+                                case "EnterFareBypassMode2":
+
+                                    break;
+                                case "ExitFareBypassMode2":
+
+                                    break;
+                                case "EnterEmergencyMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "Emergency";
+                                           txtErrorCode.Text = "Emergency Mode";
+                                           outofservice.Visibility = Visibility.Visible;
+                                       }));
+                                    break;
+                                case "ExitEmergencyMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                    DispatcherPriority.Background,
+                                    new Action(() =>
+                                    {
+                                        Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                        txtErrorCode.Text = "";
+                                        outofservice.Visibility = Visibility.Collapsed;
+                                    }));
+                                    break;
+                                case "EnterIncidentMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           txtErrorCode.Text = "Incident Mode";
+                                           outofservice.Visibility = Visibility.Visible;
+                                       }));
+                                    break;
+                                case "ExitIncidentMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                           txtErrorCode.Text = "";
+                                           outofservice.Visibility = Visibility.Collapsed;
+                                       }));
+                                    break;
+                                case "EnterScreenLock":
+                                    ScreenLockMode();
+                                    break;
+                                case "ExitScreenLock":
+                                    ScreenUnLockMode();
+                                    break;
+                                case "EnterStationClosedMode":
+                                    StationClose();
+                                    break;
+                                case "ExitStationClosedMode":
+                                    StationOpen();
+                                    break;
+                                case "EnterSetOcc":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                      DispatcherPriority.Background,
+                                      new Action(() =>
+                                      {
+                                          Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                          btnSelectTicket.IsEnabled = true;
+                                          btnSelectTicket.Opacity = 1;
+                                      }));
+                                    break;
+                                case "ExitSetOcc":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                      DispatcherPriority.Background,
+                                      new Action(() =>
+                                      {
+                                          Parameters.TvmMonitoringData.SpecialMode = "Occ";
+                                          btnSelectTicket.IsEnabled = false;
+                                          btnSelectTicket.Opacity = 0.2;
+                                      }));
+                                    break;
+                            }
+                        }
+
+                    }
 
                     result = Parameters.insTVMMonitoring();
-                    log.Debug("--SC Conn insTVMMonitoring--" + result);
-                    if (result)
+                    log.Debug("--SC Conn insTVMMonitoring-- Resp : " + result);
+                    if (result != "")
                     {
                         Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
                         Parameters.lastSync = DateTime.Now;
+                        XmlDocument xml = new XmlDocument();
+                        xml.LoadXml(result);
+
+                        if (cmdAfc != "")
+                        {
+                            log.Debug("Debug " + $"cmdAfc : {cmdAfc}");
+                            return;
+                        }
+
+                        for (var ii = 0; ii < xml.ChildNodes.Count; ii++)
+                        {
+                            string cmd = xml.ChildNodes[ii].Attributes[1].Value;
+
+                            if (cmd != "")
+                            {                               
+                                try
+                                {
+                                    refNo = xml.ChildNodes[ii].Attributes[3].Value;
+                                }
+                                catch (Exception Ex)
+                                {
+                                    log.Error("ERROR " + Ex.Message);
+                                }
+                            }
+                            switch (cmd)
+                            {
+                                case "EnterFareBypassMode1":
+
+                                    break;
+                                case "ExitFareBypassMode1":
+
+                                    break;
+                                case "EnterFareBypassMode2":
+
+                                    break;
+                                case "ExitFareBypassMode2":
+
+                                    break;
+                                case "EnterEmergencyMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "Emergency";
+                                           txtErrorCode.Text = "Emergency Mode";
+                                           outofservice.Visibility = Visibility.Visible;
+                                       }));
+                                    break;
+                                case "ExitEmergencyMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                    DispatcherPriority.Background,
+                                    new Action(() =>
+                                    {
+                                        Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                        txtErrorCode.Text = "";
+                                        outofservice.Visibility = Visibility.Collapsed;
+                                    }));
+                                    break;
+                                case "EnterIncidentMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           txtErrorCode.Text = "Incident Mode";
+                                           outofservice.Visibility = Visibility.Visible;
+                                       }));
+                                    break;
+                                case "ExitIncidentMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                           txtErrorCode.Text = "";
+                                           outofservice.Visibility = Visibility.Collapsed;
+                                       }));
+                                    break;
+                                case "EnterScreenLock":
+                                    ScreenLockMode();
+                                    break;
+                                case "ExitScreenLock":
+                                    ScreenUnLockMode();
+                                    break;
+                                case "EnterStationClosedMode":
+                                    StationClose();
+                                    break;
+                                case "ExitStationClosedMode":
+                                    StationOpen();
+                                    break;
+                                case "EnterSetOcc":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                      DispatcherPriority.Background,
+                                      new Action(() =>
+                                      {
+                                          Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                          btnSelectTicket.IsEnabled = true;
+                                          btnSelectTicket.Opacity = 1;
+                                      }));
+                                    break;
+                                case "ExitSetOcc":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                      DispatcherPriority.Background,
+                                      new Action(() =>
+                                      {
+                                          Parameters.TvmMonitoringData.SpecialMode = "Occ";
+                                          btnSelectTicket.IsEnabled = false;
+                                          btnSelectTicket.Opacity = 0.2;
+                                      }));
+                                    break;
+                            }
+                        }
+                      
                     }
                     else
                     {
@@ -396,8 +650,88 @@ namespace Kochi_TVM.Pages
             }
         }
 
+        private void ScreenLockMode()
+        {
+
+            try
+            {
+                Application.Current.Dispatcher.BeginInvoke(
+                     DispatcherPriority.Background,
+                     new Action(() =>
+                     {
+                         Parameters.TvmMonitoringData.SpecialMode = "ScreenLock";
+                         txtErrorCode.Text = "Screen Lock Mode";
+                         outofservice.Visibility = Visibility.Visible;
+                     }));
+            }
+            catch (Exception Ex)
+            {
+
+            }
+        }
+        private void ScreenUnLockMode()
+        {
+
+            try
+            {
+                Application.Current.Dispatcher.BeginInvoke(
+                     DispatcherPriority.Background,
+                     new Action(() =>
+                     {
+                         Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                         txtErrorCode.Text = "";
+                         outofservice.Visibility = Visibility.Collapsed;
+                     }));
+            }
+            catch (Exception Ex)
+            {
+            }
+        }
+
+        private void StationClose()
+        {
+            try
+            {
+
+                Application.Current.Dispatcher.BeginInvoke(
+                  DispatcherPriority.Background,
+                  new Action(() =>
+                  {
+                      Parameters.TvmMonitoringData.SpecialMode = "StationClose";
+                      txtErrorCode.Text = "Station Close";
+                      outofservice.Visibility = Visibility.Visible;
+                  }));
+            }
+            catch (Exception Ex)
+            {
+
+            }
+        }
+
+        private void StationOpen()
+        {
+
+            try
+            {
+                Application.Current.Dispatcher.BeginInvoke(
+                     DispatcherPriority.Background,
+                     new Action(() =>
+                     {
+                         Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                         txtErrorCode.Text = "";
+                         outofservice.Visibility = Visibility.Collapsed;
+                     }));
+
+            }
+            catch (Exception Ex)
+            {
+
+            }
+        }
+
         int i = 0;
         int j = 0;
+        int k = 0;
         private void CheckDeviceAction(object o)
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -412,17 +746,32 @@ namespace Kochi_TVM.Pages
                     {
                         NavigationService.Navigate(new Pages.StationClosedPage());
                     }
-                   
+
+                    int status = KMY200DoorAlarm.Instance.GetStatus();
+                    Enums.DoorStatus doorStatus = (Enums.DoorStatus)(status);
+                    if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
+                    {
+                        Parameters.TvmMonitoringData.doorSensorStatus = "Door Closed";
+                        outofservice.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        Parameters.TvmMonitoringData.doorSensorStatus = "Door Open";
+                        txtErrorCode.Text = "Door Open";
+                        outofservice.Visibility = Visibility.Visible;
+                    }
+
                     if (Parameters.TVMDynamic.GetAfcConnStatus())
                     {
                         Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
                         Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
                         if (i == 0)
-                            i = 1;                        
+                            i = 1;
                         btnSelectTicket.IsEnabled = true;
                         btnSelectTicket.Opacity = 1;
                         if (i == 1)
                         {
+                            outofservice.Visibility = Visibility.Collapsed;
                             i = 2;
                             lblNoConnection.Content = "";
                             LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
@@ -433,15 +782,44 @@ namespace Kochi_TVM.Pages
                         Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "0");
                         Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
                         i = 0;
+                        outofservice.Visibility = Visibility.Visible;
+                        txtErrorCode.Text = "No Connection";
                         LedOperations.Close();
                         lblNoConnection.Content = "No Connection!";
                         btnSelectTicket.IsEnabled = false;
                         btnSelectTicket.Opacity = 0.2;
                         return;
                     }
-                   
+
+                    BNRManager.Instance.PollingAction();
+                    if(Constants.BNRStatus != "")
+                    {
+                        if (j == 0)
+                            j = 1;
+                        btnSelectTicket.IsEnabled = true;
+                        btnSelectTicket.Opacity = 1;
+                        if (j == 1)
+                        {
+                            outofservice.Visibility = Visibility.Collapsed;
+                            j = 2;
+                            lblNoConnection.Content = "";
+                            LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                        }
+                    }
+                    else
+                    {                       
+                        j = 0;
+                        outofservice.Visibility = Visibility.Visible;
+                        txtErrorCode.Text = "BNR Printer Error";
+                        LedOperations.Close();
+                        lblNoConnection.Content = "BNR Printer Error";
+                        btnSelectTicket.IsEnabled = false;
+                        btnSelectTicket.Opacity = 0.2;
+                        return;
+                    }
+
                     PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
-                    if (QRStatus == PRINTER_STATE.OK)
+                    if (QRStatus == PRINTER_STATE.OK && StockOperations.qrSlip > 0)
                     {
                         if (j == 0)
                             j = 1;
@@ -452,6 +830,7 @@ namespace Kochi_TVM.Pages
                         if (j == 1)
                         {
                             j = 2;
+                            outofservice.Visibility = Visibility.Collapsed;
                             lblNoConnection.Content = "";
                             LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                         }
@@ -459,9 +838,14 @@ namespace Kochi_TVM.Pages
                     else
                     {
                         j = 0;
-                        LedOperations.DeviceError("");
+                        outofservice.Visibility = Visibility.Visible;
+                        LedOperations.Close();
                         Check_QRprinter = false;
                         btnSelectTicket.IsEnabled = false;
+                        if(StockOperations.qrSlip > 0)
+                            txtErrorCode.Text = "QR Printer Error";
+                        else
+                            txtErrorCode.Text = "QR Printer Paper Low";
                         lblNoConnection.Content = "Device Error";
                         btnSelectTicket.Opacity = 0.2;
                         return;
@@ -503,9 +887,27 @@ namespace Kochi_TVM.Pages
         }
         private void btnSelectTicket_Click(object sender, RoutedEventArgs e)
         {
-            TVMUtility.PlayClick();
+            TVMUtility.PlayClick();            
             try
             {
+                if (Parameters.TVMDynamic.GetAfcConnStatus())
+                {
+                    Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
+                    Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
+                    outofservice.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    outofservice.Visibility = Visibility.Visible;
+                    Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "0");
+                    Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
+                    LedOperations.Close();
+                    lblNoConnection.Content = "No Connection!";
+                    btnSelectTicket.IsEnabled = false;
+                    btnSelectTicket.Opacity = 0.2;
+                    return;
+                }
+
                 if ((Constants.Cassette1NoteCont <= Constants.NoChangeAvailable && Constants.Cassette2NoteCont <= Constants.NoChangeAvailable && Constants.Cassette3NoteCont <= Constants.NoChangeAvailable) || (StockOperations.coin1 <= Constants.NoChangeAvailable && StockOperations.coin2 <= Constants.NoChangeAvailable && StockOperations.coin1 <= Constants.NoChangeAvailable))
                 {
                     bool isVisible = true;
@@ -573,12 +975,15 @@ namespace Kochi_TVM.Pages
 
             btnLang1.IsEnabled = false;
             btnLang1.Opacity = 0.5;
+            btnLang1.Visibility = Visibility.Collapsed;
 
             btnLang2.IsEnabled = true;
             btnLang2.Opacity = 1;
+            btnLang2.Visibility = Visibility.Visible;
 
             btnLang3.IsEnabled = true;
             btnLang3.Opacity = 1;
+            btnLang3.Visibility = Visibility.Visible;
 
             Ticket.language = Languages.English;
             MultiLanguage.ChangeLanguage("EN");
@@ -591,12 +996,15 @@ namespace Kochi_TVM.Pages
 
             btnLang1.IsEnabled = true;
             btnLang1.Opacity = 1;
+            btnLang1.Visibility = Visibility.Visible;
 
             btnLang2.IsEnabled = false;
             btnLang2.Opacity = 0.5;
+            btnLang2.Visibility = Visibility.Collapsed;
 
             btnLang3.IsEnabled = true;
             btnLang3.Opacity = 1;
+            btnLang3.Visibility = Visibility.Visible;
 
             Ticket.language = Languages.Malayalam;
             MultiLanguage.ChangeLanguage("ML");
@@ -609,12 +1017,15 @@ namespace Kochi_TVM.Pages
 
             btnLang1.IsEnabled = true;
             btnLang1.Opacity = 1;
+            btnLang1.Visibility = Visibility.Visible;
 
             btnLang2.IsEnabled = true;
             btnLang2.Opacity = 1;
+            btnLang2.Visibility = Visibility.Visible;
 
             btnLang3.IsEnabled = false;
             btnLang3.Opacity = 0.5;
+            btnLang3.Visibility = Visibility.Collapsed;
 
             Ticket.language = Languages.Hint;
             MultiLanguage.ChangeLanguage("IN");
@@ -713,16 +1124,14 @@ namespace Kochi_TVM.Pages
             {
                 MultiLanguage.Init("EN");
 
-                Message();
-
                 checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
                 checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
-
-                BNRManager.Instance.PollingAction();
+                
                 StockOperations.SelStockStatus();
 
                 LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
 
+                Message();
                 //timerOccConnMsg.Tick += timerOccConnMsg_Tick;
                 //timerOccConnMsg.Interval = TimeSpan.FromSeconds(1);
                 //timerOccConnMsg.Start();
@@ -751,6 +1160,12 @@ namespace Kochi_TVM.Pages
             {
                 if (checkDeviceTimer != null)
                     checkDeviceTimer.Dispose();
+
+                bwSendSc.DoWork -= bwSendSc_DoWork;
+                bwSendSc.CancelAsync();
+
+                bwSendMonitoring.DoWork -= bwSendMonitoring_DoWork;
+                bwSendMonitoring.CancelAsync();
             }
             catch (Exception ex)
             {

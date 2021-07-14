@@ -382,6 +382,7 @@ namespace Kochi_TVM.Utils
             MediaSelected,
             MediaPaid,
             QRPrintStarted,
+            QRPrintError,
             QRPrintOver,
             ReceiptPrintStarted,
             ReceiptPrintOver,
@@ -400,6 +401,26 @@ namespace Kochi_TVM.Utils
             BalanceNoteReturned,
             BalanceCoinReturned,
             OrderCancelled
+        }
+
+        public enum DoorStatus
+        {
+            DOOR_ALL_CLOSE = 0,
+            DOOR_1_OPEN = 2,
+            DOOR_2_OPEN = 4,
+            DOOR_12_OPEN = 6,
+            DOOR_3_OPEN = 16,
+            DOOR_13_OPEN = 18,
+            DOOR_23_OPEN = 20,
+            DOOR_123_OPEN = 22,
+            DOOR_4_OPEN = 8,
+            DOOR_14_OPEN = 10,
+            DOOR_24_OPEN = 12,
+            DOOR_124_OPEN = 14,
+            DOOR_34_OPEN = 24,
+            DOOR_134_OPEN = 26,
+            DOOR_234_OPEN = 28,
+            DOOR_1234_OPEN = 30
         }
     }
 }

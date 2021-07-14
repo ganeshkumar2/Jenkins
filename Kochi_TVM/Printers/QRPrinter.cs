@@ -1,7 +1,7 @@
-﻿using Kochi_TVM.Utils;
+﻿using Kochi_TVM.Business;
+using Kochi_TVM.Utils;
 using log4net;
 using MessagingToolkit.QRCode.Codec;
-using SveltaLib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -77,7 +77,7 @@ namespace Kochi_TVM.Printers
                 string headerAddress = "Images\\kmrl_icon.png";
                 Image img = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + headerAddress);
                 image = new System.Drawing.Bitmap(img);
-                qrPrinter.printerPort = ConfigurationManager.AppSettings["QR_PORT_NAME"];
+                qrPrinter.printerPort = Parameters.TVMConst.QRPrinterPort;//ConfigurationManager.AppSettings["QR_PORT_NAME"];
                 if (qrPrinter.Init("", image, ref status, ref error))
                 {
                     result = true;
@@ -112,7 +112,7 @@ namespace Kochi_TVM.Printers
                 errCode = Printer_ErrorCodes.UnknownError;
             else if (errStatus == PrinterStatus.Unknown)
                 errCode = Printer_ErrorCodes.UnknownError;
-            log.Debug("Debug SetErrCode -> Init() : " + errCode.ToString());
+            log.Debug("Debug SetErrCode -> SetErrCode() : " + errCode.ToString());
         }
         public bool GetStatus(ref PrinterStatus status)
         {
@@ -145,6 +145,7 @@ namespace Kochi_TVM.Printers
 
         public Enums.PRINTER_STATE CheckQrPrinterStatus()
         {
+            //return Enums.PRINTER_STATE.OK;
             bool result = false;
             PrinterStatus getStat = PrinterStatus.Unknown;
             result = GetStatus(ref getStat);
@@ -171,12 +172,46 @@ namespace Kochi_TVM.Printers
             try
             {
                 string err = String.Empty;
-
                 Bitmap imageOF = new Bitmap(new QRCodeEncoder().Encode(ticketGUID), new Size(150, 150));
-
                 bool resultQr = qrPrinter.PrintG(imageOF, "KOCHI METRO", ticketGUID, qr_date, journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);//TVM'deki halin TOM'a benzetilmesi
                 //qrPrinter.PrintK("KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, "Please retain till the end of journey!", ref err);//TVM'deki halin TOM'a benzetilmesi
                 //bool resultQr = qrPrinter.Print("KOCHI METRO", ticketGUID, qr_date, journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);//TVM orjinali
+                ////Task responseTask = Task.Run(() => {
+                ////    resultQr = qrPrinter.PrintG(imageOF, "KOCHI METRO", ticketGUID, qr_date, journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);
+                ////    Console.WriteLine("In task");
+                ////});
+                ////responseTask.ContinueWith(t => Console.WriteLine("In ContinueWith"));
+                ////responseTask.Wait();
+                result = resultQr;                                                                                                                                                                                                                        //return qrPrinter.Print("KOCHI METRO", t.TicketGUID, PayPointConst.QRCodeCreateDate.ToString(), t.explanation, t.From, t.To, (t.count == 0) ? "" : t.count.ToString(), $"Rs.{t.price}", $"{PayPointConst.qrDayCount}.{unitParams.stationId.ToString("D2")}.{ unitParams.unitId.ToString("D2")}.{t.alias}", "Please retain till the end of journey!", ref err);//TOM'daki şekli
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                log.Error("Error QRPrinter -> PrintQR() : " + ex.ToString());
+                return result;
+            }
+        }
+
+        public bool PrintQRTest(string ticketGUID, string qr_date, string journeyType, string startStation, string endStation, int peopleCount, decimal totalPrice, string ticketID)
+        {
+            bool result = false;
+            //List<string> result = new List<string>();
+            try
+            {
+                string err = String.Empty;
+
+                Bitmap imageOF = new Bitmap(new QRCodeEncoder().Encode(ticketGUID), new Size(150, 150));
+
+                bool resultQr = qrPrinter.Print("KOCHI METRO", ticketGUID, qr_date, journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);//TVM'deki halin TOM'a benzetilmesi
+                //qrPrinter.PrintK("KOCHI METRO", ticketGUID, DateTime.Now.ToString(), journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, "Please retain till the end of journey!", ref err);//TVM'deki halin TOM'a benzetilmesi
+                //bool resultQr = qrPrinter.Print("KOCHI METRO", ticketGUID, qr_date, journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);//TVM orjinali
+                ////Task responseTask = Task.Run(() => {
+                ////    resultQr = qrPrinter.PrintG(imageOF, "KOCHI METRO", ticketGUID, qr_date, journeyType, startStation, endStation, (peopleCount == 0) ? "" : peopleCount.ToString(), String.Format("Rs.{0}", totalPrice), ticketID, string.Format("Kochi1 card holder saved Rs. {0:0.00}\non this trip. Get your card now!!\n- \nPlease retain till the end of \njourney!", totalPrice / 10), ref err);
+                ////    Console.WriteLine("In task");
+                ////});
+                ////responseTask.ContinueWith(t => Console.WriteLine("In ContinueWith"));
+                ////responseTask.Wait();
                 result = resultQr;                                                                                                                                                                                                                        //return qrPrinter.Print("KOCHI METRO", t.TicketGUID, PayPointConst.QRCodeCreateDate.ToString(), t.explanation, t.From, t.To, (t.count == 0) ? "" : t.count.ToString(), $"Rs.{t.price}", $"{PayPointConst.qrDayCount}.{unitParams.stationId.ToString("D2")}.{ unitParams.unitId.ToString("D2")}.{t.alias}", "Please retain till the end of journey!", ref err);//TOM'daki şekli
                 return result;
             }

@@ -46,10 +46,6 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="ESCPOSLib, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ExternalLibrary\QRPrinter\ESCPOSLib.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
@@ -66,10 +62,6 @@
     </Reference>
     <Reference Include="SAMOprLib">
       <HintPath>ExternalLibrary\Dispenser\SAMOprLib.dll</HintPath>
-    </Reference>
-    <Reference Include="SveltaLib, Version=1.1.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ExternalLibrary\QRPrinter\SveltaLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -403,6 +395,9 @@
     <Compile Include="Pages\Maintenance\AdminSettingPage.xaml.cs">
       <DependentUpon>AdminSettingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Maintenance\AlearmPage.xaml.cs">
+      <DependentUpon>AlearmPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Maintenance\BNROperationPage.xaml.cs">
       <DependentUpon>BNROperationPage.xaml</DependentUpon>
     </Compile>
@@ -423,6 +418,9 @@
     </Compile>
     <Compile Include="Pages\Maintenance\DeviceTestsPage.xaml.cs">
       <DependentUpon>DeviceTestsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Maintenance\DoorStatusPage.xaml.cs">
+      <DependentUpon>DoorStatusPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Maintenance\MaintancePage.xaml.cs">
       <DependentUpon>MaintancePage.xaml</DependentUpon>
@@ -470,10 +468,13 @@
     <Compile Include="Printers\QRPrinter.cs" />
     <Compile Include="RptDispenser\Dispenser.cs" />
     <Compile Include="RptDispenser\RPTOperations.cs" />
+    <Compile Include="Sensors\KMY200DoorAlarm.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Conversion.cs" />
     <Compile Include="Utils\Enums.cs" />
+    <Compile Include="Utils\ESCPOS.cs" />
     <Compile Include="Utils\QRCPrint.cs" />
+    <Compile Include="Utils\Svelta.cs" />
     <Compile Include="Utils\Utility.cs" />
     <Compile Include="Connected Services\NStationService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -732,6 +733,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Maintenance\AlearmPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Maintenance\BNROperationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -757,6 +762,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Maintenance\DeviceTestsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Maintenance\DoorStatusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

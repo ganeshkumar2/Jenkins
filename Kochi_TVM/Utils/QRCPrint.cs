@@ -1,5 +1,4 @@
-﻿using ESCPOSLib;
-using SveltaLib;
+﻿using log4net;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,6 +12,8 @@ namespace Kochi_TVM.Utils
 {
     public class QRCPrint
     {
+        private static ILog log = LogManager.GetLogger(typeof(QRCPrint).Name);
+
         #region PRIVATE MEMBERS
 
         private SerialPort sp = null;
@@ -49,8 +50,7 @@ namespace Kochi_TVM.Utils
                 sp.Parity = Parity.None;
                 sp.DataBits = 8;
                 sp.StopBits = StopBits.One;
-                sp.ReadTimeout = 5000;
-                sp.WriteTimeout = 5000;
+                sp.ReadTimeout = 500;
 
                 sp.Open();
 
@@ -97,7 +97,7 @@ namespace Kochi_TVM.Utils
                 sp.DiscardOutBuffer();
 
                 sp.WriteTimeout = timeout;
-
+                log.Debug("Transmit :" + BitConverter.ToString(tx));
                 sp.Write(tx, 0, tx.Length);
             }
             catch (Exception E)
@@ -241,8 +241,8 @@ namespace Kochi_TVM.Utils
             {
                 byte[] move_y = null;
                 byte temp = 0;
-                byte[] move_x = { 0x1b, 0x2a, 0x70, 0x31, 0x31, 0x33, 0x58 };
-
+                //byte[] move_x = { 0x1b, 0x2a, 0x70, 0x31, 0x31, 0x33, 0x58 };
+                byte[] move_x = { 0x1b, 0x2a, 0x70, 0x31, 0x33, 0x26, 0x58 };
                 Array_Sum(ref _vector_prn, ref move_x);
 
                 move_y = new byte[3 + i.ToString().Length + 1];
@@ -435,17 +435,22 @@ namespace Kochi_TVM.Utils
         public bool GetStatus(ref PrinterStatus status, ref string err)
         {
             status = PrinterStatus.Unknown;
+            bool Result = false;
+            try
+            {
+                Result = Transmit(svelta.StatusRequest(), 500, ref err);
+                byte[] rx = new byte[32];
+                int rxLen = 0;
 
-            bool Result = Transmit(svelta.StatusRequest(), 5000, ref err);
+                Result = Receive(1, ref rx, ref rxLen, ref err);
 
-            byte[] rx = new byte[32];
-            int rxLen = 0;
-
-            Result = Receive(1, ref rx, ref rxLen, ref err);
-
-            if (Result)
-                status = (PrinterStatus)rx[0];
-
+                if (Result)
+                    status = (PrinterStatus)rx[0];
+            }
+            catch(Exception ex)
+            {
+                log.Debug("QRCPrinter -> GetStatus() " + ex);
+            }
             return Result;
         }
 
@@ -640,12 +645,12 @@ namespace Kochi_TVM.Utils
                 tx.AddRange(svelta.PrintText("To           : " + to));
             }
 
-            if (count != "")
-            {
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow, col));
-                tx.AddRange(svelta.PrintText("Count        : " + count));
-            }
+            //if (count != "")
+            //{
+            //    col -= heightCol;
+            //    tx.AddRange(svelta.PositionCursor(offsetRow, col));
+            //    tx.AddRange(svelta.PrintText("Count        : " + count));
+            //}
 
             if (price != "")
             {
@@ -690,127 +695,7 @@ namespace Kochi_TVM.Utils
 
             Result = Transmit(tx.ToArray(), 5000, ref err);
 
-            Thread.Sleep(600);
-
-            byte[] rx = new byte[8];
-            int rxLen = 0;
-
-            Result = Receive(1, ref rx, ref rxLen, ref err);
-            if (Result)
-            {
-                Result = (rx[0] == (byte)PrinterResponse.ACK);
-                if (!Result)
-                    err = rx[0].ToString("X2");
-            }
-
-            return Result;
-        }
-
-        public bool PrintK(string header, string id, string dt, string type, string from, string to, string count, string price, string no, string footer, ref string err)
-        {
-            bool Result = true;
-
-            const int offsetRow = 30;
-            const int heightCol = 36;
-            ushort col = 376;
-
-            List<byte> tx = new List<byte>();
-
-            tx.AddRange(svelta.ClearBuffer());
-
-            tx.AddRange(svelta.SetTicketDimension(736, 448, 5, 92));
-
-            tx.AddRange(svelta.PrintRotatedImage(1, 640, 160));
-
-            tx.AddRange(svelta.Rotate90Clockwise());
-
-            tx.AddRange(svelta.FontSelect(18));
-
-            tx.AddRange(svelta.PositionCursor(180, 670));
-            tx.AddRange(svelta.PrintText(header));
-
-            tx.AddRange(svelta.PositionCursor(160, 570));
-            tx.AddRange(svelta.PDF417SetNumOfCol());
-            tx.AddRange(svelta.PDF417SetNumOfRow());
-            tx.AddRange(svelta.PDF417SetWidth());
-            tx.AddRange(svelta.PDF417SetHeight());
-            tx.AddRange(svelta.PDF417SetErrCorrectionLevel(0, 0));
-            tx.AddRange(svelta.PDF417Store(id));
-
-            tx.AddRange(svelta.FontSelect(5));
-
-            tx.AddRange(svelta.PositionCursor(offsetRow, col));
-            tx.AddRange(svelta.PrintText("Date/Time    : " + dt));
-
-            col -= heightCol;
-            tx.AddRange(svelta.PositionCursor(offsetRow, col));
-            tx.AddRange(svelta.PrintText("Type         : " + type));
-
-            if (from != "")
-            {
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow, col));
-                tx.AddRange(svelta.PrintText("From         : " + from));
-            }
-
-            if (to != "")
-            {
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow, col));
-                tx.AddRange(svelta.PrintText("To           : " + to));
-            }
-
-            if (count != "")
-            {
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow, col));
-                tx.AddRange(svelta.PrintText("Count        : " + count));
-            }
-
-            if (price != "")
-            {
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow, col));
-                tx.AddRange(svelta.PrintText("Price        : " + price));
-            }
-
-            string[] footerLines = new string[0];
-            if (footer != "")
-                footerLines = footer.Split('\n');
-
-            if (footerLines.Length < 2)
-            {
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow, col));
-                tx.AddRange(svelta.PrintText("---------------------------------------"));
-            }
-
-            col -= heightCol;
-            tx.AddRange(svelta.PositionCursor(offsetRow, col));
-            tx.AddRange(svelta.PrintText("Ticket No    : " + no));
-
-            col -= heightCol;
-            tx.AddRange(svelta.PositionCursor(offsetRow, col));
-            tx.AddRange(svelta.PrintText("---------------------------------------"));
-
-            for (byte ii = 0; ii < footerLines.Length; ii++)
-            {
-                if (footerLines[ii].Trim() == "")
-                    continue;
-
-                if ((ii + 1) == footerLines.Length)
-                    tx.AddRange(svelta.FontSelect(3));
-
-                col -= heightCol;
-                tx.AddRange(svelta.PositionCursor(offsetRow - 18, col));
-                tx.AddRange(svelta.PrintText(footerLines[ii]));
-            }
-
-            tx.AddRange(svelta.PrintCut());
-
-            Result = Transmit(tx.ToArray(), 5000, ref err);
-
-            Thread.Sleep(200);
+            //Thread.Sleep(600);
 
             byte[] rx = new byte[8];
             int rxLen = 0;
@@ -852,10 +737,11 @@ namespace Kochi_TVM.Utils
 
             Result = Transmit(tx.ToArray(), 5000, ref err);
             */
+          
             const int offsetRow = 0;
             const int heightCol = 30;
             ushort col = 360;
-
+              
             List<byte> tx = new List<byte>();
             List<byte> tx1 = new List<byte>();
 
@@ -870,6 +756,7 @@ namespace Kochi_TVM.Utils
             tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
 
             tx.AddRange(svelta.SetTicketDimension(368, 448, 0, 432));
+            //tx.AddRange(svelta.SetTicketDimension(816, 440, 40, 768));
 
             tx.AddRange(svelta.Rotate90Clockwise());
 
@@ -950,37 +837,34 @@ namespace Kochi_TVM.Utils
             tx.AddRange(svelta.Print());
             Transmit(tx.ToArray(), 5000, ref err);
 
-            Thread.Sleep(200);
+            Thread.Sleep(500);
 
             tx.Clear();
             tx.AddRange(svelta.ChangePrinterEmulationToESC_POS());
+            tx.AddRange(new byte[] { 0x1B, 0x64, 0x01 });
             tx.AddRange(FromBitmapToGam(qr));
+            //tx.AddRange(new byte[] { 0x1B, 0x64, 0x02 });
             Bitmap logo = new Bitmap("D:\\logo\\kmrl_logo.bmp");
             logo.RotateFlip(RotateFlipType.Rotate180FlipX);
 
-            tx.AddRange(FromBitmapToGam(new Bitmap(logo, new Size(150, 62))));
-            //tx.AddRange(new byte[] { 0x1D, 0x57, 1, 0, 0x1D, 0xF8, 0x1D, 0x64, 0x00, 0x1D, 0xF6 });
-            tx.AddRange(new byte[] { 0x1B, 0x7B, 0x01 });
-            tx.AddRange(ASCIIEncoding.ASCII.GetBytes("      KOCHI METRO"));
-            tx.AddRange(new byte[] { 0x1B, 0x7B, 0x00 });
-            tx.AddRange(new byte[] { 0x1B, 0x64, 0x01, 0x1B, 0x69 });
+            tx.AddRange(FromBitmapToGam(new Bitmap(logo, new Size(500, 50))));
+            ////tx.AddRange(new byte[] { 0x1D, 0x57, 1, 0, 0x1D, 0xF8, 0x1D, 0x64, 0x00, 0x1D, 0xF6 });
+            //tx.AddRange(new byte[] { 0x1B, 0x7B, 0x01 });
+            //tx.AddRange(ASCIIEncoding.ASCII.GetBytes("      KOCHI METRO"));
+            //tx.AddRange(new byte[] { 0x1B, 0x7B, 0x00 });
+            tx.AddRange(new byte[] { 0x1B, 0x64, 0x06, 0x1B, 0x69 });
             Transmit(tx.ToArray(), 5000, ref err);
 
-            Thread.Sleep(200);
+            Thread.Sleep(500);
+
             tx.Clear();
             tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
-            tx.AddRange(svelta.SetTicketDimension(1,448,0,432));
-            tx.AddRange(svelta.Rotate90Clockwise());
-            tx.AddRange(svelta.PrintCut());
-            Transmit(tx.ToArray(), 5000, ref err);
-            Thread.Sleep(200);
+            //tx.AddRange(svelta.SetTicketDimension(1, 448, 0, 432));
+            //tx.AddRange(svelta.Rotate90Clockwise());
+            //tx.AddRange(svelta.PrintCut());
+            this.Transmit(tx.ToArray(), 5000, ref err);
+            Thread.Sleep(500);
 
-            //tx.Clear();
-            //tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
-
-            //Transmit(tx.ToArray(), 5000, ref err);
-
-            //Thread.Sleep(1000);
 
             byte[] rx = new byte[8];
             int rxLen = 0;
@@ -996,6 +880,178 @@ namespace Kochi_TVM.Utils
 
             return Result;
         }
+
+
+        //public bool PrintG(Bitmap qr, string header, string id, string dt, string type, string from, string to, string count, string price, string no, string footer, ref string err)
+        //{
+        //    bool Result = true;
+
+        //    /*
+        //    List<byte> tx = new List<byte>();
+        //    tx.AddRange(svelta.ChangePrinterEmulationToESC_POS());
+        //    tx.AddRange(new byte[] {0x1B, 0x26, 0x6C, 0x31, 0x37, 0x39, 0x32, 0x52 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x74, 0x32, 0x30, 0x34, 0x52 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x62, 0x31, 0x4D });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x70, 0x35, 0x30, 0x58 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x70, 0x32, 0x35, 0x59 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x62, 0x35, 0x30, 0x57, 0xF2, 0x0F });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x70, 0x2B, 0x31, 0x30, 0x30, 0x58 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x70, 0x35, 0x30, 0x59 });
+        //    tx.AddRange(new byte[] {0x50, 0x52, 0x49, 0x4E, 0x54, 0x20, 0x54, 0x45, 0x53, 0x54 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x70, 0x35, 0x30, 0x58 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x70, 0x39, 0x39, 0x59 });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x62, 0x35, 0x30, 0x57, 0xF2, 0x0F });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x62, 0x30, 0x4D });
+        //    tx.AddRange(new byte[] {0x1B, 0x2A, 0x72, 0x42 });
+        //    tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
+        //    tx.AddRange(svelta.PrintCut());
+
+        //    Result = Transmit(tx.ToArray(), 5000, ref err);
+        //    */
+        //    const int offsetRow = 0;
+        //    const int heightCol = 30;
+        //    ushort col = 360;
+
+        //    List<byte> tx = new List<byte>();
+        //    List<byte> tx1 = new List<byte>();
+
+        //    //tx.AddRange(svelta.ClearBuffer());
+
+        //    //tx.AddRange(svelta.PrintRotatedImage(1, 640, 160));
+        //    //Transmit(tx.ToArray(), 5000, ref err);
+        //    //tx.Clear();
+
+        //    tx.AddRange(svelta.ClearBuffer());
+
+        //    tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
+
+        //    tx.AddRange(svelta.SetTicketDimension(368, 448, 0, 432));
+
+        //    tx.AddRange(svelta.Rotate90Clockwise());
+
+        //    tx.AddRange(svelta.FontSelect(18));
+
+        //    //tx.AddRange(svelta.PositionCursor(180, 670));
+        //    //tx.AddRange(svelta.PrintText(header));
+
+        //    tx.AddRange(svelta.FontSelect(5));
+
+        //    tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //    tx.AddRange(svelta.PrintText("Date/Time : " + dt));
+
+        //    col -= heightCol;
+        //    tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //    tx.AddRange(svelta.PrintText("Type      : " + type));
+
+        //    if (from != "")
+        //    {
+        //        col -= heightCol;
+        //        tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //        tx.AddRange(svelta.PrintText("From      : " + from));
+        //    }
+
+        //    if (to != "")
+        //    {
+        //        col -= heightCol;
+        //        tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //        tx.AddRange(svelta.PrintText("To        : " + to));
+        //    }
+
+        //    //if (count != "")
+        //    //{
+        //    //    col -= heightCol;
+        //    //    tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //    //    tx.AddRange(svelta.PrintText("Count     : " + count));
+        //    //}
+
+        //    if (price != "")
+        //    {
+        //        col -= heightCol;
+        //        tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //        tx.AddRange(svelta.PrintText("Price     : " + price));
+        //    }
+
+        //    string[] footerLines = new string[0];
+        //    if (footer != "")
+        //        footerLines = footer.Split('\n');
+
+        //    if (footerLines.Length < 2)
+        //    {
+        //        col -= heightCol;
+        //        tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //        tx.AddRange(svelta.PrintText("---------------------------------------"));
+        //    }
+
+        //    col -= heightCol;
+        //    tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //    tx.AddRange(svelta.PrintText("Ticket No : " + no));
+
+        //    col -= heightCol;
+        //    tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //    tx.AddRange(svelta.PrintText("---------------------------------------"));
+
+        //    for (byte ii = 0; ii < footerLines.Length; ii++)
+        //    {
+        //        if (footerLines[ii].Trim() == "")
+        //            continue;
+
+        //        if ((ii + 1) == footerLines.Length)
+        //            tx.AddRange(svelta.FontSelect(3));
+
+        //        col -= heightCol;
+        //        tx.AddRange(svelta.PositionCursor(offsetRow, col));
+        //        tx.AddRange(svelta.PrintText(footerLines[ii]));
+        //    }
+
+        //    tx.AddRange(svelta.Print());
+        //    Transmit(tx.ToArray(), 5000, ref err);
+
+        //    Thread.Sleep(600);
+
+        //    tx.Clear();
+        //    tx.AddRange(svelta.ChangePrinterEmulationToESC_POS());
+        //    tx.AddRange(FromBitmapToGam(qr));
+        //    Bitmap logo = new Bitmap("D:\\logo\\kmrl_logo.bmp");
+        //    logo.RotateFlip(RotateFlipType.Rotate180FlipX);
+
+        //    tx.AddRange(FromBitmapToGam(new Bitmap(logo, new Size(150, 62))));
+        //    //tx.AddRange(new byte[] { 0x1D, 0x57, 1, 0, 0x1D, 0xF8, 0x1D, 0x64, 0x00, 0x1D, 0xF6 });
+        //    tx.AddRange(new byte[] { 0x1B, 0x7B, 0x01 });
+        //    tx.AddRange(ASCIIEncoding.ASCII.GetBytes("      KOCHI METRO"));
+        //    tx.AddRange(new byte[] { 0x1B, 0x7B, 0x00 });
+        //    tx.AddRange(new byte[] { 0x1B, 0x64, 0x01, 0x1B, 0x69 });
+        //    Transmit(tx.ToArray(), 5000, ref err);
+
+        //    Thread.Sleep(600);
+        //    tx.Clear();
+        //    tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
+        //    tx.AddRange(svelta.SetTicketDimension(1,448,0,432));
+        //    tx.AddRange(svelta.Rotate90Clockwise());
+        //    tx.AddRange(svelta.PrintCut());
+        //    Transmit(tx.ToArray(), 5000, ref err);
+        //    //Thread.Sleep(600);
+
+        //    //tx.Clear();
+        //    //tx.AddRange(escpos.ChangePrinterEmulationToSVELTA());
+
+        //    //Transmit(tx.ToArray(), 5000, ref err);
+
+        //    Thread.Sleep(1000);
+
+        //    byte[] rx = new byte[8];
+        //    int rxLen = 0;
+
+        //    Result = Receive(1, ref rx, ref rxLen, ref err);
+        //    if (Result)
+        //    {
+        //        Result = (rx[0] == (byte)PrinterResponse.ACK);
+        //        if (!Result)
+        //            err = rx[0].ToString("X2");
+        //    }
+
+
+        //    return Result;
+        //}
 
         //public bool PrintG(Bitmap qr, string header, string id, string dt, string type, string from, string to, string count, string price, string no, string footer, ref string err)
         //{

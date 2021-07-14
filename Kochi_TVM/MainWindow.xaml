@@ -17,7 +17,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*" />
                 <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
 
             <Grid Name="gridLogo" Grid.Row="0" Grid.Column="0" Visibility="Visible" MouseLeftButtonDown="gridLogo_MouseLeftButtonDown">
@@ -35,17 +35,24 @@
                 <Image Name="axisLogo" Grid.Column="3" Grid.Row="1" Source="Images\axisbank_logo.png" VerticalAlignment="Stretch"  Stretch="Uniform" HorizontalAlignment="Stretch"/>
             </Grid>
 
-
-            <Grid Name="gridDT" Grid.Row="0" Grid.Column="2" Visibility="Visible" MouseLeftButtonDown="gridDT_MouseLeftButtonDown">
+            <Grid Name="gridName" Grid.Row="0" Grid.Column="1" Visibility="Visible" MouseLeftButtonDown="gridDT_MouseLeftButtonDown">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Name="lStation" Grid.Row="0" Grid.Column="0" Content="Aluva Station" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Titillium" FontSize="21"  Foreground="{StaticResource WhiteFontColor}" HorizontalAlignment="Stretch" />
-                <Label Name="lDate" Grid.Row="1" Grid.Column="0" Content="Monday, 14th December 2015 09:14 PM" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Titillium" FontSize="21"  Foreground="{StaticResource WhiteFontColor}"  HorizontalAlignment="Stretch" />
+                <Label Name="lStation" Grid.Row="0" Grid.Column="0" Content="Aluva Station" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Titillium" FontSize="23" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}" HorizontalAlignment="Stretch" />
+             </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Name="lDate" Grid.Row="1" Grid.Column="0" Content="Monday, 14th December 2015 09:14 PM" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="0,0,20,0" FontFamily="Titillium" FontSize="21" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}"  HorizontalAlignment="Stretch" />
             </Grid>
         </Grid>
         <Border Grid.Row="1" Grid.Column="0" Background="{StaticResource ViceColor}" />

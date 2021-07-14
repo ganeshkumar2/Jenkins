@@ -1,5 +1,6 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.Sensors;
 using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            KMY200DoorAlarm.Instance.SetAlarmClose();            
             if (Parameters.menuItems.Contains(Parameters.MenuStrings.QrRep) ||
              Parameters.menuItems.Contains(Parameters.MenuStrings.RptRep) ||
              Parameters.menuItems.Contains(Parameters.MenuStrings.CashEscCheck) ||
@@ -40,7 +42,7 @@ namespace Kochi_TVM.Pages.Maintenance
                 btnCollection.Visibility = Visibility.Visible;
             }
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Log Out";
             btnBack.Visibility = Visibility.Hidden;
         }
@@ -63,7 +65,17 @@ namespace Kochi_TVM.Pages.Maintenance
 
             if (messageBoxResult == Custom.MessageBoxResult.OK)
             {
-                NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                int status = KMY200DoorAlarm.Instance.GetStatus();
+                Enums.DoorStatus doorStatus = (Enums.DoorStatus)(status);
+                if(doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
+                {
+                    KMY200DoorAlarm.Instance.SetAlarm();
+                    NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                }
+                else
+                {
+                    MessageBoxOperations.ShowMessage("Door", "Please close the all doors.", MessageBoxButtonSet.OKCancel);
+                }
             }
         }
 

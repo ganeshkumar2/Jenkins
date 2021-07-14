@@ -250,6 +250,7 @@ namespace Kochi_TVM.BNR
             }
             catch (Exception ex)
             {
+                Constants.BNRStatus = "";
                 log.Error("Error BNRManager -> ParseResponse() - " + ex.ToString());
             }
             return state;

@@ -36,6 +36,7 @@ namespace Kochi_TVM.Logs
             {ElectronicJournalRecordType.MediaSelected , " MediaSelected "},
             {ElectronicJournalRecordType.MediaPaid , " MediaPaid "},
             {ElectronicJournalRecordType.QRPrintStarted , " QRPrintStarted"},
+            {ElectronicJournalRecordType.QRPrintError , " QRPrintError"},
             {ElectronicJournalRecordType.QRPrintOver , " QRPrintOver"},
             {ElectronicJournalRecordType.ReceiptPrintStarted , " ReceiptPrintStarted"},
             {ElectronicJournalRecordType.ReceiptPrintOver , " ReceiptPrintOver"},
@@ -202,6 +203,19 @@ namespace Kochi_TVM.Logs
                 using (StreamWriter tw = new StreamWriter(fs))
                 {
                     tw.WriteLine(commondata + String.Format("{0:D8}", Convert.ToInt64(transactionNumber)) + GetEJCode(ElectronicJournalRecordType.QRPrintStarted));
+                    tw.Close();
+                }
+            }
+        }
+
+        public static void QRPrintError()
+        {
+            if (File.Exists(path))
+            {
+                FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write);
+                using (StreamWriter tw = new StreamWriter(fs))
+                {
+                    tw.WriteLine(commondata + String.Format("{0:D8}", Convert.ToInt64(transactionNumber)) + GetEJCode(ElectronicJournalRecordType.QRPrintError));
                     tw.Close();
                 }
             }

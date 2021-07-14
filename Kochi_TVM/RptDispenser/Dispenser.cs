@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Kochi_TVM.Business;
+using log4net;
 using RPTIssueLib;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Kochi_TVM.RptDispenser
 
             try
             {
-                rpt.crt571Port = ConfigurationManager.AppSettings["Dispenser"];
+                rpt.crt571Port = Parameters.TVMConst.RPTDispenserPort;//ConfigurationManager.AppSettings["Dispenser"];
 
                 var err = LIB_ERR.NO_ERROR;
                 if (rpt.Init(DEVICE_TYPE.CRT571_DISPENSER, ref err))

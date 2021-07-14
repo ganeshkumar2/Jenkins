@@ -101,7 +101,7 @@
                 <Label Name="lblChangeAmountKeyColon" Content=":" Grid.Row="5" Grid.Column="16" Grid.RowSpan="2" Grid.ColumnSpan="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
                 <Label Name="lblChangeAmountValue" Content=" 100 Rs." Grid.Row="5" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Style="{StaticResource styleLabelCash}"/>
 
-                <Border x:Name="customerMsgGrid" Grid.Row="7" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="5" Height="40" Background="#ee1a24" HorizontalAlignment="Center" Margin="0,0,20,0" Visibility="Hidden">
+                <Border x:Name="customerMsgGrid" Grid.Row="7" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="9" Height="40" Background="#ee1a24" Visibility="Collapsed" HorizontalAlignment="Center" Margin="0,0,20,0" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>

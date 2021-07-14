@@ -64,7 +64,7 @@ namespace Kochi_TVM.Printers
         {
 
         }
-        string PrinterName = ConfigurationManager.AppSettings["ReceiptPrinterName"];//"CUSTOM TL60";//"Microsoft Print to PDF";
+        string PrinterName = Parameters.TVMConst.ReceiptPrinterName;//ConfigurationManager.AppSettings["ReceiptPrinterName"];//"CUSTOM TL60";//"Microsoft Print to PDF";
         public Enums.PRINTER_STATE getStatusWithUsb()
         {
             try
@@ -205,7 +205,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
             //logo.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipY);
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -234,7 +234,7 @@ namespace Kochi_TVM.Printers
             //logo.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipY);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -263,7 +263,7 @@ namespace Kochi_TVM.Printers
             //logo.RotateFlip(System.Drawing.RotateFlipType.Rotate180FlipY);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -293,7 +293,7 @@ namespace Kochi_TVM.Printers
             AddText("GSTIN32AAECK5274H1ZL");
             AddText("SALE");
             AddText("------------------------------------------------------------------------------");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("Media Type", "QR", 80);
@@ -340,13 +340,13 @@ namespace Kochi_TVM.Printers
 
             AddText("KOCHI METRO");
             AddText("TVM Info");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
 
             AddText("------------------------------------------------------------------------------");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Equipment ID", Parameters.TVMDynamic.GetParameter("sys_EquipmentId"), 80);
             AddText("App Version", Parameters.TVMStatic.GetParameter("appVersion"), 80);
@@ -377,19 +377,19 @@ namespace Kochi_TVM.Printers
 
             AddText("KOCHI METRO");
             AddText("TVM Devices Info");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
 
             AddText("------------------------------------------------------------------------------");
             AddText("Receipt Printer", getStatusWithUsb() == PRINTER_STATE.OK ? "OK" : "ERROR(Not Connected)", 110);
-            AddText(string.Format("QR Printer: {0}", Parameters.TVMStatic.GetParameter("qrcPrinterStatus") == "1" ? "OK" : "ERROR(Not Connected)"));
+            AddText("QR Printer", QRPrinter.Instance.CheckQrPrinterStatus() == PRINTER_STATE.OK ? "OK" : "ERROR(Not Connected)",110);
             //AddText("QR Printer", PrintOperations.isInitQRPrinter == true ? "OK" : "Not Connected", 110);
-            AddText("Banknote Acceptor", Parameters.TVMStatic.GetParameter("bnaStatus") == "1" ? "OK" : "Not Connected", 110);
-            AddText("RPT Dispenser", Parameters.TVMStatic.GetParameter("rptDispenserStatus") == "1" ? "OK" : "Not Connected", 110);
-            AddText("EMV POS", "Not Connected", 110);
-            AddText("Card POS", "Not Connected", 110);
+            AddText("Banknote Acceptor", Constants.BNRStatus == "DISABLED" ? "OK" : "Not Connected", 110);
+            //AddText("RPT Dispenser", Parameters.TVMStatic.GetParameter("rptDispenserStatus") == "1" ? "OK" : "Not Connected", 110);
+            //AddText("EMV POS", "Not Connected", 110);
+            //AddText("Card POS", "Not Connected", 110);
             AddText("Hopper Rs.5", CCTalkManager.Instance.coinHopperEV4000_3.Manufacture != null ? "OK" : "Not Connected)", 110);
             AddText("Hopper Rs.2", CCTalkManager.Instance.coinHopperEV4000_2.Manufacture != null ? "OK" : "Not Connected)", 110);
             AddText("Hopper Rs.1", CCTalkManager.Instance.coinHopperEV4000_1.Manufacture != null ? "OK" : "Not Connected)", 110);
@@ -417,7 +417,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("TVM Collection Info");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Card No", "1234567898765432", 80);
 
@@ -659,7 +659,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -669,7 +669,8 @@ namespace Kochi_TVM.Printers
             AddText("Added Coin", "Rs."+coin.ToString(), 80);
             AddText("Added Count", count.ToString(), 80);
             AddText("Added Amount", "Rs."+(count * coin).ToString(), 80);
-            AddText("Total Count", stock.ToString(), 80);
+            AddText("------------------------------------------------------------------------------");
+            AddText("Available Count", stock.ToString(), 80);
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
@@ -690,7 +691,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("sys_EquipmentId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -701,7 +702,8 @@ namespace Kochi_TVM.Printers
             AddText("Removed Coin", "Rs."+coin.ToString(), 110);
             AddText("Removed Count", count.ToString(), 110);
             AddText("Removed Amount", "Rs." + (count * coin).ToString(), 110);
-            AddText("Total Count", stock.ToString(), 110);
+            AddText("------------------------------------------------------------------------------");
+            AddText("Available Count", stock.ToString(), 110);
             AddText("------------------------------------------------------------------------------");
 
             PrintDocument Document1 = new PrintDocument();
@@ -722,7 +724,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -760,7 +762,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -774,14 +776,16 @@ namespace Kochi_TVM.Printers
             AddText("Rs." + Constants.HopperAddress1Coin + " Coin Count", coin1.ToString(), 120);
             AddText("Rs." + Constants.HopperAddress2Coin+" Coin Count", coin2.ToString(), 120);
             AddText("Rs." + Constants.HopperAddress3Coin+" Coin Count", coin5.ToString(), 120);
+            AddText("------------------------------------------------------------------------------");
             AddText("Hoppers Amount", ("Rs." + ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin))).ToString(), 120);
-
+            AddText("------------------------------------------------------------------------------");
             AddText("Rs." + billval1 +" Banknote Count", banknote10.ToString(), 130);
             AddText("Rs." + billval2 +" Banknote Count", banknote20.ToString(), 130);
             AddText("Rs." + billval3 +" Banknote Count", bankescrow.ToString(), 130);
             AddText("Box Amount", "Rs." + box.ToString() , 130);
+            AddText("------------------------------------------------------------------------------");
             AddText("Banknotes Amount", ("Rs." + ((banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box)).ToString(), 130);
-
+            AddText("------------------------------------------------------------------------------");
 
             AddText("Grand Total", ("Rs." + ((coin1 * Constants.HopperAddress1Coin) + (coin2 * Constants.HopperAddress2Coin) + (coin5 * Constants.HopperAddress3Coin) + (banknote10 * billval1) + (banknote20 * billval2) + (bankescrow * billval3) + box)).ToString(), 130);
 
@@ -805,7 +809,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -855,7 +859,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -904,7 +908,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -952,7 +956,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -983,7 +987,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -1055,7 +1059,7 @@ namespace Kochi_TVM.Printers
             AddImage(logo);
 
             AddText("KOCHI METRO");
-            AddText("Date/Time", Ticket.transactionDts.ToString("yyyy-MM-dd HH:mm"), 80);
+            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Station", Stations.currentStation.name, 80);
             AddText("User", Parameters.userId, 80);
@@ -1066,7 +1070,7 @@ namespace Kochi_TVM.Printers
             AddText("Type ", explanation, 100);
             AddText("From ", From, 100);
             AddText("To ", to, 100);
-            AddText("Count ", count, 100);
+            AddText("Id ", count, 100);
             AddText("------------------------------------------------------------------------------");
             AddText("");
 

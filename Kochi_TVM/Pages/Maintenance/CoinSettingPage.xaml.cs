@@ -24,7 +24,7 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             InitializeComponent();
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             lblTypeCoin1.Text = Convert.ToString(Constants.HopperAddress1Coin);
             lblTypeCoin2.Text = Convert.ToString(Constants.HopperAddress2Coin);
             lblTypeCoin3.Text = Convert.ToString(Constants.HopperAddress3Coin);

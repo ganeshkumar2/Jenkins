@@ -1,5 +1,6 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.Pages.Custom;
+using Kochi_TVM.Printers;
 using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Kochi_TVM.Pages.Maintenance
             UpdDevStat();
 
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
         }
         private void UpdDevStat()
@@ -96,7 +97,10 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-
+            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+            {
+                CustomTL60Printer.Instance.TVMInfoReceipt();
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

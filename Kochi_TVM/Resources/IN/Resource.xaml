@@ -61,8 +61,9 @@
 	<system:String x:Key="selectOperation">Please Select Operation</system:String>
 	<system:String x:Key="info">Info</system:String>
 	<system:String x:Key="operationControl">Operation Control</system:String>
-	<system:String x:Key="deficitAmount">शेष राशि</system:String>
-	<system:String x:Key="maintenance">Maintenance</system:String>
+    <system:String x:Key="deficitAmount">घाटा राशि</system:String>
+    <system:String x:Key="balanceAmount">शेष राशि</system:String>
+    <system:String x:Key="maintenance">Maintenance</system:String>
 	<system:String x:Key="appVersion">App Version: </system:String>
 	<system:String x:Key="equipmentId">Equipment Id: </system:String>
 	<system:String x:Key="tvmInfo">TVM Info</system:String>
@@ -179,4 +180,6 @@
     <system:String x:Key="Kakkanad IWAI">कक्कनाड आईडब्ल्यूएआई</system:String>
     <system:String x:Key="Eroor">एरोर</system:String>
     <system:String x:Key="Vyttila">वैरिलि</system:String>
+    <system:String x:Key="nobalance">अपर्याप्त शेषराशि</system:String>
+    <system:String x:Key="maxnotes">अधिकतम नोट स्वीकार किए गए</system:String>
 </ResourceDictionary>

@@ -108,12 +108,12 @@
                 <Label Name="hoppersCaption" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Content="  Hoppers : " Style="{StaticResource styleLabel2}"/>
                 <Label Name="hoppersTotalCaption" Grid.Row="0" Grid.Column="2" Content="Total" Style="{StaticResource styleLabel2}"/>
                 <Label Name="hoppersTotalValue" Grid.Row="1" Grid.Column="2" Content="294 Rs. " Style="{StaticResource styleLabel2}" />
-                <Label Name="hopper5Caption" Grid.Row="0" Grid.Column="4" Content="Hopper 5 RS" Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper5Value" Grid.Row="1" Grid.Column="4" Content="38x5 = 190 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper5Caption" Grid.Row="0" Grid.Column="8" Content="Hopper 5 RS" Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper5Value" Grid.Row="1" Grid.Column="8" Content="38x5 = 190 Rs." Style="{StaticResource styleLabel2}"/>
                 <Label Name="hopper2Caption" Grid.Row="0" Grid.Column="6" Content="Hopper 2 RS" Style="{StaticResource styleLabel2}"/>
                 <Label Name="hopper2Value" Grid.Row="1" Grid.Column="6" Content="45 x 2 = 90 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper1Caption" Grid.Row="0" Grid.Column="8" Content="Hopper 1 RS" Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper1Value" Grid.Row="1" Grid.Column="8" Content="14 x 1 = 14 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper1Caption" Grid.Row="0" Grid.Column="4" Content="Hopper 1 RS" Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper1Value" Grid.Row="1" Grid.Column="4" Content="14 x 1 = 14 Rs." Style="{StaticResource styleLabel2}"/>
             </Grid>
 
             <Grid Name="Receipts" Grid.Row="4" Grid.Column="0">
@@ -151,17 +151,17 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="2" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" Margin="0,0,-0.2,0.4" />
-                <Label Name="GrandTotal" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Content="  Grand Total : " Style="{StaticResource styleLabel2}" Margin="0,0,0,0.4"/>
+                <Label Name="GrandTotal" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Content="  Grand Total : " Style="{StaticResource styleLabel2}" />
                 <Label Name="GrandTotalAmount" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="10000 Rs." Style="{StaticResource styleLabel2}" />
-                <Label Name="HopperGrand" Grid.Row="0" Grid.Column="2" Content="Hoppers" Style="{StaticResource styleLabel2}" Grid.ColumnSpan="2" Margin="0.2,0,24.6,45.4" Grid.RowSpan="2"/>
-                <Label Name="HopperGrandAmount" Grid.Row="1" Grid.Column="2" Content="1000 Rs." Style="{StaticResource styleLabel2}" Grid.ColumnSpan="2" Margin="0.2,0.2,24.6,0.4" />
-                <Label Name="BanknoteGrand" Grid.Row="0" Grid.Column="4" Content="Banknotes" Style="{StaticResource styleLabel2}" Grid.ColumnSpan="2" Margin="0.4,0,-0.2,45.4" Grid.RowSpan="2"/>
-                <Label Name="BanknoteGrandAmount" Grid.Row="1" Grid.Column="4" Content="2000 Rs." Style="{StaticResource styleLabel2}" Grid.ColumnSpan="2" Margin="0.4,0.2,-0.2,0.4"/>
+                <Label Name="HopperGrand" Grid.Row="0" Grid.Column="2" Content="Hoppers" Style="{StaticResource styleLabel2}"/>
+                <Label Name="HopperGrandAmount" Grid.Row="1" Grid.Column="2" Content="1000 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="BanknoteGrand" Grid.Row="0" Grid.Column="4" Content="Banknotes" Style="{StaticResource styleLabel2}"/>
+                <Label Name="BanknoteGrandAmount" Grid.Row="1" Grid.Column="4" Content="2000 Rs." Style="{StaticResource styleLabel2}"/>
             </Grid>
 
 
 
-            <Grid Name="Dispenser" Grid.Row="6" Grid.Column="0">
+            <Grid Name="Dispenser" Grid.Row="6" Grid.Column="0" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>

@@ -31,7 +31,7 @@ namespace Kochi_TVM.Pages.Maintenance
         {
             InitializeComponent();
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
-            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("sys_EquipmentId");
+            lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
             cbCassette.Items.Add("Cassette 1");
             cbCassette.Items.Add("Cassette 2");
@@ -200,6 +200,24 @@ namespace Kochi_TVM.Pages.Maintenance
         private void GridSubmitSetting_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TVMUtility.PlayClick();
+
+            if (cassettes[0].billNumber > 0)
+            {
+                MessageBoxOperations.ShowMessage("BNR", "Please unload the Cassette 1.", MessageBoxButtonSet.OK);
+                return;
+            }
+
+            if (cassettes[1].billNumber > 0)
+            {
+                MessageBoxOperations.ShowMessage("BNR", "Please unload the Cassette 2.", MessageBoxButtonSet.OK);
+                return;
+            }
+
+            if (cassettes[2].billNumber > 0)
+            {
+                MessageBoxOperations.ShowMessage("BNR", "Please unload the Cassette 3.", MessageBoxButtonSet.OK);
+                return;
+            }
 
             if ((cbCassette.SelectedIndex == -1))
             {

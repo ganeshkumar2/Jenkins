@@ -61,8 +61,9 @@
 	<system:String x:Key="selectOperation">Please Select Operation</system:String>
 	<system:String x:Key="info">Info</system:String>
 	<system:String x:Key="operationControl">Operation Control</system:String>
-	<system:String x:Key="deficitAmount">ബാക്കി തുക</system:String>
-	<system:String x:Key="maintenance">Maintenance</system:String>
+    <system:String x:Key="deficitAmount">കമ്മി തുക</system:String>
+    <system:String x:Key="balanceAmount">ബാക്കി തുക</system:String>
+    <system:String x:Key="maintenance">Maintenance</system:String>
 	<system:String x:Key="appVersion">App Version: </system:String>
 	<system:String x:Key="equipmentId">Equipment Id: </system:String>
 	<system:String x:Key="tvmInfo">TVM Info</system:String>
@@ -153,7 +154,7 @@
 	<system:String x:Key="shutdownCap">SHUTDOWN</system:String>
 	<system:String x:Key="areYouSureRestart">Are you sure you want to Restart the TVM?</system:String>
 	<system:String x:Key="areYouSureShutdown">Are you sure you want to Shutdown the TVM?</system:String>
-    <system:String x:Key="ChangeAmt">തുക മാറ്റുക:</system:String>
+    <system:String x:Key="ChangeAmt">ബാക്കി തുക:</system:String>
     <system:String x:Key="Aluva">ആലുവ</system:String>
     <system:String x:Key="Pulinchodu">പുളിഞ്ചോട്</system:String>
     <system:String x:Key="Companypady">കമ്പനിപ്പടി</system:String>
@@ -179,4 +180,6 @@
     <system:String x:Key="Kakkanad IWAI">കക്കനാട് IWAI</system:String>
     <system:String x:Key="Eroor">എറൂർ</system:String>
     <system:String x:Key="Vyttila">വൈറ്റില</system:String>
+    <system:String x:Key="nobalance">അപര്യാപ്തമായ ബാലൻസ്</system:String>
+    <system:String x:Key="maxnotes">പരമാവധി കുറിപ്പുകൾ സ്വീകരിച്ചു</system:String>
 </ResourceDictionary>

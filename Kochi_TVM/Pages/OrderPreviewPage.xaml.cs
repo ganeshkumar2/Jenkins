@@ -252,6 +252,7 @@ namespace Kochi_TVM.Pages
             {
                 if (StockOperations.qrSlip >= Ticket.ticketCount)
                 {
+                    ElectronicJournal.AmountPayable(Ticket.totalPrice.ToString());
                     ElectronicJournal.MediaSelected("CASH");
                     NavigationService.Navigate(new Pages.PayByCashPage());
                 }
