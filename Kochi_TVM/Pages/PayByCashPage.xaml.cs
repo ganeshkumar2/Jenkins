@@ -518,7 +518,7 @@ namespace Kochi_TVM.Pages
                     {
                         if (Constants.BNRStatus == "IDLING")
                         {
-                            BNRManager.Instance.StopProcess();
+                            DisposePage();
                         }
                     }
                 };
@@ -540,44 +540,36 @@ namespace Kochi_TVM.Pages
                     {                         
                         await Task.Delay(3000);
                         log.Info("PayByCashOrCoinPage - dispatcherTimer_Tick");
-                        if (Constants.BNRStatus == "DISABLED" || Constants.BNRStatus == "IDLING")
-                        {                            
-                            DisposePage();
+                        DisposePage();
+                        await Task.Delay(300);
+                        isReturn = true;
+                        isCancel = true;
+                        if (!dispenseMyself)
+                        {
                             await Task.Delay(300);
-                            isReturn = true;
-                            isCancel = true;
-                            if (!dispenseMyself)
-                            {
-                                await Task.Delay(300);
 
-                                byte[] snd_arr = await getDispence();
-                                if (snd_arr != null && snd_arr.Length > 0)
-                                {
-                                    waitGrid.Visibility = Visibility.Hidden;
-                                    mainGrid.Visibility = Visibility.Hidden;
-                                    returnAmountTxt.Content = "₹" + Convert.ToString(receivedNote);
-                                    ElectronicJournal.NoteReturned(Convert.ToInt32(receivedNote));
-                                    cashGrid.Visibility = Visibility.Visible;
-                                    DispenseSeqBill(snd_arr);
-                                }
-                                else
-                                {
-                                    ElectronicJournal.OrderCancelled();
-                                    NavigationService.Navigate(new Pages.MainPage());
-                                }
+                            byte[] snd_arr = await getDispence();
+                            if (snd_arr != null && snd_arr.Length > 0)
+                            {
+                                waitGrid.Visibility = Visibility.Hidden;
+                                mainGrid.Visibility = Visibility.Hidden;
+                                returnAmountTxt.Content = "₹" + Convert.ToString(receivedNote);
+                                ElectronicJournal.NoteReturned(Convert.ToInt32(receivedNote));
+                                cashGrid.Visibility = Visibility.Visible;
+                                DispenseSeqBill(snd_arr);
                             }
                             else
                             {
                                 ElectronicJournal.OrderCancelled();
                                 NavigationService.Navigate(new Pages.MainPage());
                             }
-                            checkTranTimer.Dispose();
                         }
                         else
                         {
-                            checkTranTimer.Dispose();
-                            resetTimmer();
+                            ElectronicJournal.OrderCancelled();
+                            NavigationService.Navigate(new Pages.MainPage());
                         }
+                        checkTranTimer.Dispose();
                     }
                     catch (Exception ex1)
                     {
