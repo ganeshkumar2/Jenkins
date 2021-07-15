@@ -427,17 +427,47 @@ namespace Kochi_TVM.Pages
                             }
                             switch (cmd)
                             {
-                                case "EnterFareBypassMode1":
-
+                                case "EnterOutOffServiceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "OutOffServiceMode";
+                                           txtErrorCode.Text = "Out Of Service Mode";
+                                           outofservice.Visibility = Visibility.Visible;
+                                           LedOperations.Close();
+                                       }));
                                     break;
-                                case "ExitFareBypassMode1":
-
+                                case "ExitOutOffServiceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                   DispatcherPriority.Background,
+                                   new Action(() =>
+                                   {
+                                       Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                       txtErrorCode.Text = "";
+                                       outofservice.Visibility = Visibility.Collapsed;
+                                       LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                                   }));
                                     break;
-                                case "EnterFareBypassMode2":
-
+                                case "EnterMaintenanceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "MaintenanceMode";
+                                           NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                                       }));
                                     break;
-                                case "ExitFareBypassMode2":
-
+                                case "ExitMaintenanceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                           txtErrorCode.Text = "";
+                                           outofservice.Visibility = Visibility.Collapsed;
+                                           LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                                       }));
                                     break;
                                 case "EnterEmergencyMode":
                                     Application.Current.Dispatcher.BeginInvoke(
@@ -447,6 +477,7 @@ namespace Kochi_TVM.Pages
                                            Parameters.TvmMonitoringData.SpecialMode = "Emergency";
                                            txtErrorCode.Text = "Emergency Mode";
                                            outofservice.Visibility = Visibility.Visible;
+                                           LedOperations.Emergency();
                                        }));
                                     break;
                                 case "ExitEmergencyMode":
@@ -457,27 +488,28 @@ namespace Kochi_TVM.Pages
                                         Parameters.TvmMonitoringData.SpecialMode = "Normal";
                                         txtErrorCode.Text = "";
                                         outofservice.Visibility = Visibility.Collapsed;
+                                        LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                                     }));
                                     break;
-                                case "EnterIncidentMode":
-                                    Application.Current.Dispatcher.BeginInvoke(
-                                       DispatcherPriority.Background,
-                                       new Action(() =>
-                                       {
-                                           txtErrorCode.Text = "Incident Mode";
-                                           outofservice.Visibility = Visibility.Visible;
-                                       }));
-                                    break;
-                                case "ExitIncidentMode":
-                                    Application.Current.Dispatcher.BeginInvoke(
-                                       DispatcherPriority.Background,
-                                       new Action(() =>
-                                       {
-                                           Parameters.TvmMonitoringData.SpecialMode = "Normal";
-                                           txtErrorCode.Text = "";
-                                           outofservice.Visibility = Visibility.Collapsed;
-                                       }));
-                                    break;
+                                //case "EnterIncidentMode":
+                                //    Application.Current.Dispatcher.BeginInvoke(
+                                //       DispatcherPriority.Background,
+                                //       new Action(() =>
+                                //       {
+                                //           txtErrorCode.Text = "Incident Mode";
+                                //           outofservice.Visibility = Visibility.Visible;
+                                //       }));
+                                //    break;
+                                //case "ExitIncidentMode":
+                                //    Application.Current.Dispatcher.BeginInvoke(
+                                //       DispatcherPriority.Background,
+                                //       new Action(() =>
+                                //       {
+                                //           Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                //           txtErrorCode.Text = "";
+                                //           outofservice.Visibility = Visibility.Collapsed;
+                                //       }));
+                                //    break;
                                 case "EnterScreenLock":
                                     ScreenLockMode();
                                     break;
@@ -547,26 +579,57 @@ namespace Kochi_TVM.Pages
                             }
                             switch (cmd)
                             {
-                                case "EnterFareBypassMode1":
-
+                                case "EnterOutOffServiceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "OutOffServiceMode";
+                                           txtErrorCode.Text = "Out Of Service Mode";
+                                           outofservice.Visibility = Visibility.Visible;
+                                           LedOperations.Close();
+                                       }));
                                     break;
-                                case "ExitFareBypassMode1":
-
+                                case "ExitOutOffServiceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                   DispatcherPriority.Background,
+                                   new Action(() =>
+                                   {
+                                       Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                       txtErrorCode.Text = "";
+                                       outofservice.Visibility = Visibility.Collapsed;
+                                       LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                                   }));
                                     break;
-                                case "EnterFareBypassMode2":
-
+                                case "EnterMaintenanceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "MaintenanceMode";
+                                           NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                                       }));
                                     break;
-                                case "ExitFareBypassMode2":
-
+                                case "ExitMaintenanceMode":
+                                    Application.Current.Dispatcher.BeginInvoke(
+                                       DispatcherPriority.Background,
+                                       new Action(() =>
+                                       {
+                                           Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                           txtErrorCode.Text = "";
+                                           outofservice.Visibility = Visibility.Collapsed;
+                                           LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                                       }));
                                     break;
                                 case "EnterEmergencyMode":
                                     Application.Current.Dispatcher.BeginInvoke(
                                        DispatcherPriority.Background,
                                        new Action(() =>
                                        {
-                                           Parameters.TvmMonitoringData.SpecialMode = "Emergency";
+                                           Parameters.TvmMonitoringData.SpecialMode = "EmergencyMode";
                                            txtErrorCode.Text = "Emergency Mode";
                                            outofservice.Visibility = Visibility.Visible;
+                                           LedOperations.Emergency();
                                        }));
                                     break;
                                 case "ExitEmergencyMode":
@@ -577,27 +640,28 @@ namespace Kochi_TVM.Pages
                                         Parameters.TvmMonitoringData.SpecialMode = "Normal";
                                         txtErrorCode.Text = "";
                                         outofservice.Visibility = Visibility.Collapsed;
+                                        LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                                     }));
                                     break;
-                                case "EnterIncidentMode":
-                                    Application.Current.Dispatcher.BeginInvoke(
-                                       DispatcherPriority.Background,
-                                       new Action(() =>
-                                       {
-                                           txtErrorCode.Text = "Incident Mode";
-                                           outofservice.Visibility = Visibility.Visible;
-                                       }));
-                                    break;
-                                case "ExitIncidentMode":
-                                    Application.Current.Dispatcher.BeginInvoke(
-                                       DispatcherPriority.Background,
-                                       new Action(() =>
-                                       {
-                                           Parameters.TvmMonitoringData.SpecialMode = "Normal";
-                                           txtErrorCode.Text = "";
-                                           outofservice.Visibility = Visibility.Collapsed;
-                                       }));
-                                    break;
+                                //case "EnterIncidentMode":
+                                //    Application.Current.Dispatcher.BeginInvoke(
+                                //       DispatcherPriority.Background,
+                                //       new Action(() =>
+                                //       {
+                                //           txtErrorCode.Text = "IncidentMode";
+                                //           outofservice.Visibility = Visibility.Visible;
+                                //       }));
+                                //    break;
+                                //case "ExitIncidentMode":
+                                //    Application.Current.Dispatcher.BeginInvoke(
+                                //       DispatcherPriority.Background,
+                                //       new Action(() =>
+                                //       {
+                                //           Parameters.TvmMonitoringData.SpecialMode = "Normal";
+                                //           txtErrorCode.Text = "";
+                                //           outofservice.Visibility = Visibility.Collapsed;
+                                //       }));
+                                //    break;
                                 case "EnterScreenLock":
                                     ScreenLockMode();
                                     break;
@@ -697,6 +761,7 @@ namespace Kochi_TVM.Pages
                   DispatcherPriority.Background,
                   new Action(() =>
                   {
+                      LedOperations.GreenText("STATION CLOSE");
                       Parameters.TvmMonitoringData.SpecialMode = "StationClose";
                       txtErrorCode.Text = "Station Close";
                       outofservice.Visibility = Visibility.Visible;
@@ -717,6 +782,7 @@ namespace Kochi_TVM.Pages
                      DispatcherPriority.Background,
                      new Action(() =>
                      {
+                         LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                          Parameters.TvmMonitoringData.SpecialMode = "Normal";
                          txtErrorCode.Text = "";
                          outofservice.Visibility = Visibility.Collapsed;
@@ -742,128 +808,130 @@ namespace Kochi_TVM.Pages
                     DateTime startDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursStart"));
                     DateTime endDate = DateTime.Parse(Parameters.TVMDynamic.GetParameter("sys_WorkHoursEnd"));
 
-                    if (!((startDate <= DateTime.Now) && (endDate >= DateTime.Now)))
+                    if (Parameters.TvmMonitoringData.SpecialMode == "Normal")
                     {
-                        NavigationService.Navigate(new Pages.StationClosedPage());
-                    }
-
-                    int status = KMY200DoorAlarm.Instance.GetStatus();
-                    Enums.DoorStatus doorStatus = (Enums.DoorStatus)(status);
-                    if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
-                    {
-                        Parameters.TvmMonitoringData.doorSensorStatus = "Door Closed";
-                        outofservice.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        Parameters.TvmMonitoringData.doorSensorStatus = "Door Open";
-                        txtErrorCode.Text = "Door Open";
-                        outofservice.Visibility = Visibility.Visible;
-                    }
-
-                    if (Parameters.TVMDynamic.GetAfcConnStatus())
-                    {
-                        Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
-                        Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
-                        if (i == 0)
-                            i = 1;
-                        btnSelectTicket.IsEnabled = true;
-                        btnSelectTicket.Opacity = 1;
-                        if (i == 1)
+                        if (!((startDate <= DateTime.Now) && (endDate >= DateTime.Now)))
                         {
-                            outofservice.Visibility = Visibility.Collapsed;
-                            i = 2;
-                            lblNoConnection.Content = "";
-                            LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                            NavigationService.Navigate(new Pages.StationClosedPage());
                         }
-                    }
-                    else
-                    {
-                        Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "0");
-                        Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
-                        i = 0;
-                        outofservice.Visibility = Visibility.Visible;
-                        txtErrorCode.Text = "No Connection";
-                        LedOperations.Close();
-                        lblNoConnection.Content = "No Connection!";
-                        btnSelectTicket.IsEnabled = false;
-                        btnSelectTicket.Opacity = 0.2;
-                        return;
-                    }
 
-                    BNRManager.Instance.PollingAction();
-                    if(Constants.BNRStatus != "")
-                    {
-                        if (j == 0)
-                            j = 1;
-                        btnSelectTicket.IsEnabled = true;
-                        btnSelectTicket.Opacity = 1;
-                        if (j == 1)
+                        int status = KMY200DoorAlarm.Instance.GetStatus();
+                        Enums.DoorStatus doorStatus = (Enums.DoorStatus)(status);
+                        if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
                         {
+                            Parameters.TvmMonitoringData.doorSensorStatus = "Door Closed";
                             outofservice.Visibility = Visibility.Collapsed;
-                            j = 2;
-                            lblNoConnection.Content = "";
-                            LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                         }
-                    }
-                    else
-                    {                       
-                        j = 0;
-                        outofservice.Visibility = Visibility.Visible;
-                        txtErrorCode.Text = "BNR Printer Error";
-                        LedOperations.Close();
-                        lblNoConnection.Content = "BNR Printer Error";
-                        btnSelectTicket.IsEnabled = false;
-                        btnSelectTicket.Opacity = 0.2;
-                        return;
-                    }
-
-                    PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
-                    if (QRStatus == PRINTER_STATE.OK && StockOperations.qrSlip > 0)
-                    {
-                        if (j == 0)
-                            j = 1;
-
-                        Check_QRprinter = true;
-                        btnSelectTicket.IsEnabled = true;                        
-                        btnSelectTicket.Opacity = 1;
-                        if (j == 1)
-                        {
-                            j = 2;
-                            outofservice.Visibility = Visibility.Collapsed;
-                            lblNoConnection.Content = "";
-                            LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
-                        }
-                    }
-                    else
-                    {
-                        j = 0;
-                        outofservice.Visibility = Visibility.Visible;
-                        LedOperations.Close();
-                        Check_QRprinter = false;
-                        btnSelectTicket.IsEnabled = false;
-                        if(StockOperations.qrSlip > 0)
-                            txtErrorCode.Text = "QR Printer Error";
                         else
-                            txtErrorCode.Text = "QR Printer Paper Low";
-                        lblNoConnection.Content = "Device Error";
-                        btnSelectTicket.Opacity = 0.2;
-                        return;
-                    }
+                        {
+                            Parameters.TvmMonitoringData.doorSensorStatus = "Door Open";
+                            txtErrorCode.Text = "Door Open";
+                            outofservice.Visibility = Visibility.Visible;
+                        }
+
+                        if (Parameters.TVMDynamic.GetAfcConnStatus())
+                        {
+                            Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
+                            Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "1");
+                            if (i == 0)
+                                i = 1;
+                            btnSelectTicket.IsEnabled = true;
+                            btnSelectTicket.Opacity = 1;
+                            if (i == 1)
+                            {
+                                outofservice.Visibility = Visibility.Collapsed;
+                                i = 2;
+                                lblNoConnection.Content = "";
+                                LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                            }
+                        }
+                        else
+                        {
+                            Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "0");
+                            Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
+                            i = 0;
+                            outofservice.Visibility = Visibility.Visible;
+                            txtErrorCode.Text = "No Connection";
+                            LedOperations.Close();
+                            lblNoConnection.Content = "No Connection!";
+                            btnSelectTicket.IsEnabled = false;
+                            btnSelectTicket.Opacity = 0.2;
+                            return;
+                        }
+
+                        BNRManager.Instance.PollingAction();
+                        if (Constants.BNRStatus != "")
+                        {
+                            if (j == 0)
+                                j = 1;
+                            btnSelectTicket.IsEnabled = true;
+                            btnSelectTicket.Opacity = 1;
+                            if (j == 1)
+                            {
+                                outofservice.Visibility = Visibility.Collapsed;
+                                j = 2;
+                                lblNoConnection.Content = "";
+                                LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                            }
+                        }
+                        else
+                        {
+                            j = 0;
+                            outofservice.Visibility = Visibility.Visible;
+                            txtErrorCode.Text = "BNR Printer Error";
+                            LedOperations.Close();
+                            lblNoConnection.Content = "BNR Printer Error";
+                            btnSelectTicket.IsEnabled = false;
+                            btnSelectTicket.Opacity = 0.2;
+                            return;
+                        }
+
+                        PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
+                        if (QRStatus == PRINTER_STATE.OK && StockOperations.qrSlip > 0)
+                        {
+                            if (j == 0)
+                                j = 1;
+
+                            Check_QRprinter = true;
+                            btnSelectTicket.IsEnabled = true;
+                            btnSelectTicket.Opacity = 1;
+                            if (j == 1)
+                            {
+                                j = 2;
+                                outofservice.Visibility = Visibility.Collapsed;
+                                lblNoConnection.Content = "";
+                                LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
+                            }
+                        }
+                        else
+                        {
+                            j = 0;
+                            outofservice.Visibility = Visibility.Visible;
+                            LedOperations.Close();
+                            Check_QRprinter = false;
+                            btnSelectTicket.IsEnabled = false;
+                            if (StockOperations.qrSlip > 0)
+                                txtErrorCode.Text = "QR Printer Error";
+                            else
+                                txtErrorCode.Text = "QR Printer Paper Low";
+                            lblNoConnection.Content = "Device Error";
+                            btnSelectTicket.Opacity = 0.2;
+                            return;
+                        }
 
 
-                    PRINTER_STATE ReceiptPrinter = CustomTL60Printer.Instance.getStatusWithUsb();
-                    if (ReceiptPrinter == PRINTER_STATE.OK)
-                    {
-                        Check_Receiptprinter = true;
-                        Constants.NoReceiptMode = false;
+                        PRINTER_STATE ReceiptPrinter = CustomTL60Printer.Instance.getStatusWithUsb();
+                        if (ReceiptPrinter == PRINTER_STATE.OK)
+                        {
+                            Check_Receiptprinter = true;
+                            Constants.NoReceiptMode = false;
+                        }
+                        else
+                        {
+                            Check_Receiptprinter = false;
+                            Constants.NoReceiptMode = true;
+                        }
                     }
-                    else
-                    {
-                        Check_Receiptprinter = false;
-                        Constants.NoReceiptMode = true;
-                    }
-
                     //DISP_STAT stat = DISP_STAT.STACKER_FULL;
                     //RPTOperations.GetStatus(ref stat);
                     //byte status = 1;
