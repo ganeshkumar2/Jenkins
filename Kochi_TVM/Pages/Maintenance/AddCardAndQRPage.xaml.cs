@@ -38,13 +38,6 @@ namespace Kochi_TVM.Pages.Maintenance
             lblAppVersion.Content = "App Version : " + Parameters.TVMStatic.GetParameter("appVersion");
             lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
-
-            btnAdd.Visibility = Visibility.Hidden;
-            btnMinus.Visibility = Visibility.Hidden;
-            btnEmpty.Visibility = Visibility.Hidden;
-            lblCard.Visibility = Visibility.Hidden;
-            lblTypeCount.Visibility = Visibility.Hidden;
-            lblCardInfo.Visibility = Visibility.Hidden;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

@@ -1,6 +1,6 @@
 ﻿using Kochi_TVM.Business;
+using Kochi_TVM.Utils;
 using log4net;
-using RPTIssueLib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,7 +22,7 @@ namespace Kochi_TVM.RptDispenser
         private string comPort;
 
 
-        RPTIssuer rpt = new RPTIssuer();
+        RPTIssuer rpt = new RPTIssuer(TVMUtility.GetSamUnlockKey(Constants.SamCardType));
         private Dispenser_ErrorCodes errCode = Dispenser_ErrorCodes.Success;
         private string errDesc = String.Empty;
 
@@ -40,9 +40,9 @@ namespace Kochi_TVM.RptDispenser
         #endregion
         public Dispenser()
         {
-            //Init();
+            Init();
         }
-        public bool Init()
+        private bool Init()
         {
             bool result = false;
 

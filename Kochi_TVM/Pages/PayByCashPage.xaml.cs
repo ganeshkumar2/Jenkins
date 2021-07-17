@@ -7,6 +7,7 @@ using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.PID;
 using Kochi_TVM.Printers;
+using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Utils;
 using log4net;
 using System;
@@ -695,43 +696,98 @@ namespace Kochi_TVM.Pages
                                 isReturn = false;
                                 try
                                 {
-                                    bool result = false;
-                                    result = OCCOperations.InsertQRTransaction();
-                                    if (result)
+                                    switch (Ticket.journeyType)
                                     {
-                                        log.Debug("LogTypes.Info : InsertQRTransaction return true");
-                                        if (StockOperations.qrSlip > Ticket.listTickets.Count)
-                                        {
-                                            bool print_result = false;
-                                            Ticket.sellTicketCount = 0;
-                                            foreach (var t in Ticket.listTickets)
+                                        case JourneyType.Group_Ticket:
+                                        case JourneyType.SJT:
+                                        case JourneyType.RJT:
+                                            bool result = false;
+                                            result = OCCOperations.InsertQRTransaction();
+                                            if (result)
                                             {
-                                                if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
+                                                log.Debug("LogTypes.Info : InsertQRTransaction return true");
+                                                if (StockOperations.qrSlip > Ticket.listTickets.Count)
                                                 {
-                                                    ElectronicJournal.QRPrintStarted();
-                                                    bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
-                                                    await Task.Delay(4000);
-                                                    if (true)
+                                                    bool print_result = false;
+                                                    Ticket.sellTicketCount = 0;
+                                                    foreach (var t in Ticket.listTickets)
                                                     {
-                                                        print_result = true;
-                                                        long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                                                        int stock = StockOperations.qrSlip;
-                                                        StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, 1);
-                                                        ElectronicJournal.QRPrintOver();
-                                                    }                                                   
+                                                        if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
+                                                        {
+                                                            ElectronicJournal.QRPrintStarted();
+                                                            bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
+                                                            await Task.Delay(4000);
+                                                            if (true)
+                                                            {
+                                                                print_result = true;
+                                                                long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                                                                int stock = StockOperations.qrSlip;
+                                                                StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, 1);
+                                                                ElectronicJournal.QRPrintOver();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            ElectronicJournal.QRPrintError();
+                                                            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                                            {
+                                                                CustomTL60Printer.Instance.UnableToPrintQR(Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.alias.ToString());
+                                                            }
+                                                            print_result = true;
+                                                        }
+                                                    }
+
+                                                    if (print_result)
+                                                    {
+                                                        await Task.Delay(200);
+                                                        BNRManager.Instance.GetExtendedCassetteStatus();
+                                                        await Task.Delay(1000);
+                                                    }
+                                                    else
+                                                    {
+                                                        BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                        mainGrid.Visibility = Visibility.Visible;
+                                                        waitGrid.Visibility = Visibility.Hidden;
+                                                        lblPaidAmountValue.Content = "";
+                                                        lblChangeAmountValue.Content = "";
+                                                        isCancel = true;
+                                                        returncash(false, false);
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    ElectronicJournal.QRPrintError();
-                                                    if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
-                                                    {
-                                                        CustomTL60Printer.Instance.UnableToPrintQR(Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.alias.ToString());
-                                                    }
-                                                    print_result = true;
+                                                    BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                    mainGrid.Visibility = Visibility.Visible;
+                                                    waitGrid.Visibility = Visibility.Hidden;
+                                                    lblPaidAmountValue.Content = "";
+                                                    lblChangeAmountValue.Content = "";
+                                                    isCancel = true;
+                                                    returncash(false, false);
                                                 }
                                             }
-
-                                            if (print_result)
+                                            else
+                                            {
+                                                if (RPT())
+                                                {
+                                                    await Task.Delay(200);
+                                                    BNRManager.Instance.GetExtendedCassetteStatus();
+                                                    await Task.Delay(1000);
+                                                }
+                                                else
+                                                {
+                                                    BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                    mainGrid.Visibility = Visibility.Visible;
+                                                    waitGrid.Visibility = Visibility.Hidden;
+                                                    lblPaidAmountValue.Content = "";
+                                                    lblChangeAmountValue.Content = "";
+                                                    isCancel = true;
+                                                    returncash(false, false);
+                                                }
+                                            }
+                                            break;
+                                        case JourneyType.Day_Pass:
+                                        case JourneyType.Weekend_Pass:
+                                            if (RPT())
                                             {
                                                 await Task.Delay(200);
                                                 BNRManager.Instance.GetExtendedCassetteStatus();
@@ -747,28 +803,11 @@ namespace Kochi_TVM.Pages
                                                 isCancel = true;
                                                 returncash(false, false);
                                             }
-                                        }
-                                        else
-                                        {
-                                            BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
-                                            mainGrid.Visibility = Visibility.Visible;
-                                            waitGrid.Visibility = Visibility.Hidden;
-                                            lblPaidAmountValue.Content = "";
-                                            lblChangeAmountValue.Content = "";
-                                            isCancel = true;
-                                            returncash(false, false);
-                                        }
+                                            break;
+                                        default:
+                                            break;
                                     }
-                                    else
-                                    {
-                                        BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
-                                        mainGrid.Visibility = Visibility.Visible;
-                                        waitGrid.Visibility = Visibility.Hidden;
-                                        lblPaidAmountValue.Content = "";
-                                        lblChangeAmountValue.Content = "";
-                                        isCancel = true;
-                                        returncash(false, false);
-                                    }
+                                    
                                 }
                                 catch(Exception ex)
                                 {
@@ -798,41 +837,96 @@ namespace Kochi_TVM.Pages
                             balance = 0;
                             try
                             {
-                                bool result = false;
-                                result = OCCOperations.InsertQRTransaction();
-                                if (result)
+                                switch (Ticket.journeyType)
                                 {
-                                    log.Debug("LogTypes.Info : InsertQRTransaction return true");
-                                    if (StockOperations.qrSlip > Ticket.listTickets.Count)
-                                    {
-                                        bool print_result = false;
-                                        Ticket.sellTicketCount = 0;
-                                        foreach (var t in Ticket.listTickets)
+                                    case JourneyType.Group_Ticket:
+                                    case JourneyType.SJT:
+                                    case JourneyType.RJT:
+                                        bool result = false;
+                                        result = OCCOperations.InsertQRTransaction();
+                                        if (result)
                                         {
-                                            if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
+                                            log.Debug("LogTypes.Info : InsertQRTransaction return true");
+                                            if (StockOperations.qrSlip > Ticket.listTickets.Count)
                                             {
-                                                bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
-                                                await Task.Delay(4000);
-                                                if (true)
+                                                bool print_result = false;
+                                                Ticket.sellTicketCount = 0;
+                                                foreach (var t in Ticket.listTickets)
                                                 {
-                                                    print_result = true;
-                                                    long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
-                                                    int stock = StockOperations.qrSlip;
-                                                    StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
-                                                }                                                
+                                                    if (QRPrinter.Instance.CheckQrPrinterStatus() == Enums.PRINTER_STATE.OK)
+                                                    {
+                                                        bool flag = QRPrinter.Instance.PrintQR(t.TicketGUID, Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.peopleCount, t.price, String.Format("{0}.{1}.{2}.{3}", Ticket.dayCount, t.FromId, Parameters.TVMDynamic.GetParameter("unitId"), t.alias));
+                                                        await Task.Delay(4000);
+                                                        if (true)
+                                                        {
+                                                            print_result = true;
+                                                            long trxId = Convert.ToInt64(TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_QR));
+                                                            int stock = StockOperations.qrSlip;
+                                                            StockOperations.InsStock(trxId, (int)StockType.QRSlip, (int)DeviceType.QRPrinter, (int)UpdateType.Decrease, Ticket.ticketCount);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        ElectronicJournal.QRPrintError();
+                                                        if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+                                                        {
+                                                            CustomTL60Printer.Instance.UnableToPrintQR(Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.alias.ToString());
+                                                        }
+                                                        print_result = true;
+                                                    }
+                                                }
+
+                                                if (print_result)
+                                                {
+                                                    await Task.Delay(200);
+                                                    BNRManager.Instance.GetExtendedCassetteStatus();
+                                                    await Task.Delay(1000);
+                                                }
+                                                else
+                                                {
+                                                    BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                    mainGrid.Visibility = Visibility.Visible;
+                                                    waitGrid.Visibility = Visibility.Hidden;
+                                                    lblPaidAmountValue.Content = "";
+                                                    lblChangeAmountValue.Content = "";
+                                                    isCancel = true;
+                                                    returncash(false, false);
+                                                }
                                             }
                                             else
                                             {
-                                                ElectronicJournal.QRPrintError();
-                                                if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
-                                                {
-                                                    CustomTL60Printer.Instance.UnableToPrintQR(Ticket.ticketActivateDts.ToString(), t.explanation, t.From, t.To, t.alias.ToString());
-                                                }
-                                                print_result = true;
+                                                BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                mainGrid.Visibility = Visibility.Visible;
+                                                waitGrid.Visibility = Visibility.Hidden;
+                                                lblPaidAmountValue.Content = "";
+                                                lblChangeAmountValue.Content = "";
+                                                isCancel = true;
+                                                returncash(false, false);
                                             }
                                         }
-
-                                        if (print_result)
+                                        else
+                                        {
+                                            if (RPT())
+                                            {
+                                                await Task.Delay(200);
+                                                BNRManager.Instance.GetExtendedCassetteStatus();
+                                                await Task.Delay(1000);
+                                            }
+                                            else
+                                            {
+                                                BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
+                                                mainGrid.Visibility = Visibility.Visible;
+                                                waitGrid.Visibility = Visibility.Hidden;
+                                                lblPaidAmountValue.Content = "";
+                                                lblChangeAmountValue.Content = "";
+                                                isCancel = true;
+                                                returncash(false, false);
+                                            }
+                                        }
+                                        break;
+                                    case JourneyType.Day_Pass:
+                                    case JourneyType.Weekend_Pass:
+                                        if (RPT())
                                         {
                                             await Task.Delay(200);
                                             BNRManager.Instance.GetExtendedCassetteStatus();
@@ -848,27 +942,9 @@ namespace Kochi_TVM.Pages
                                             isCancel = true;
                                             returncash(false, false);
                                         }
-                                    }
-                                    else
-                                    {
-                                        BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
-                                        mainGrid.Visibility = Visibility.Visible;
-                                        waitGrid.Visibility = Visibility.Hidden;
-                                        lblPaidAmountValue.Content = "";
-                                        lblChangeAmountValue.Content = "";
-                                        isCancel = true;
-                                        returncash(false, false);
-                                    }
-                                }
-                                else
-                                {
-                                    BNRManager.BNRCurrencyStateInputEvent -= new BNRManager.BNRCurrencyStateEventHandler(BNRManager_BNRCurrencyStateInputEvent);
-                                    mainGrid.Visibility = Visibility.Visible;
-                                    waitGrid.Visibility = Visibility.Hidden;
-                                    lblPaidAmountValue.Content = "";
-                                    lblChangeAmountValue.Content = "";
-                                    isCancel = true;
-                                    returncash(false, false);
+                                        break;
+                                    default:
+                                        break;
                                 }
                             }
                             catch (Exception ex)
@@ -923,6 +999,29 @@ namespace Kochi_TVM.Pages
                 }
                 log.Error("Error PayByCashPage -> ReceivedCashTxtBox_TextChanged() : " + ex.ToString());
             }
+        }
+        private bool RPT()
+        {
+            bool result = false;
+            try
+            {
+                result = RPTOperations.GiveRPTTicket();
+                if (result)
+                {
+                    log.Debug("LogTypes.Info : GiveRPTTicket return true");
+                }
+                else
+                {
+                    result = false;
+                    log.Debug("LogTypes.Warning : GiveRPTTicket return false");
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                log.Error("LogTypes.Error " + ex.ToString());
+            }
+            return result;
         }
         void UnloadValue()
         {

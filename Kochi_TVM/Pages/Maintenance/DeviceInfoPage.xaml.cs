@@ -3,6 +3,7 @@ using Kochi_TVM.Business;
 using Kochi_TVM.CCTalk;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Printers;
+using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
@@ -110,17 +111,29 @@ namespace Kochi_TVM.Pages.Maintenance
             {
             }
 
-            ////Dispenser
-            //try
-            //{
-            //    DeviceInfoControl Dispenser = new DeviceInfoControl("RPT Dispenser", Parameters.TVMStatic.GetParameter("rptDispenserStatus") == "1" ? "OK" : "ERROR");
-            //    Grid.SetRow(Dispenser, 6);
-            //    Grid.SetColumn(Dispenser, 0);
-            //    operationGrid.Children.Add(Dispenser);
-            //}
-            //catch (Exception ex)
-            //{
-            //}
+            //Dispenser
+            try
+            {
+                DISP_STAT stat = DISP_STAT.STACKER_FULL;
+                RPTOperations.GetStatus(ref stat);
+                byte rptstatus = 1;
+                if (stat == DISP_STAT.STACKER_UNKNOWN)
+                {
+                    rptstatus = 0;
+                }
+                else if ((stat == DISP_STAT.STACKER_NOCARD) && (!RPTOperations.IsCardInRFCardOperationPosition()))
+                {
+                    rptstatus = 0;
+                }
+                Parameters.TVMStatic.AddOrUpdateParameter("rptDispenserStatus", rptstatus.ToString());
+                DeviceInfoControl Dispenser = new DeviceInfoControl("RPT Dispenser", rptstatus == 1 ? "OK" : "ERROR");
+                Grid.SetRow(Dispenser, 4);
+                Grid.SetColumn(Dispenser, 0);
+                operationGrid.Children.Add(Dispenser);
+            }
+            catch (Exception ex)
+            {
+            }
 
             ////EMV POS
             //try

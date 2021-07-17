@@ -40,6 +40,10 @@
     <Reference Include="CctalkLib">
       <HintPath>ExternalLibrary\CCTalk\CctalkLib.dll</HintPath>
     </Reference>
+    <Reference Include="CRT571, Version=1.4.3.15, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ExternalLibrary\Dispenser\CRT571.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -57,9 +61,6 @@
       <HintPath>ExternalLibrary\Dispenser\pcsc-sharp.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
-    <Reference Include="RPTIssueLib">
-      <HintPath>ExternalLibrary\Dispenser\RPTIssueLib.dll</HintPath>
-    </Reference>
     <Reference Include="SAMOprLib">
       <HintPath>ExternalLibrary\Dispenser\SAMOprLib.dll</HintPath>
     </Reference>
@@ -466,8 +467,12 @@
     <Compile Include="PID\PIDMessageLog.cs" />
     <Compile Include="Printers\CustomTL60Printer.cs" />
     <Compile Include="Printers\QRPrinter.cs" />
+    <Compile Include="RptDispenser\ACSReader.cs" />
     <Compile Include="RptDispenser\Dispenser.cs" />
+    <Compile Include="RptDispenser\RPTIssuer.cs" />
     <Compile Include="RptDispenser\RPTOperations.cs" />
+    <Compile Include="RptDispenser\RPTTypes.cs" />
+    <Compile Include="RptDispenser\RPTUtils.cs" />
     <Compile Include="Sensors\KMY200DoorAlarm.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Conversion.cs" />
@@ -475,7 +480,7 @@
     <Compile Include="Utils\ESCPOS.cs" />
     <Compile Include="Utils\QRCPrint.cs" />
     <Compile Include="Utils\Svelta.cs" />
-    <Compile Include="Utils\Utility.cs" />
+    <Compile Include="Utils\TVMUtility.cs" />
     <Compile Include="Connected Services\NStationService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -5,7 +5,6 @@ using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Sensors;
 using Kochi_TVM.Utils;
 using log4net;
-using RPTIssueLib;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -134,7 +133,21 @@ namespace Kochi_TVM.Pages
                 {
                     DISP_STAT stat = DISP_STAT.STACKER_FULL;
                     RPTOperations.GetStatus(ref stat);
-                    outOfServiceLbl.Content = "Dispenser Status " + stat.ToString();
+                    byte rptstatus = 1;
+
+                    if (stat == DISP_STAT.STACKER_UNKNOWN)
+                    {
+                        rptstatus = 0;
+                    }
+                    else if ((stat == DISP_STAT.STACKER_NOCARD) && (!RPTOperations.IsCardInRFCardOperationPosition()))
+                    {
+                        rptstatus = 0;
+                    }
+                    
+                    if(rptstatus == 1)
+                        outOfServiceLbl.Content = "Dispenser Status OK" ;
+                    else if (rptstatus == 0)
+                        outOfServiceLbl.Content = "Dispenser Status Error";
                 }
                 catch (Exception ex)
                 {
@@ -196,14 +209,14 @@ namespace Kochi_TVM.Pages
                     CoinHopper3();
                     await Task.Delay(1000);
 
-                    //Dispencer();
-                    //await Task.Delay(1000);
-
-                    UpdDevStat();
+                    Dispencer();
                     await Task.Delay(1000);
 
-                    KMY200DoorAlarm.Instance.SetAlarm();
+                    UpdDevStat();
+                    await Task.Delay(5000);
 
+                    KMY200DoorAlarm.Instance.SetAlarm();
+                    outOfServiceLbl.Content = "Alarm Activated";
                     await Task.Delay(1000);
                     NavigationService.Navigate(new Pages.MainPage());
                 }));

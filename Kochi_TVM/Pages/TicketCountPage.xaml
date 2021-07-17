@@ -193,7 +193,7 @@
                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
                 <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/dayPass.png"/>
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="One Day Pass" Style="{StaticResource styleLabelHeader4}" />
+                <Label Name="lblOneDayPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="One Day Pass" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
             <Grid x:Name="gridWeekendPass" Grid.Row="0" Grid.Column="0" Height="200" Width="200">
@@ -216,7 +216,7 @@
                 <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
                 <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/weekendPass.png"/>
                 <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Weekend Pass" Style="{StaticResource styleLabelHeader4}" />
+                <Label Name="lblWeekendPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Weekend Pass" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
             <ScrollViewer Name="scrollCountGrid" Grid.Column="1" Grid.Row="0" VerticalScrollBarVisibility="Auto" Style="{StaticResource SemiTransparentThinScrollViewer}" >

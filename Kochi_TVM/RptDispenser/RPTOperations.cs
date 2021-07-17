@@ -2,7 +2,6 @@
 using Kochi_TVM.Models;
 using Kochi_TVM.Utils;
 using log4net;
-using RPTIssueLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +24,6 @@ namespace Kochi_TVM.RptDispenser
             {
                 if (!isInit)
                 {
-                    Dispenser.Instance.Init();
                     isInit = true;
                 }
             }

@@ -40,35 +40,56 @@
 
         <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Type" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Grid.Row="0" Grid.Column="2" Content="Count" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Grid.Row="0" Grid.Column="4" Content="Amount" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             
-            <Label Grid.Row="1" Grid.Column="0" Content="SJT" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="QR - SJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRSJTCashCount" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRSJTCashAmount" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRSJTNonCashCount" Grid.Row="1" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRSJTNonCashAmount" Grid.Row="1" Grid.Column="8" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
 
-            <Label  Grid.Row="2" Grid.Column="0" Content="RJT" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label  Grid.Row="2" Grid.Column="0" Content="QR - RJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRRJTCashCount" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRRJTCashAmount" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRRJTNonCashCount" Grid.Row="2" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
             <Label Name="lblQRRJTNonCashAmount" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
 
-            <Button x:Name="btnPrint" Grid.Row="4" Grid.Column="7" Grid.ColumnSpan="2" Content="Print Page"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnPrint_Click" />
+            <Label Grid.Row="3" Grid.Column="0" Content="RPT - SJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTQRSJTCashCount" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTQRSJTCashAmount" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+
+            <Label Grid.Row="4" Grid.Column="0" Content="RPT - RJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTQRRJTCashCount" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTQRRJTCashAmount" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+
+            <Label Grid.Row="5" Grid.Column="0" Content="RPT - Day Pass" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTDayPassCashCount" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTDayPassCashAmount" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+
+            <Label Grid.Row="6" Grid.Column="0" Content="RPT - Weekedpass" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTWeekendCashCount" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTWeekendCashAmount" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+
+
+            <Button x:Name="btnPrint" Grid.Row="7" Grid.Column="7" Grid.ColumnSpan="2" Content="Print Page"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnPrint_Click" />
         </Grid>
 
         <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">

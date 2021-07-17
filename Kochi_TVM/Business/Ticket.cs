@@ -327,16 +327,16 @@ namespace Kochi_TVM.Business
                         journeyTypeText = MultiLanguage.GetText("RJT");
                         break;
                     case JourneyType.Group_Ticket:
-                        journeyTypeText = "GROUP TICKET";
+                        journeyTypeText = MultiLanguage.GetText("GRO");
                         break;
                     case JourneyType.EventTicket:
                         journeyTypeText = "EVENT TICKET";
                         break;
                     case JourneyType.Day_Pass:
-                        journeyTypeText = "DAILY PASS";
+                        journeyTypeText = MultiLanguage.GetText("onedaypass");
                         break;
                     case JourneyType.Weekend_Pass:
-                        journeyTypeText = "WEEKEND PASS";
+                        journeyTypeText = MultiLanguage.GetText("weekenddaypass");
                         break;
                     case JourneyType.Trip_Pass:
                         journeyTypeText = "TRIP PASS";

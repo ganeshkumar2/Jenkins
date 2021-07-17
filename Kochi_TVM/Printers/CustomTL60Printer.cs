@@ -387,7 +387,7 @@ namespace Kochi_TVM.Printers
             AddText("QR Printer", QRPrinter.Instance.CheckQrPrinterStatus() == PRINTER_STATE.OK ? "OK" : "ERROR(Not Connected)",110);
             //AddText("QR Printer", PrintOperations.isInitQRPrinter == true ? "OK" : "Not Connected", 110);
             AddText("Banknote Acceptor", Constants.BNRStatus == "DISABLED" ? "OK" : "Not Connected", 110);
-            //AddText("RPT Dispenser", Parameters.TVMStatic.GetParameter("rptDispenserStatus") == "1" ? "OK" : "Not Connected", 110);
+            AddText("RPT Dispenser", Parameters.TVMStatic.GetParameter("rptDispenserStatus") == "1" ? "OK" : "Not Connected", 110);
             //AddText("EMV POS", "Not Connected", 110);
             //AddText("Card POS", "Not Connected", 110);
             AddText("Hopper Rs.5", CCTalkManager.Instance.coinHopperEV4000_3.Manufacture != null ? "OK" : "Not Connected)", 110);
@@ -498,7 +498,18 @@ namespace Kochi_TVM.Printers
             int RPTSJTCashAmount = 0;
             int RPTSJTNonCashCount = 0;
             int RPTSJTNonCashAmount = 0;
-
+            int RPTRJTCashCount = 0;
+            int RPTRJTCashAmount = 0;
+            int RPTRJTNonCashCount = 0;
+            int RPTRJTNonCashAmount = 0;
+            int RPTDayPassCashCount = 0;
+            int RPTDayPassCashAmount = 0;
+            int RPTDayPassNonCashCount = 0;
+            int RPTDayPassNonCashAmount = 0;
+            int RPTWeekendPassCashCount = 0;
+            int RPTWeekendPassCashAmount = 0;
+            int RPTWeekendPassNonCashCount = 0;
+            int RPTWeekendPassNonCashAmount = 0;
 
             try
             {
@@ -541,6 +552,46 @@ namespace Kochi_TVM.Printers
                             RPTSJTNonCashCount = Convert.ToInt32(data.Count);
                             RPTSJTNonCashAmount = Convert.ToInt32(data.Amount);
                         }
+                        else if (Convert.ToString(data.Transaction) == "RPT SJT-CASH")
+                        {
+                            RPTSJTCashCount = Convert.ToInt32(data.Count);
+                            RPTSJTCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT SJT-NonCASH")
+                        {
+                            RPTSJTNonCashCount = Convert.ToInt32(data.Count);
+                            RPTSJTNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT RJT-CASH")
+                        {
+                            RPTRJTCashCount = Convert.ToInt32(data.Count);
+                            RPTRJTCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT RJT-NonCASH")
+                        {
+                            RPTRJTNonCashCount = Convert.ToInt32(data.Count);
+                            RPTRJTNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Day Pass-CASH")
+                        {
+                            RPTDayPassCashCount = Convert.ToInt32(data.Count);
+                            RPTDayPassCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Day Pass-NonCASH")
+                        {
+                            RPTDayPassNonCashCount = Convert.ToInt32(data.Count);
+                            RPTDayPassNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Weekend Pass-CASH")
+                        {
+                            RPTWeekendPassCashCount = Convert.ToInt32(data.Count);
+                            RPTWeekendPassCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Weekend Pass-NonCASH")
+                        {
+                            RPTWeekendPassNonCashCount = Convert.ToInt32(data.Count);
+                            RPTWeekendPassNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
                     }
                 }
 
@@ -578,12 +629,18 @@ namespace Kochi_TVM.Printers
                 //PrinterFunctions.AddText(string.Format("Count: {0}", QRRJTNonCashCount));
                 //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", QRRJTNonCashAmount)); 
 
-                //PrinterFunctions.AddText("RPT Sale(SJT Cash)");
-                //PrinterFunctions.AddText(string.Format("Count: {0}", RPTSJTCashCount));
-                //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", RPTSJTCashAmount)); 
-                //PrinterFunctions.AddText("RPT Sale(RJT Cash)");
-                //PrinterFunctions.AddText(string.Format("Count: {0}", 0));
-                //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", 0));
+                AddText("RPT Sale(SJT Cash)");
+                AddText(string.Format("Count: {0}", RPTSJTCashCount));
+                AddText(string.Format("Amount: {0} Rs", RPTSJTCashAmount));
+                AddText("RPT Sale(RJT Cash)");
+                AddText(string.Format("Count: {0}", RPTRJTCashCount));
+                AddText(string.Format("Amount: {0} Rs", RPTRJTCashAmount));
+                AddText("RPT Sale(Onc day Pass Cash)");
+                AddText(string.Format("Count: {0}", RPTDayPassCashCount));
+                AddText(string.Format("Amount: {0} Rs", RPTDayPassCashAmount));
+                AddText("RPT Sale(Weekend Pass Cash)");
+                AddText(string.Format("Count: {0}", RPTWeekendPassCashCount));
+                AddText(string.Format("Amount: {0} Rs", RPTWeekendPassCashAmount));
                 //PrinterFunctions.AddText("RPT Sale(SJT Non-Cash)");
                 //PrinterFunctions.AddText(string.Format("Count: {0}", RPTSJTNonCashCount));
                 //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", RPTSJTNonCashAmount)); ;
@@ -592,9 +649,9 @@ namespace Kochi_TVM.Printers
                 //PrinterFunctions.AddText(string.Format("Amount: {0} Rs", 0));
                 //PrinterFunctions.AddText(" ");
 
-                AddText("Cash Amount", "Rs."+(QRRJTCashAmount + QRSJTCashAmount).ToString() /*+ RPTSJTCashAmount*/, 80);
+                AddText("Cash Amount", "Rs."+(QRRJTCashAmount + QRSJTCashAmount + RPTSJTCashAmount+ RPTRJTCashAmount+ RPTDayPassCashAmount+ RPTWeekendPassCashAmount).ToString() /*+ RPTSJTCashAmount*/, 80);
                 //PrinterFunctions.AddText(string.Format("Non-Cash Amount: {0} Rs.", QRRJTNonCashAmount + QRSJTNonCashAmount + RPTSJTNonCashAmount));
-                AddText("Total Amount", "Rs."+(QRRJTCashAmount + QRSJTCashAmount).ToString() /*+ RPTSJTCashAmount +
+                AddText("Total Amount", "Rs."+(QRRJTCashAmount + QRSJTCashAmount + RPTSJTCashAmount + RPTRJTCashAmount + RPTDayPassCashAmount + RPTWeekendPassCashAmount).ToString() /*+ RPTSJTCashAmount +
                                                                                     + QRRJTNonCashAmount + QRSJTNonCashAmount + RPTSJTNonCashAmount*/, 80);
 
                 //PrinterFunctions.AddText("--Transactions--");

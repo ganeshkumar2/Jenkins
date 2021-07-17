@@ -151,7 +151,7 @@ namespace Kochi_TVM.Pages
                         lblLine4Key.Visibility = Visibility.Visible; lblLine4Value.Visibility = Visibility.Visible;
 
                         lblLine1Key.Content = Ticket.journeyTypeText;
-                        lblLine2Key.Content = MultiLanguage.GetText("ticketType"); lblLine2Value.Content = Ticket.ticketTypeText;
+                        lblLine2Key.Content = MultiLanguage.GetText("ticketType"); lblLine2Value.Content = MultiLanguage.GetText("RFIDPaper");
                         lblLine3Key.Content = MultiLanguage.GetText("numberOfTickets"); lblLine3Value.Content = Ticket.ticketCount;
                         lblLine4Key.Content = MultiLanguage.GetText("amount"); lblLine4Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
 

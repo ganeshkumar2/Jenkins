@@ -29,6 +29,8 @@ namespace Kochi_TVM.Pages
                 labelSJT.Content = MultiLanguage.GetText("sj");
                 lblRJT.Content = MultiLanguage.GetText("rj");
                 lblGroup.Content = MultiLanguage.GetText("gj");
+                lblOneDayPass.Content = MultiLanguage.GetText("onedaypass");
+                lblWeekendPass.Content = MultiLanguage.GetText("weekenddaypass");
                 lblHeader.Content = MultiLanguage.GetText("selectTicketType");
                 
                 //lblGroup.Content

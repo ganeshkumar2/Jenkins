@@ -33,6 +33,7 @@
 	<system:String x:Key="acceptableNotes">Acceptable Notes:</system:String>
 	<system:String x:Key="RJT">RETURN JOURNEY TICKET</system:String>
 	<system:String x:Key="SJT">SINGLE JOURNEY TICKET</system:String>
+    <system:String x:Key="GRO">GROUP JOURNEY TICKET</system:String>
 	<system:String x:Key="destination">Destination :</system:String>
 	<system:String x:Key="ticketType">Ticket Type :</system:String>
 	<system:String x:Key="amount">Amount :</system:String>
@@ -182,4 +183,7 @@
     <system:String x:Key="Vyttila">Vyttila</system:String>
     <system:String x:Key="nobalance">Insufficient balance</system:String>
     <system:String x:Key="maxnotes">Maximum notes accepted</system:String>
+    <system:String x:Key="onedaypass">One Day Pass</system:String>
+    <system:String x:Key="weekenddaypass">Weekend Pass</system:String>
+    <system:String x:Key="RFIDPaper">RFID Paper Ticket</system:String>
 </ResourceDictionary>

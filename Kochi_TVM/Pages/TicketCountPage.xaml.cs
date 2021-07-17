@@ -1,6 +1,7 @@
 ﻿using Kochi_TVM.Business;
 using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
+using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Utils;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,8 @@ namespace Kochi_TVM.Pages
             labelSJT.Content = MultiLanguage.GetText("sj");
             labelRJT.Content = MultiLanguage.GetText("rj");
             labelGT.Content = MultiLanguage.GetText("gj");
+            lblOneDayPass.Content = MultiLanguage.GetText("onedaypass");
+            lblWeekendPass.Content = MultiLanguage.GetText("weekenddaypass");
             EditTicketGridForAction(Ticket.journeyType);
             Message();
         }
@@ -283,7 +286,7 @@ namespace Kochi_TVM.Pages
             Button btn = (Button)sender;
             int count = Int32.Parse(btn.Content.ToString());
 
-            //StockOperations.SelStockStatus();
+            StockOperations.SelStockStatus();
 
             Ticket.peopleCount = 1;
             Ticket.ticketCount = 1;
@@ -294,22 +297,22 @@ namespace Kochi_TVM.Pages
                 int maxGroupCount = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("sys_MaxGroupCount"));
                 if (count >= minGroupCount && count <= maxGroupCount)
                 {
-                    //if (count <= StockOperations.qrSlip)
-                    //{
+                    if (count <= StockOperations.qrSlip)
+                    {
                         Ticket.peopleCount = count;
-                    ElectronicJournal.NumberOfTicket(count.ToString());
-                    NavigationService.Navigate(new Pages.OrderPreviewPage());
-                    //    PageControl.ShowPage(Pages.paymentTypePage);
-                    //}
-                    //else if (StockOperations.qrSlip == 0)
-                    //{
-                    //    //MessageBoxOperations.ShowMessage("Paper Count..", "Not enough paper, You can buy " + StockOperations.qrSlip.ToString()+ " tickets.", MessageBoxButtonSet.OK);
-                    //    MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("noQrSlip"), MessageBoxButtonSet.OK);
-                    //}
-                    //else
-                    //{
-                    //    MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("notEnoughPaper") + ", " + MultiLanguage.GetText("youCanBuy") + " " + StockOperations.qrSlip.ToString() + MultiLanguage.GetText("tickets"), MessageBoxButtonSet.OK);
-                    //}
+                        ElectronicJournal.NumberOfTicket(count.ToString());
+                        NavigationService.Navigate(new Pages.OrderPreviewPage());
+                        //    PageControl.ShowPage(Pages.paymentTypePage);
+                    }
+                    else if (StockOperations.qrSlip == 0)
+                    {
+                        //MessageBoxOperations.ShowMessage("Paper Count..", "Not enough paper, You can buy " + StockOperations.qrSlip.ToString()+ " tickets.", MessageBoxButtonSet.OK);
+                        MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("noQrSlip"), MessageBoxButtonSet.OK);
+                    }
+                    else
+                    {
+                        MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("notEnoughPaper") + ", " + MultiLanguage.GetText("youCanBuy") + " " + StockOperations.qrSlip.ToString() + MultiLanguage.GetText("tickets"), MessageBoxButtonSet.OK);
+                    }
                 }
 
             }
@@ -317,22 +320,22 @@ namespace Kochi_TVM.Pages
             {
                 int maxTicket = Convert.ToInt32(Parameters.TVMDynamic.GetParameter("sys_MaxTicket"));
                 if (count >= 1 && count <= maxTicket)
-                    //    if (count <= StockOperations.qrSlip)
-                    //    {
-                    Ticket.ticketCount = count;
-                ElectronicJournal.NumberOfTicket(count.ToString());
-                NavigationService.Navigate(new Pages.OrderPreviewPage());
-                //PageControl.ShowPage(Pages.paymentTypePage);
-                //    }
-                //    else if (StockOperations.qrSlip == 0)
-                //    {
-                //        //MessageBoxOperations.ShowMessage("Paper Count..", "Not enough paper, You can buy " + StockOperations.qrSlip.ToString()+ " tickets.", MessageBoxButtonSet.OK);
-                //        MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("noQrSlip"), MessageBoxButtonSet.OK);
-                //    }
-                //    else
-                //    {
-                //        MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("notEnoughPaper") + ", " + MultiLanguage.GetText("youCanBuy") + " " + StockOperations.qrSlip.ToString() + MultiLanguage.GetText("tickets"), MessageBoxButtonSet.OK);
-                //    }
+                    if (count <= StockOperations.qrSlip)
+                    {
+                        Ticket.ticketCount = count;
+                        ElectronicJournal.NumberOfTicket(count.ToString());
+                        NavigationService.Navigate(new Pages.OrderPreviewPage());
+                        //PageControl.ShowPage(Pages.paymentTypePage);
+                    }
+                    else if (StockOperations.qrSlip == 0)
+                    {
+                        //MessageBoxOperations.ShowMessage("Paper Count..", "Not enough paper, You can buy " + StockOperations.qrSlip.ToString()+ " tickets.", MessageBoxButtonSet.OK);
+                        MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("noQrSlip"), MessageBoxButtonSet.OK);
+                    }
+                    else
+                    {
+                        MessageBoxOperations.ShowMessage(MultiLanguage.GetText("paperCount"), MultiLanguage.GetText("notEnoughPaper") + ", " + MultiLanguage.GetText("youCanBuy") + " " + StockOperations.qrSlip.ToString() + MultiLanguage.GetText("tickets"), MessageBoxButtonSet.OK);
+                    }
             }
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)

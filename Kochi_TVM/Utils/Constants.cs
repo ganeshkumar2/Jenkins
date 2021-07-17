@@ -39,5 +39,6 @@ namespace Kochi_TVM.Utils
         public static string CurrencySymbol = "₹";
 
         public static int Change = 0;
+        public static SamCardType SamCardType { get; set; } = SamCardType.KochiTest;
     }
 }

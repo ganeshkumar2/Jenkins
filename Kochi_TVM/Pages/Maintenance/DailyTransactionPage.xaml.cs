@@ -36,6 +36,18 @@ namespace Kochi_TVM.Pages.Maintenance
         int RPTSJTCashAmount = 0;
         int RPTSJTNonCashCount = 0;
         int RPTSJTNonCashAmount = 0;
+        int RPTRJTCashCount = 0;
+        int RPTRJTCashAmount = 0;
+        int RPTRJTNonCashCount = 0;
+        int RPTRJTNonCashAmount = 0;
+        int RPTDayPassCashCount = 0;
+        int RPTDayPassCashAmount = 0;
+        int RPTDayPassNonCashCount = 0;
+        int RPTDayPassNonCashAmount = 0;
+        int RPTWeekendPassCashCount = 0;
+        int RPTWeekendPassCashAmount = 0;
+        int RPTWeekendPassNonCashCount = 0;
+        int RPTWeekendPassNonCashAmount = 0;
         public DailyTransactionPage()
         {
             InitializeComponent();
@@ -87,6 +99,36 @@ namespace Kochi_TVM.Pages.Maintenance
                             RPTSJTNonCashCount = Convert.ToInt32(data.Count);
                             RPTSJTNonCashAmount = Convert.ToInt32(data.Amount);
                         }
+                        else if (Convert.ToString(data.Transaction) == "RPT RJT-CASH")
+                        {
+                            RPTRJTCashCount = Convert.ToInt32(data.Count);
+                            RPTRJTCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT RJT-NonCASH")
+                        {
+                            RPTRJTNonCashCount = Convert.ToInt32(data.Count);
+                            RPTRJTNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Day Pass-CASH")
+                        {
+                            RPTDayPassCashCount = Convert.ToInt32(data.Count);
+                            RPTDayPassCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Day Pass-NonCASH")
+                        {
+                            RPTDayPassNonCashCount = Convert.ToInt32(data.Count);
+                            RPTDayPassNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Weekend Pass-CASH")
+                        {
+                            RPTWeekendPassCashCount = Convert.ToInt32(data.Count);
+                            RPTWeekendPassCashAmount = Convert.ToInt32(data.Amount);
+                        }
+                        else if (Convert.ToString(data.Transaction) == "RPT Weekend Pass-NonCASH")
+                        {
+                            RPTWeekendPassNonCashCount = Convert.ToInt32(data.Count);
+                            RPTWeekendPassNonCashAmount = Convert.ToInt32(data.Amount);
+                        }
                     }
                 }
             }
@@ -97,12 +139,27 @@ namespace Kochi_TVM.Pages.Maintenance
 
             lblQRSJTCashCount.Content = QRSJTCashCount;
             lblQRSJTCashAmount.Content = Conversion.MoneyFormat(QRSJTCashAmount);
+
             lblQRSJTNonCashCount.Content = QRSJTNonCashCount;
             lblQRSJTNonCashAmount.Content = Conversion.MoneyFormat(QRSJTNonCashAmount);
+
             lblQRRJTCashCount.Content = QRRJTCashCount;
             lblQRRJTCashAmount.Content = Conversion.MoneyFormat(QRRJTCashAmount);
+
             lblQRRJTNonCashCount.Content = QRRJTNonCashCount;
             lblQRRJTNonCashAmount.Content = Conversion.MoneyFormat(QRRJTNonCashAmount);
+
+            lblRPTQRSJTCashCount.Content = RPTSJTCashCount;
+            lblRPTQRSJTCashAmount.Content = Conversion.MoneyFormat(RPTSJTCashAmount);
+
+            lblRPTQRRJTCashCount.Content = RPTRJTCashCount;
+            lblRPTQRRJTCashAmount.Content = Conversion.MoneyFormat(RPTRJTCashAmount);
+
+            lblRPTDayPassCashCount.Content = RPTDayPassCashCount;
+            lblRPTDayPassCashAmount.Content = Conversion.MoneyFormat(RPTDayPassCashAmount);
+
+            lblRPTWeekendCashCount.Content = RPTWeekendPassCashCount;
+            lblRPTWeekendCashAmount.Content = Conversion.MoneyFormat(RPTWeekendPassCashAmount);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -112,7 +169,10 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            CustomTL60Printer.Instance.StandAloneReceipt();
+            if (CustomTL60Printer.Instance.getStatusWithUsb() == Enums.PRINTER_STATE.OK)
+            {
+                CustomTL60Printer.Instance.StandAloneReceipt();
+            }
         }
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {

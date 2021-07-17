@@ -161,7 +161,7 @@
 
 
 
-            <Grid Name="Dispenser" Grid.Row="6" Grid.Column="0" Visibility="Hidden">
+            <Grid Name="Dispenser" Grid.Row="6" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>

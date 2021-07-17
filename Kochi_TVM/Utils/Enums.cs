@@ -422,5 +422,16 @@ namespace Kochi_TVM.Utils
             DOOR_234_OPEN = 28,
             DOOR_1234_OPEN = 30
         }
+
+        public enum SamCardType
+        {
+            KochiTest,
+            KochiProd, 
+            IndoreTest,
+            IndoreProd,
+            AmritsarTest,
+            AmritsarProd
+        }
+
     }
 }

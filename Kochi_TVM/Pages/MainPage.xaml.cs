@@ -10,7 +10,6 @@ using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Sensors;
 using Kochi_TVM.Utils;
 using log4net;
-using RPTIssueLib;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -932,20 +931,21 @@ namespace Kochi_TVM.Pages
                             Constants.NoReceiptMode = true;
                         }
                     }
-                    //DISP_STAT stat = DISP_STAT.STACKER_FULL;
-                    //RPTOperations.GetStatus(ref stat);
-                    //byte status = 1;
 
-                    //if (stat == DISP_STAT.STACKER_UNKNOWN)
-                    //{
-                    //    status = 0;
-                    //}
-                    //else if ((stat == DISP_STAT.STACKER_NOCARD) && (!RPTOperations.IsCardInRFCardOperationPosition()))
-                    //{
-                    //    status = 0;
-                    //}
-                    //Parameters.TVMStatic.AddOrUpdateParameter("rptDispenserStatus", status.ToString());
-                    //log.Debug("Debug MainPage -> rptDispenserStatus : " + stat.ToString());
+                    DISP_STAT stat = DISP_STAT.STACKER_FULL;
+                    RPTOperations.GetStatus(ref stat);
+                    byte rptstatus = 1;
+
+                    if (stat == DISP_STAT.STACKER_UNKNOWN)
+                    {
+                        rptstatus = 0;
+                    }
+                    else if ((stat == DISP_STAT.STACKER_NOCARD) && (!RPTOperations.IsCardInRFCardOperationPosition()))
+                    {
+                        rptstatus = 0;
+                    }
+                    Parameters.TVMStatic.AddOrUpdateParameter("rptDispenserStatus", rptstatus.ToString());
+                    log.Debug("Debug MainPage -> rptDispenserStatus : " + stat.ToString());
                 }
                 catch (Exception ex)
                 {
