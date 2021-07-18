@@ -3,10 +3,12 @@ using Kochi_TVM.Logs;
 using Kochi_TVM.MultiLanguages;
 using Kochi_TVM.Pages.Custom;
 using Kochi_TVM.Utils;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,13 +28,16 @@ namespace Kochi_TVM.Pages
     /// </summary>
     public partial class TicketCountPage : Page
     {
+        private static ILog log = LogManager.GetLogger(typeof(TicketCountPage).Name);
+        private static Timer idleTimer;
+        private static TimerCallback idleTimerDelegate;
+
         Grid TicketCountGrid = null;
         Grid PassengerCountGrid = null;
         public TicketCountPage()
         {
             InitializeComponent();
         }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             lblHeader.Content = MultiLanguage.GetText("selectTicketCount");
@@ -45,6 +50,38 @@ namespace Kochi_TVM.Pages
             lblWeekendPass.Content = MultiLanguage.GetText("weekenddaypass");
             EditTicketGridForAction(Ticket.journeyType);
             Message();
+        }
+        private void initialTimer()
+        {
+            try
+            {
+                idleTimerDelegate = new TimerCallback(NavigateAction);
+                idleTimer = new Timer(idleTimerDelegate, null, 0, 1000);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> initialTimer() : " + ex.ToString());
+            }
+        }
+        private void NavigateAction(object obj)
+        {
+            try
+            {
+                var idleTime = IdleTimeDetector.GetIdleTimeInfo();
+
+                if (idleTime.IdleTime.TotalMinutes >= Constants.SystemIdleTimeout)
+                {
+                    idleTimer.Dispose();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        NavigationService.Navigate(new Pages.MainPage());
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> DateTimeTimerAction() : " + ex.ToString());
+            }
         }
         void Message()
         {
@@ -340,7 +377,8 @@ namespace Kochi_TVM.Pages
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            if(idleTimer != null)
+                idleTimer.Dispose();
         }
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {

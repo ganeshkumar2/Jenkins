@@ -41,25 +41,25 @@ namespace Kochi_TVM.Pages.Maintenance
             lblEquipmentID.Content = "Equipment ID : " + Parameters.TVMDynamic.GetParameter("descCode");
             btnFinish.Content = "Cancel";
 
+            DeviceInfoControl hopper51 = new DeviceInfoControl("Front Door", "Close");
+            Grid.SetRow(hopper51, 0);
+            Grid.SetColumn(hopper51, 0);
+            operationGrid.Children.Add(hopper51);
+
             DeviceInfoControl BNA1 = new DeviceInfoControl("Hopper Door", "Close");
             Grid.SetRow(BNA1, 0);
-            Grid.SetColumn(BNA1, 0);
+            Grid.SetColumn(BNA1, 2);
             operationGrid.Children.Add(BNA1);
 
             DeviceInfoControl hopper21 = new DeviceInfoControl("Back Left Door", "Close");
-            Grid.SetRow(hopper21, 0);
+            Grid.SetRow(hopper21, 2);
             Grid.SetColumn(hopper21, 2);
             operationGrid.Children.Add(hopper21);
 
             DeviceInfoControl Dispenser1 = new DeviceInfoControl("Back Right Door", "Close");
             Grid.SetRow(Dispenser1, 2);
             Grid.SetColumn(Dispenser1, 0);
-            operationGrid.Children.Add(Dispenser1);
-
-            DeviceInfoControl hopper51 = new DeviceInfoControl("Front Door", "Close");
-            Grid.SetRow(hopper51, 2);
-            Grid.SetColumn(hopper51, 2);
-            operationGrid.Children.Add(hopper51);
+            operationGrid.Children.Add(Dispenser1);           
 
             KMY200DoorAlarm.VibrationSensorInputEvent += new KMY200DoorAlarm.VibrationSensorInputEventHandler(CheckVibrationAction);
             KMY200DoorAlarm.HelpButtonInputEvent += new KMY200DoorAlarm.HelpButtonInputEventHandler(CheckHelpAction);
@@ -119,13 +119,18 @@ namespace Kochi_TVM.Pages.Maintenance
 
                 if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door","Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
@@ -133,21 +138,22 @@ namespace Kochi_TVM.Pages.Maintenance
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
                     operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_1_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
@@ -155,21 +161,22 @@ namespace Kochi_TVM.Pages.Maintenance
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
                     operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_2_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
@@ -177,21 +184,22 @@ namespace Kochi_TVM.Pages.Maintenance
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
                     operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_3_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
@@ -199,197 +207,198 @@ namespace Kochi_TVM.Pages.Maintenance
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
                     operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_4_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Close");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                    
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_12_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Close");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_13_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Open");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_14_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Close");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_123_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Open");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_24_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Close");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                    
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_23_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Open");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Close");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_234_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Open");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                 
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_34_OPEN)
                 {
+
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Close");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
@@ -397,77 +406,72 @@ namespace Kochi_TVM.Pages.Maintenance
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
                     operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_134_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Close");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Open");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                    
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_124_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
                     Grid.SetRow(BNA, 0);
-                    Grid.SetColumn(BNA, 0);
+                    Grid.SetColumn(BNA, 2);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Close");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                   
                 }
                 if (doorStatus == Enums.DoorStatus.DOOR_1234_OPEN)
                 {
+                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
+                    Grid.SetRow(hopper5, 0);
+                    Grid.SetColumn(hopper5, 0);
+                    operationGrid.Children.Add(hopper5);
+
                     DeviceInfoControl BNA = new DeviceInfoControl("Hopper Door", "Open");
-                    Grid.SetRow(BNA, 0);
+                    Grid.SetRow(BNA, 2);
                     Grid.SetColumn(BNA, 0);
                     operationGrid.Children.Add(BNA);
 
                     DeviceInfoControl hopper2 = new DeviceInfoControl("Back Left Door", "Open");
-                    Grid.SetRow(hopper2, 0);
+                    Grid.SetRow(hopper2, 2);
                     Grid.SetColumn(hopper2, 2);
                     operationGrid.Children.Add(hopper2);
 
                     DeviceInfoControl Dispenser = new DeviceInfoControl("Back Right Door", "Open");
                     Grid.SetRow(Dispenser, 2);
                     Grid.SetColumn(Dispenser, 0);
-                    operationGrid.Children.Add(Dispenser);
-
-                    DeviceInfoControl hopper5 = new DeviceInfoControl("Front Door", "Open");
-                    Grid.SetRow(hopper5, 2);
-                    Grid.SetColumn(hopper5, 2);
-                    operationGrid.Children.Add(hopper5);
+                    operationGrid.Children.Add(Dispenser);                 
                 }
             }
             catch (Exception ex)

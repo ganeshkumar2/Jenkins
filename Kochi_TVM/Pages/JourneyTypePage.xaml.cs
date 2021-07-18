@@ -5,6 +5,7 @@ using Kochi_TVM.PID;
 using Kochi_TVM.Utils;
 using log4net;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,11 +20,16 @@ namespace Kochi_TVM.Pages
     public partial class JourneyTypePage : Page
     {
         private static ILog log = LogManager.GetLogger(typeof(JourneyTypePage).Name);
+
+        private static Timer idleTimer;
+        private static TimerCallback idleTimerDelegate;
         public JourneyTypePage()
         {
             InitializeComponent();
             try
             {
+                initialTimer();
+
                 btnBack.Content = MultiLanguage.GetText("back");
                 btnFinish.Content = MultiLanguage.GetText("cancel");
                 labelSJT.Content = MultiLanguage.GetText("sj");
@@ -40,6 +46,38 @@ namespace Kochi_TVM.Pages
             catch (Exception ex)
             {
                 log.Error("Error JourneyTypePage -> JourneyTypePage() : " + ex.ToString());
+            }
+        }
+        private void initialTimer()
+        {
+            try
+            {
+                idleTimerDelegate = new TimerCallback(NavigateAction);
+                idleTimer = new Timer(idleTimerDelegate, null, 0, 1000);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> initialTimer() : " + ex.ToString());
+            }
+        }
+        private void NavigateAction(object obj)
+        {
+            try
+            {
+                var idleTime = IdleTimeDetector.GetIdleTimeInfo();
+
+                if (idleTime.IdleTime.TotalMinutes >= Constants.SystemIdleTimeout)
+                {
+                    idleTimer.Dispose();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        NavigationService.Navigate(new Pages.MainPage());
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> DateTimeTimerAction() : " + ex.ToString());
             }
         }
         void Message()
@@ -126,6 +164,12 @@ namespace Kochi_TVM.Pages
             Ticket.journeyType = JourneyType.Weekend_Pass;
             GoToNextStep();
             NavigationService.Navigate(new Pages.TicketCountPage());
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (idleTimer != null)
+                idleTimer.Dispose();
         }
     }
 }

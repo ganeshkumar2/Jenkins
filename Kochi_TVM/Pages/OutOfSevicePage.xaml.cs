@@ -213,7 +213,7 @@ namespace Kochi_TVM.Pages
                     await Task.Delay(1000);
 
                     UpdDevStat();
-                    await Task.Delay(5000);
+                    await Task.Delay(6000);
 
                     KMY200DoorAlarm.Instance.SetAlarm();
                     outOfServiceLbl.Content = "Alarm Activated";
@@ -238,17 +238,20 @@ namespace Kochi_TVM.Pages
                     await Task.Delay(1000);
                     if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
-                        await Task.Delay(1000);
+                        await Task.Delay(1000);                        
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_1_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
@@ -256,11 +259,12 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
-                        await Task.Delay(1000);
+                       
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_2_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
@@ -268,83 +272,84 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
-                        await Task.Delay(1000);
+                        
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_3_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_4_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_12_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_13_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_14_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_123_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
-                        await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_24_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
@@ -352,47 +357,47 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Close";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
-                        await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_23_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_234_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_34_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
-                        await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_134_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
@@ -400,31 +405,29 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
-                        await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_124_OPEN)
                     {
+                        await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_1234_OPEN)
                     {
                         await Task.Delay(1000);
+                        outOfServiceLbl.Content = "Front Door Close";
+                        await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door Open";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Open";
                         await Task.Delay(1000);
                     }
                 }

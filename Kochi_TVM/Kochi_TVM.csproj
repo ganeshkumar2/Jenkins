@@ -478,6 +478,7 @@
     <Compile Include="Utils\Conversion.cs" />
     <Compile Include="Utils\Enums.cs" />
     <Compile Include="Utils\ESCPOS.cs" />
+    <Compile Include="Utils\IdleTimeDetector.cs" />
     <Compile Include="Utils\QRCPrint.cs" />
     <Compile Include="Utils\Svelta.cs" />
     <Compile Include="Utils\TVMUtility.cs" />

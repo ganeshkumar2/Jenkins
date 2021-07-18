@@ -37,7 +37,8 @@ namespace Kochi_TVM.Pages
         private readonly BackgroundWorker bwAfcStatus = null;
         private readonly BackgroundWorker bwSendSc = null;
         private readonly BackgroundWorker bwSendMonitoring = null;
-
+        private static Timer idleTimer;
+        private static TimerCallback idleTimerDelegate;
         bool Check_Receiptprinter = false;
         bool Check_QRprinter = false;
         public MainPage()
@@ -958,6 +959,8 @@ namespace Kochi_TVM.Pages
             TVMUtility.PlayClick();            
             try
             {
+                initialTimer();
+
                 if (Parameters.TVMDynamic.GetAfcConnStatus())
                 {
                     Parameters.TVMDynamic.AddOrUpdateParameter("AfcConn", "1");
@@ -1031,7 +1034,39 @@ namespace Kochi_TVM.Pages
                 log.Error("Error MainPage -> btnSelectTicket_Click() : " + ex.ToString());
             }
         }
+        private void initialTimer()
+        {
+            try
+            {
+                idleTimerDelegate = new TimerCallback(NavigateAction);
+                idleTimer = new Timer(idleTimerDelegate, null, 0, 1000);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> initialTimer() : " + ex.ToString());
+            }
+        }
+        private void NavigateAction(object obj)
+        {
+            try
+            {
+                var idleTime = IdleTimeDetector.GetIdleTimeInfo();
 
+                if (idleTime.IdleTime.TotalMinutes >= Constants.SystemIdleTimeout)
+                {
+                    idleTimer.Dispose();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        grdNoChangeMode.Visibility = Visibility.Collapsed;
+                        grdNoReceiptPrinterMode.Visibility = Visibility.Collapsed;
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> DateTimeTimerAction() : " + ex.ToString());
+            }
+        }
         private void btnSelectCard_Click(object sender, RoutedEventArgs e)
         {
 
@@ -1228,6 +1263,9 @@ namespace Kochi_TVM.Pages
             {
                 if (checkDeviceTimer != null)
                     checkDeviceTimer.Dispose();
+
+                if (idleTimer != null)
+                    idleTimer.Dispose();
 
                 bwSendSc.DoWork -= bwSendSc_DoWork;
                 bwSendSc.CancelAsync();

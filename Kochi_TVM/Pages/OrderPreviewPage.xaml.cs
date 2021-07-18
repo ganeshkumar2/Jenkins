@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +33,9 @@ namespace Kochi_TVM.Pages
     public partial class OrderPreviewPage : Page
     {
         private static ILog log = LogManager.GetLogger(typeof(OrderPreviewPage).Name);
+
+        private static Timer idleTimer;
+        private static TimerCallback idleTimerDelegate;
         public OrderPreviewPage()
         {
             InitializeComponent();
@@ -41,6 +45,7 @@ namespace Kochi_TVM.Pages
         {
             try
             {
+                initialTimer();
                 LedOperations.GreenText("PAY USING CASH");
                 lblInfo.Content = MultiLanguage.GetText("startPaymentProc");
                 btnBack.Content = MultiLanguage.GetText("back");
@@ -111,6 +116,38 @@ namespace Kochi_TVM.Pages
             catch (Exception ex)
             {
                 log.Error("Error OrderPreviewPage -> Page_Loaded() : " + ex.ToString());
+            }
+        }
+        private void initialTimer()
+        {
+            try
+            {
+                idleTimerDelegate = new TimerCallback(NavigateAction);
+                idleTimer = new Timer(idleTimerDelegate, null, 0, 1000);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> initialTimer() : " + ex.ToString());
+            }
+        }
+        private void NavigateAction(object obj)
+        {
+            try
+            {
+                var idleTime = IdleTimeDetector.GetIdleTimeInfo();
+
+                if (idleTime.IdleTime.TotalMinutes >= Constants.SystemIdleTimeout)
+                {
+                    idleTimer.Dispose();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        NavigationService.Navigate(new Pages.MainPage());
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error TicketTypePage -> DateTimeTimerAction() : " + ex.ToString());
             }
         }
         void Message()
@@ -222,7 +259,8 @@ namespace Kochi_TVM.Pages
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            if (idleTimer != null)
+                idleTimer.Dispose();
         }
 
         private void btnCash_Click(object sender, RoutedEventArgs e)

@@ -37,7 +37,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Image Name="imgStationClosedMode" Grid.Row="3" Grid.Column="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/images/station_closed.jpg" />
-        <TextBlock Name="txtStationClosedMode" Grid.Row="5" Grid.Column="1"  Text="STATION CLOSED" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Titillium" FontSize="24" Foreground="{StaticResource WhiteFontColor}" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="OUT OF SERVICE" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontFamily="Titillium" FontSize="45" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}" />
 
         <!--<Grid Name="operationGrid" Grid.Column="1" Grid.Row="5" >
             <Grid.RowDefinitions>
