@@ -40,6 +40,7 @@ namespace Kochi_TVM.Pages
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            initialTimer();
             lblHeader.Content = MultiLanguage.GetText("selectTicketCount");
             btnBack.Content = MultiLanguage.GetText("back");
             btnFinish.Content = MultiLanguage.GetText("cancel");

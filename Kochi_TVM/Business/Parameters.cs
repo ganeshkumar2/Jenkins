@@ -62,39 +62,48 @@ namespace Kochi_TVM.Business
 
         static string TVMInfoXml()
         {
+            
             _xml = new XmlDocument();
-            _tvmNode = _xml.CreateElement(string.Empty, "tvmSummary", string.Empty);
-            _xml.AppendChild(_tvmNode);
-            /*******************************************TOM INFORMATION**********************************************************************/
-            _tvmNode.SetAttribute("tvmId", $"{TvmMonitoringData.tvmId}"); //$"{}"
-            _tvmNode.SetAttribute("operationDate", DateTime.Now.ToString("yyyyMMdd"));
-            _tvmNode.SetAttribute("lastTransactionDate", Convert.ToDateTime(TvmMonitoringData.lastTransactionDate).ToString("yyyyMMdd HH:mm:ss"));
-            _tvmNode.SetAttribute("lastSynchronizationDate", Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd HH:mm:ss"));
-            _tvmNode.SetAttribute("appVersion", $"{TvmMonitoringData.appVersion}");
-            _tvmNode.SetAttribute("updateDt", DateTime.Now.ToString("yyyyMMdd HH:mm:ss"));
-            _tvmNode.SetAttribute("stationId", TvmMonitoringData.stationId.ToString());
-            _tvmNode.SetAttribute("currentWorkMode", TvmMonitoringData.SpecialMode);
-            _tvmNode.SetAttribute("CCConnectionStatus", Parameters.TVMDynamic.GetParameter("AfcConn") == "1" ? "Connected" : "Not Connected");
-            /*****************************************DEVICE STATUS*********************************************************************************/
-            AddDeviceInfoXmlNode("bnrStatus", "0", TvmMonitoringData.bnrStatus, "1");
-            AddDeviceInfoXmlNode("hopperStatus1", "0", $"{TvmMonitoringData.hopperStatus1}", "1");
-            AddDeviceInfoXmlNode("hopperStatus2", "0", $"{TvmMonitoringData.hopperStatus2}", "1");
-            AddDeviceInfoXmlNode("hopperStatus5", "0", $"{TvmMonitoringData.hopperStatus5}", "1");
-            AddDeviceInfoXmlNode("qrPrinter", "0", $"{TvmMonitoringData.qrPrinterStatus}", "1");
-            AddDeviceInfoXmlNode("receiptPrinter", "0", $"{TvmMonitoringData.receiptPrinterStatus}", "1");
-            AddDeviceInfoXmlNode("ledPanelStatus", "0", $"{TvmMonitoringData.ledPanelStatus}", "1");
-            AddDeviceInfoXmlNode("doorSensorStatus", "0", $"{TvmMonitoringData.doorSensorStatus}", "1");
-            AddDeviceInfoXmlNode("speakerStatus", "0", $"{TvmMonitoringData.speakerStatus}", "1");            
-            /**************************************************TRANSACTION STATUS*******************************************************************/
-            AddAccountInfoXmlNode("QRSJT", TvmMonitoringData.QRSJT_Count, TvmMonitoringData.QRSJT_Amount.ToString());
-            AddAccountInfoXmlNode("QRRJT", TvmMonitoringData.QRRJT_Count, TvmMonitoringData.QRRJT_Amount.ToString());           
-            AddAccountInfoXmlNode("Total", TvmMonitoringData.Total_Count, TvmMonitoringData.Total_Amount.ToString());
-            /********************************************************STOCK MANAGEMENT*******************************************************************************/
-            AddStockInfoXmlNode("NumberofQR", TvmMonitoringData.numberOfQr);
-            AddStockInfoXmlNode("hopperCoins1", Convert.ToInt16(TvmMonitoringData.hopperCoins1));
-            AddStockInfoXmlNode("hopperCoins2", Convert.ToInt16(TvmMonitoringData.hopperCoins2));
-            AddStockInfoXmlNode("hopperCoins5", Convert.ToInt16(TvmMonitoringData.hopperCoins5));
-            /*******************************************************************************************************************************************************/
+            try
+            {
+                _tvmNode = _xml.CreateElement(string.Empty, "tvmSummary", string.Empty);
+                _xml.AppendChild(_tvmNode);
+                /*******************************************TOM INFORMATION**********************************************************************/
+                _tvmNode.SetAttribute("tvmId", $"{TvmMonitoringData.tvmId}"); //$"{}"
+                _tvmNode.SetAttribute("operationDate", DateTime.Now.ToString("yyyyMMdd"));
+                _tvmNode.SetAttribute("lastTransactionDate", Convert.ToDateTime(TvmMonitoringData.lastTransactionDate).ToString("yyyyMMdd HH:mm:ss"));
+                _tvmNode.SetAttribute("lastSynchronizationDate", Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd HH:mm:ss"));
+                _tvmNode.SetAttribute("appVersion", $"{TvmMonitoringData.appVersion}");
+                _tvmNode.SetAttribute("updateDt", DateTime.Now.ToString("yyyyMMdd HH:mm:ss"));
+                _tvmNode.SetAttribute("stationId", TvmMonitoringData.stationId.ToString());
+                _tvmNode.SetAttribute("currentWorkMode", TvmMonitoringData.SpecialMode);
+                _tvmNode.SetAttribute("CCConnectionStatus", Parameters.TVMDynamic.GetParameter("AfcConn") == "1" ? "Connected" : "Not Connected");
+                /*****************************************DEVICE STATUS*********************************************************************************/
+                AddDeviceInfoXmlNode("bnrStatus", "0", TvmMonitoringData.bnrStatus, "1");
+                AddDeviceInfoXmlNode("hopperStatus1", "0", $"{TvmMonitoringData.hopperStatus1}", "1");
+                AddDeviceInfoXmlNode("hopperStatus2", "0", $"{TvmMonitoringData.hopperStatus2}", "1");
+                AddDeviceInfoXmlNode("hopperStatus5", "0", $"{TvmMonitoringData.hopperStatus5}", "1");
+                AddDeviceInfoXmlNode("qrPrinter", "0", $"{TvmMonitoringData.qrPrinterStatus}", "1");
+                AddDeviceInfoXmlNode("receiptPrinter", "0", $"{TvmMonitoringData.receiptPrinterStatus}", "1");
+                AddDeviceInfoXmlNode("ledPanelStatus", "0", $"{TvmMonitoringData.ledPanelStatus}", "1");
+                AddDeviceInfoXmlNode("doorSensorStatus", "0", $"{TvmMonitoringData.doorSensorStatus}", "1");
+                AddDeviceInfoXmlNode("speakerStatus", "0", $"{TvmMonitoringData.speakerStatus}", "1");
+                /**************************************************TRANSACTION STATUS*******************************************************************/
+                AddAccountInfoXmlNode("QRSJT", TvmMonitoringData.QRSJT_Count, TvmMonitoringData.QRSJT_Amount.ToString());
+                AddAccountInfoXmlNode("QRRJT", TvmMonitoringData.QRRJT_Count, TvmMonitoringData.QRRJT_Amount.ToString());
+                AddAccountInfoXmlNode("Total", TvmMonitoringData.Total_Count, TvmMonitoringData.Total_Amount.ToString());
+                /********************************************************STOCK MANAGEMENT*******************************************************************************/
+                AddStockInfoXmlNode("NumberofQR", TvmMonitoringData.numberOfQr);
+                AddStockInfoXmlNode("hopperCoins1", Convert.ToInt16(TvmMonitoringData.hopperCoins1));
+                AddStockInfoXmlNode("hopperCoins2", Convert.ToInt16(TvmMonitoringData.hopperCoins2));
+                AddStockInfoXmlNode("hopperCoins5", Convert.ToInt16(TvmMonitoringData.hopperCoins5));
+                /*******************************************************************************************************************************************************/
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+                return _xml.OuterXml;
+            }
             return _xml.OuterXml; 
         }
 
@@ -157,19 +166,31 @@ namespace Kochi_TVM.Business
 
         public static string InsertLog()
         {
-            string ip = Properties.Settings.Default.ip;
-            var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
-            KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
-
-            var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+            var resp = "";
+            try
             {
-                Username = "NServiceUser",
-                Password = "n3ER7!cEn3Er"
-            };
+                string ip = Properties.Settings.Default.ip;
+                var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
+                KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
 
+                var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+                {
+                    Username = "NServiceUser",
+                    Password = "n3ER7!cEn3Er"
+                };
+                string val = TVMInfoXml();
+                if (val != null && val != "")
+                {
+                    resp = service.InsertMonitoring(requestHeader, val);
 
-            var resp = service.InsertMonitoring(requestHeader,TVMInfoXml());
-
+                    return resp;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+                return resp;
+            }
             return resp;
         }
         public static bool CheckScConnection()
@@ -208,25 +229,32 @@ namespace Kochi_TVM.Business
         public static bool InsNStationAlarm(int stationId, int deviceId, int alarmType, string message)
         {
             bool retVal = false;
-            string ip = Properties.Settings.Default.ip;
-            var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
-            KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
-            KioskFramework.NStationService.TvmAlarm model = new KioskFramework.NStationService.TvmAlarm();
-
-
-            var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+            try
             {
-                Username = "NServiceUser",
-                Password = "n3ER7!cEn3Er"
-            };
+                string ip = Properties.Settings.Default.ip;
+                var remoteAddress = new System.ServiceModel.EndpointAddress(ip);
+                KioskFramework.NStationService.ServiceSoapClient service = new KioskFramework.NStationService.ServiceSoapClient(new System.ServiceModel.BasicHttpBinding(), remoteAddress);
+                KioskFramework.NStationService.TvmAlarm model = new KioskFramework.NStationService.TvmAlarm();
 
-            model.alarmMessage = message;
-            model.alarmTypeId = alarmType;
-            model.deviceNo = deviceId;
-            model.stationId = stationId;
 
-            retVal = service.InsTvmAlarm(requestHeader, model);
+                var requestHeader = new KioskFramework.NStationService.WSRequestHeader
+                {
+                    Username = "NServiceUser",
+                    Password = "n3ER7!cEn3Er"
+                };
 
+                model.alarmMessage = message;
+                model.alarmTypeId = alarmType;
+                model.deviceNo = deviceId;
+                model.stationId = stationId;
+
+                retVal = service.InsTvmAlarm(requestHeader, model);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.ToString());
+                return retVal;
+            }
             return retVal;
         }
 
@@ -272,12 +300,16 @@ namespace Kochi_TVM.Business
                 model.Total_Count = TvmMonitoringData.Total_Count;
                 model.tvmId = TvmMonitoringData.tvmId;
                 string val = TVMInfoXml();
-                retVal = service.InsertMonitoring(requestHeader, val);
+                if (val != null && val != "")
+                {
+                    retVal = service.InsertMonitoring(requestHeader, val);
+                }
                 log.Debug(retVal);
             }
             catch (Exception ex)
             {
                 log.Error(ex.ToString());
+                return retVal;
             }
 
             return retVal;
@@ -299,9 +331,12 @@ namespace Kochi_TVM.Business
                 };
 
                 string val = TVMInfoXml();
-                var commandAfc = AfcDataTransactionClient.StatusReport(requestHeader, val);
-                log.Debug(val);
-                retVal = commandAfc;
+                if (val != null && val != "")
+                {
+                    var commandAfc = AfcDataTransactionClient.StatusReport(requestHeader, val);
+                    log.Debug(val);
+                    retVal = commandAfc;
+                }                
                 log.Debug(retVal);
             }
             catch (Exception ex)

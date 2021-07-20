@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Kochi_TVM.Pages.Maintenance
 {
@@ -24,6 +26,8 @@ namespace Kochi_TVM.Pages.Maintenance
     /// </summary>
     public partial class AdminMainPage : Page
     {
+        Timer checkDeviceTimer;
+        TimerCallback checkDeviceTimerDelegate;
         public AdminMainPage()
         {
             InitializeComponent();
@@ -49,7 +53,8 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            if (checkDeviceTimer != null)
+                checkDeviceTimer.Dispose();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -74,11 +79,38 @@ namespace Kochi_TVM.Pages.Maintenance
                 }
                 else
                 {
-                    MessageBoxOperations.ShowMessage("Door", "Please close the all doors.", MessageBoxButtonSet.OKCancel);
+                    outofservice.Visibility = Visibility.Visible;
+                    txtErrorCode.Text = "Door Open";
+                    checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);
+                    checkDeviceTimer = new Timer(checkDeviceTimerDelegate, null, 1000, Constants.CheckDeviceTime);
+                    //MessageBoxOperations.ShowMessage("Door", "Please close the all doors.", MessageBoxButtonSet.OKCancel);
                 }
             }
         }
-
+        private void CheckDeviceAction(object o)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    int status = KMY200DoorAlarm.Instance.GetStatus();
+                    Enums.DoorStatus doorStatus = (Enums.DoorStatus)(status);
+                    if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
+                    {
+                        KMY200DoorAlarm.Instance.SetAlarm();
+                        NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                    }
+                    else
+                    {
+                        txtErrorCode.Text = "Door Open";
+                        outofservice.Visibility = Visibility.Visible;
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }), DispatcherPriority.Background);
+        }
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();

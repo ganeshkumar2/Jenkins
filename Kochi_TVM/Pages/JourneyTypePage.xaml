@@ -157,7 +157,7 @@
                 <Label Name="lblGroup" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Group Ticket" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
-            <Grid x:Name="gridOnePass" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="gridOnePass_MouseLeftButtonDown">
+            <Grid x:Name="gridOnePass" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridOnePass_MouseLeftButtonDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="8*"/>
@@ -180,7 +180,7 @@
                 <Label Name="lblOneDayPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="One Day Pass" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
-            <Grid x:Name="gridWeekendPass" Grid.Row="2" Grid.Column="2" MouseLeftButtonDown="gridWeekendPass_MouseLeftButtonDown">
+            <Grid x:Name="gridWeekendPass" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="gridWeekendPass_MouseLeftButtonDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="8*"/>

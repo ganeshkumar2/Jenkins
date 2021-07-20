@@ -16,7 +16,7 @@
             <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
             <Label Name="deviceCaption" Grid.Row="0" Grid.Column="0" Content="" HorizontalContentAlignment="Right" Style="{StaticResource styleLabel2}"/>
             <Label Content=":" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource styleLabel2}"/>
-            <Label Name="deviceValue" Grid.Row="0" Grid.Column="2" Content="" HorizontalContentAlignment="Left" Style="{StaticResource styleLabel2}" />
+            <Label Name="deviceValue" Grid.Row="0" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" FontFamily="Titillium"/>
         </Grid>
     </Grid>
 </UserControl>

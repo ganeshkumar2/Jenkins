@@ -64,28 +64,29 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="12" Grid.RowSpan="2" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
-                <Label Name="bnaCaption" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Content="  Banknotes : " Style="{StaticResource styleLabel2}" />
-                <Label Name="bnaTotalCaption" Grid.Row="0" Grid.Column="2" Content="Total" Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaTotalValue" Grid.Row="1" Grid.Column="2" Content="780 Rs. " Style="{StaticResource styleLabel2}" />
-                <Label Name="bnaCassette1Caption" Grid.Row="0" Grid.Column="4" Content="Cassette 1" Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaCassette1Value" Grid.Row="1" Grid.Column="4" Content="8 x 20 = 160 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaCassette2Caption" Grid.Row="0" Grid.Column="6" Content="Cassette 2" Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaCassette2Value" Grid.Row="1" Grid.Column="6" Content="8 x 20 = 160 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaCassette3Caption" Grid.Row="0" Grid.Column="8" Content="Cassette 3" Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaCassette3Value" Grid.Row="1" Grid.Column="8" Content="4 x 50 = 200 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaBoxCaption" Grid.Row="0" Grid.Column="10" Content="Box" Style="{StaticResource styleLabel2}"/>
-                <Label Name="bnaBoxValue" Grid.Row="1" Grid.Column="10" Content="420 Rs. " Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaCaption" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Content="  Banknotes : " Style="{StaticResource styleLabel2}" />              
+                <Label Name="bnaCassette1Caption" Grid.Row="0" Grid.Column="2" Content="Cassette 1" Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaCassette1Value" Grid.Row="1" Grid.Column="2" Content="8 x 20 = 160 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaCassette2Caption" Grid.Row="0" Grid.Column="4" Content="Cassette 2" Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaCassette2Value" Grid.Row="1" Grid.Column="4" Content="8 x 20 = 160 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaCassette3Caption" Grid.Row="0" Grid.Column="6" Content="Cassette 3" Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaCassette3Value" Grid.Row="1" Grid.Column="6" Content="4 x 50 = 200 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaBoxCaption" Grid.Row="0" Grid.Column="8" Content="Box" Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaBoxValue" Grid.Row="1" Grid.Column="8" Content="420 Rs. " Style="{StaticResource styleLabel2}"/>
+
+                <Label Name="bnaTotalCaption" Grid.Row="0" Grid.Column="10" Content="Total" Style="{StaticResource styleLabel2}"/>
+                <Label Name="bnaTotalValue" Grid.Row="1" Grid.Column="10" Content="780 Rs. " Style="{StaticResource styleLabel2}" />
             </Grid>
 
             <Grid Name="Hoppers" Grid.Row="2" Grid.ColumnSpan="3">
@@ -105,15 +106,15 @@
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="10" Grid.RowSpan="2" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
-                <Label Name="hoppersCaption" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Content="  Hoppers : " Style="{StaticResource styleLabel2}"/>
-                <Label Name="hoppersTotalCaption" Grid.Row="0" Grid.Column="2" Content="Total" Style="{StaticResource styleLabel2}"/>
-                <Label Name="hoppersTotalValue" Grid.Row="1" Grid.Column="2" Content="294 Rs. " Style="{StaticResource styleLabel2}" />
-                <Label Name="hopper5Caption" Grid.Row="0" Grid.Column="8" Content="Hopper 5 RS" Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper5Value" Grid.Row="1" Grid.Column="8" Content="38x5 = 190 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper2Caption" Grid.Row="0" Grid.Column="6" Content="Hopper 2 RS" Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper2Value" Grid.Row="1" Grid.Column="6" Content="45 x 2 = 90 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper1Caption" Grid.Row="0" Grid.Column="4" Content="Hopper 1 RS" Style="{StaticResource styleLabel2}"/>
-                <Label Name="hopper1Value" Grid.Row="1" Grid.Column="4" Content="14 x 1 = 14 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="hoppersCaption" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Content="  Hoppers : " Style="{StaticResource styleLabel2}"/>               
+                <Label Name="hopper5Caption" Grid.Row="0" Grid.Column="6" Content="Hopper 5 RS" Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper5Value" Grid.Row="1" Grid.Column="6" Content="38x5 = 190 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper2Caption" Grid.Row="0" Grid.Column="4" Content="Hopper 2 RS" Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper2Value" Grid.Row="1" Grid.Column="4" Content="45 x 2 = 90 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper1Caption" Grid.Row="0" Grid.Column="2" Content="Hopper 1 RS" Style="{StaticResource styleLabel2}"/>
+                <Label Name="hopper1Value" Grid.Row="1" Grid.Column="2" Content="14 x 1 = 14 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="hoppersTotalCaption" Grid.Row="0" Grid.Column="10" Content="Total" Style="{StaticResource styleLabel2}"/>
+                <Label Name="hoppersTotalValue" Grid.Row="1" Grid.Column="10" Content="294 Rs. " Style="{StaticResource styleLabel2}" />
             </Grid>
 
             <Grid Name="Receipts" Grid.Row="4" Grid.Column="0">
@@ -151,12 +152,12 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="2" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" Margin="0,0,-0.2,0.4" />
-                <Label Name="GrandTotal" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Content="  Grand Total : " Style="{StaticResource styleLabel2}" />
-                <Label Name="GrandTotalAmount" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="10000 Rs." Style="{StaticResource styleLabel2}" />
-                <Label Name="HopperGrand" Grid.Row="0" Grid.Column="2" Content="Hoppers" Style="{StaticResource styleLabel2}"/>
-                <Label Name="HopperGrandAmount" Grid.Row="1" Grid.Column="2" Content="1000 Rs." Style="{StaticResource styleLabel2}"/>
-                <Label Name="BanknoteGrand" Grid.Row="0" Grid.Column="4" Content="Banknotes" Style="{StaticResource styleLabel2}"/>
-                <Label Name="BanknoteGrandAmount" Grid.Row="1" Grid.Column="4" Content="2000 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="HopperGrand" Grid.Row="0" Grid.Column="0" Content="Hoppers" Style="{StaticResource styleLabel2}"/>
+                <Label Name="HopperGrandAmount" Grid.Row="1" Grid.Column="0" Content="1000 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="BanknoteGrand" Grid.Row="0" Grid.Column="2" Content="Banknotes" Style="{StaticResource styleLabel2}"/>
+                <Label Name="BanknoteGrandAmount" Grid.Row="1" Grid.Column="2" Content="2000 Rs." Style="{StaticResource styleLabel2}"/>
+                <Label Name="GrandTotal" Grid.Row="0" Grid.Column="4" Grid.RowSpan="1" Content="Grand Total" Style="{StaticResource styleLabel2}" />
+                <Label Name="GrandTotalAmount" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Content="10000 Rs." Style="{StaticResource styleLabel2}" />
             </Grid>
 
 

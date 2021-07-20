@@ -42,6 +42,8 @@ namespace Kochi_TVM.Pages
         {
             try
             {
+                Constants.IsMaintenanceActive = false;
+
                 LedOperations.StationClose();
 
                 checkDeviceTimerDelegate = new TimerCallback(CheckDeviceAction);

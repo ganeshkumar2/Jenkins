@@ -45,7 +45,8 @@ namespace Kochi_TVM.Pages
         {
             InitializeComponent();
             try
-            {                
+            {
+                Constants.IsMaintenanceActive = false;
                 //timerOccConnMsg = new DispatcherTimer();
                 //bwAfcStatus = new BackgroundWorker
                 //{
@@ -491,15 +492,9 @@ namespace Kochi_TVM.Pages
                                         LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                                     }));
                                     break;
-                                //case "EnterIncidentMode":
-                                //    Application.Current.Dispatcher.BeginInvoke(
-                                //       DispatcherPriority.Background,
-                                //       new Action(() =>
-                                //       {
-                                //           txtErrorCode.Text = "Incident Mode";
-                                //           outofservice.Visibility = Visibility.Visible;
-                                //       }));
-                                //    break;
+                                case "Restart":
+                                    TVMUtility.RestartSystem();
+                                    break;
                                 //case "ExitIncidentMode":
                                 //    Application.Current.Dispatcher.BeginInvoke(
                                 //       DispatcherPriority.Background,
@@ -643,15 +638,9 @@ namespace Kochi_TVM.Pages
                                         LedOperations.GreenText("WELCOME TO " + Stations.currentStation.name + " " + PIDMessageLog.getMessage());
                                     }));
                                     break;
-                                //case "EnterIncidentMode":
-                                //    Application.Current.Dispatcher.BeginInvoke(
-                                //       DispatcherPriority.Background,
-                                //       new Action(() =>
-                                //       {
-                                //           txtErrorCode.Text = "IncidentMode";
-                                //           outofservice.Visibility = Visibility.Visible;
-                                //       }));
-                                //    break;
+                                case "Restart":
+                                    TVMUtility.RestartSystem();
+                                    break;
                                 //case "ExitIncidentMode":
                                 //    Application.Current.Dispatcher.BeginInvoke(
                                 //       DispatcherPriority.Background,
@@ -709,8 +698,8 @@ namespace Kochi_TVM.Pages
                     log.Error(ex.ToString());
                     Parameters.TVMStatic.AddOrUpdateParameter("SCConn", "0");
                 }
-
-                Thread.Sleep(30000);
+                Thread.Sleep(60000 * 5);
+                //Thread.Sleep(30000);
             }
         }
 
@@ -1272,6 +1261,8 @@ namespace Kochi_TVM.Pages
 
                 bwSendMonitoring.DoWork -= bwSendMonitoring_DoWork;
                 bwSendMonitoring.CancelAsync();
+
+                Constants.IsMaintenanceActive = true;
             }
             catch (Exception ex)
             {

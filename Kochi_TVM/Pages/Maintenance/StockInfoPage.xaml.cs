@@ -131,7 +131,7 @@ namespace Kochi_TVM.Pages.Maintenance
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 #region dispenser
-                //DispenserValue.Content = StockOperations.rpt.ToString();
+                DispenserValue.Content = Convert.ToString(StockOperations.rpt);
                 #endregion
 
                 #region hopper

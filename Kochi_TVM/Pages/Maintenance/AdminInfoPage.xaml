@@ -57,7 +57,7 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="btnTVMInfo" Grid.Row="1" Grid.Column="1" Content="TVM Info" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnTVMInfo_Click" />
-            <Button x:Name="btnDeviceInfo" Grid.Row="1" Grid.Column="3" Content="Device Info"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnDeviceInfo_Click"/>
+            <Button x:Name="btnDeviceInfo" Grid.Row="1" Grid.Column="3" Content="Devices Info"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnDeviceInfo_Click"/>
             <Button x:Name="btnStockStatus" Grid.Row="3" Grid.Column="1" Content="Stock Status"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnStockStatus_Click"/>
             <Button x:Name="btnDailyTxn" Grid.Row="3" Grid.Column="3" Content="Daily Transaction" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnDailyTxn_Click"/>
             <Button x:Name="btnDoorStatus" Grid.Row = "5" Grid.Column="1" Content="Door Status" Style="{StaticResource styleLanguageBtn}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="btnDoorStatus_Click" />

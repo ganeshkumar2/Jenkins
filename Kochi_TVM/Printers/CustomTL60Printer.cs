@@ -346,7 +346,7 @@ namespace Kochi_TVM.Printers
             AddText("User", Parameters.userId, 80);
 
             AddText("------------------------------------------------------------------------------");
-            AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
+            //AddText("Date/Time", DateTime.Now.ToString("yyyy-MM-dd HH:mm"), 80);
             AddText("TVM ID", Parameters.TVMDynamic.GetParameter("unitId"), 80);
             AddText("Equipment ID", Parameters.TVMDynamic.GetParameter("sys_EquipmentId"), 80);
             AddText("App Version", Parameters.TVMStatic.GetParameter("appVersion"), 80);

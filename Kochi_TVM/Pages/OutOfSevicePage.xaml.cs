@@ -41,7 +41,7 @@ namespace Kochi_TVM.Pages
             }
             catch (Exception ex)
             {
-                log.Error("Error OutOfServicePage -> asyncFunc() : " + ex.ToString());
+                log.Error("Error OutOfServicePage -> asyncFunc() :" + ex.ToString());
             }
         }
 
@@ -77,12 +77,19 @@ namespace Kochi_TVM.Pages
                     if (CCTalkManager.Instance.coinHopperEV4000_1.Manufacture != null)
                     {
                         CCTalkManager.Instance.coinHopperEV4000_1.EnableHopper();
-                        outOfServiceLbl.Content = "Coin Hopper One OK";                      
+                        outOfServiceLbl.Content = "Coin Hopper One :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "OK";
                     }
                 }
                 catch (Exception ex)
                 {
-                    outOfServiceLbl.Content = ex.Message;
+                    outOfServiceLbl.Content = "Coin Hopper One :";
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                    outOfServiceRedLbl.Content = "Not OK";
+                    log.Error("Error OutOfSevicePage -> CoinHopper1() :" + ex.ToString());
                 }
             }));
         }
@@ -96,12 +103,19 @@ namespace Kochi_TVM.Pages
                     if (CCTalkManager.Instance.coinHopperEV4000_2.Manufacture != null)
                     {
                         CCTalkManager.Instance.coinHopperEV4000_2.EnableHopper();
-                        outOfServiceLbl.Content = "Coin Hopper Two OK";                    
+                        outOfServiceLbl.Content = "Coin Hopper Two :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "OK";
                     }
                 }
                 catch (Exception ex)
                 {
-                    outOfServiceLbl.Content = ex.Message;
+                    outOfServiceLbl.Content = "Coin Hopper Two :";
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                    outOfServiceRedLbl.Content = "Not OK";
+                    log.Error("Error OutOfSevicePage -> CoinHopper2() :" + ex.ToString());
                 }
             }));
         }
@@ -115,12 +129,19 @@ namespace Kochi_TVM.Pages
                     if (CCTalkManager.Instance.coinHopperEV4000_3.Manufacture != null)
                     {
                         CCTalkManager.Instance.coinHopperEV4000_3.EnableHopper();
-                        outOfServiceLbl.Content = "Coin Hopper Three OK";                        
+                        outOfServiceLbl.Content = "Coin Hopper Three :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "OK";
                     }
                 }
                 catch (Exception ex)
                 {
-                    outOfServiceLbl.Content = ex.Message;
+                    outOfServiceLbl.Content = "Coin Hopper Three :";
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                    outOfServiceRedLbl.Content = "Not OK";
+                    log.Error("Error OutOfSevicePage -> CoinHopper2() :" + ex.ToString());
                 }
             }));
         }
@@ -143,11 +164,21 @@ namespace Kochi_TVM.Pages
                     {
                         rptstatus = 0;
                     }
-                    
-                    if(rptstatus == 1)
-                        outOfServiceLbl.Content = "Dispenser Status OK" ;
+
+                    if (rptstatus == 1)
+                    {
+                        outOfServiceLbl.Content = "Dispenser Status :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "OK";
+                    }
                     else if (rptstatus == 0)
-                        outOfServiceLbl.Content = "Dispenser Status Error";
+                    {
+                        outOfServiceLbl.Content = "Dispenser Status :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "Not OK";
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -174,8 +205,10 @@ namespace Kochi_TVM.Pages
                 try
                 {
                     Constants.BNRStatus = Enum.GetName(typeof(BNRState), state);
-                    outOfServiceLbl.Content = "BNR Status : " + Constants.BNRStatus;
-                    log.Debug("BNR Status : " + Constants.BNRStatus);
+                    outOfServiceLbl.Content = "BNR Status :";
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceGreenLbl.Content = Constants.BNRStatus;
                     if (state == BNRState.DISABLED)
                     {
                         new Thread(() => AsyncIntHopperFunc()).Start();
@@ -183,7 +216,11 @@ namespace Kochi_TVM.Pages
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Error PayByCashOrCoinPage -> BNRManager_BNRStateInputEvent : " + ex.ToString());
+                    outOfServiceLbl.Content = "BNR Status :";
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                    outOfServiceRedLbl.Content = "Not OK";
+                    log.Error("Error PayByCashOrCoinPage -> BNRManager_BNRStateInputEvent :" + ex.ToString());
                 }
             }), DispatcherPriority.Background);
         }
@@ -213,17 +250,20 @@ namespace Kochi_TVM.Pages
                     await Task.Delay(1000);
 
                     UpdDevStat();
-                    await Task.Delay(6000);
+                    await Task.Delay(8000);
 
                     KMY200DoorAlarm.Instance.SetAlarm();
-                    outOfServiceLbl.Content = "Alarm Activated";
-                    await Task.Delay(1000);
+                    outOfServiceLbl.Content = "Alarm Activated :";
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceGreenLbl.Content = "OK";
+                    await Task.Delay(2000);
                     NavigationService.Navigate(new Pages.MainPage());
                 }));
             }
             catch (Exception ex)
             {
-                log.Error("Error OutOfServicePage -> asyncFunc() : " + ex.ToString());
+                log.Error("Error OutOfServicePage -> asyncFunc() :" + ex.ToString());
             }
         }
 
@@ -239,195 +279,387 @@ namespace Kochi_TVM.Pages
                     if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);                        
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_1_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                        
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_2_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_3_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_4_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right Door:";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_12_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_13_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_14_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_123_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_24_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Close";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_23_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_234_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_34_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Close";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_134_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Close";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_124_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
                     if (doorStatus == Enums.DoorStatus.DOOR_1234_OPEN)
                     {
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Front Door Close";
+                        outOfServiceLbl.Content = "Front Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Hopper Door Open";
+                        outOfServiceLbl.Content = "Hopper Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Door Open";
+                        outOfServiceLbl.Content = "Back Left Door :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
-                        outOfServiceLbl.Content = "Back Left Right Open";
+                        outOfServiceLbl.Content = "Back Left Right :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                     }
                 }

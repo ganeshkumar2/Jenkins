@@ -59,6 +59,8 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnSetServiceMode_Click(object sender, RoutedEventArgs e)
         {
+            TVMUtility.PlayClick();
+
             if (svcMode)
             {
                 svcMode = false;
@@ -78,41 +80,26 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnShutDown_Click(object sender, RoutedEventArgs e)
         {
+            TVMUtility.PlayClick();
+
             var result = MessageBoxOperations.ShowMessage("SHUTDOWN", "Are you sure you want to Shutdown the TVM?", MessageBoxButtonSet.YesNo);
 
             if (result == Custom.MessageBoxResult.OK)
             {
-                Process proccess = new Process();
-
-                proccess.StartInfo.FileName = "shutdown";
-                proccess.StartInfo.Arguments = "/s /f /t 000";
-                proccess.StartInfo.CreateNoWindow = true;
-                proccess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                proccess.EnableRaisingEvents = false;
-
-                proccess.Start();
-                proccess.WaitForExit();
+                TVMUtility.ShutDownSystem();
             }
         }
 
         private void btnRestart_Click(object sender, RoutedEventArgs e)
         {
+            TVMUtility.PlayClick();
+
             var result = MessageBoxOperations.ShowMessage("RESTART", "Are you sure you want to Restart the TVM?", MessageBoxButtonSet.YesNo);
 
             if (result == Custom.MessageBoxResult.OK)
             {
-                Process proccess = new Process();
-
-                proccess.StartInfo.FileName = "shutdown";
-                proccess.StartInfo.Arguments = "/r /f /t 000";
-                proccess.StartInfo.CreateNoWindow = true;
-                proccess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                proccess.EnableRaisingEvents = false;
-
-                proccess.Start();
-                proccess.WaitForExit();
+                TVMUtility.RestartSystem();
             }
-
         }
 
         private void btnTestDevice_Click(object sender, RoutedEventArgs e)

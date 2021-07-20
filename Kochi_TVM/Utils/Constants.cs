@@ -42,5 +42,6 @@ namespace Kochi_TVM.Utils
         public static SamCardType SamCardType { get; set; } = SamCardType.KochiTest;
 
         public static int SystemIdleTimeout = 1;
+        public static bool IsMaintenanceActive = false;
     }
 }

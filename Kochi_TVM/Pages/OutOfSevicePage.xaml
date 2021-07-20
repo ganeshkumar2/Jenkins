@@ -12,10 +12,15 @@
       Title="OutOfSevicePage">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.6*"/>
-            <RowDefinition Height="0.4*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Name="imgLoading" Source="/Kochi_TVM;component/Images/out_of_service.jpg"/>
-        <Label x:Name="outOfServiceLbl" Grid.Row="1" Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="80" FontSize="36"/>
+        <Image Grid.Row="0" Name="imgLoading" Source="/Kochi_TVM;component/Images/out_of_service.jpg" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label x:Name="outOfServiceLbl"  Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="80" FontSize="36" Margin="0,0,5,0"/>
+            <Label x:Name="outOfServiceGreenLbl" Visibility="Collapsed" Content="OK" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="80" FontSize="36" Foreground="Green" Margin="0,0,5,0"/>
+            <Label x:Name="outOfServiceRedLbl"  Visibility="Collapsed" Content="Not OK" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="80" FontSize="36" Foreground="Red" Margin="0,0,5,0"/>
+        </StackPanel>
+        
     </Grid>
 </Page>

@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
 
-            <Grid Name="gridLogo" Grid.Row="0" Grid.Column="0" Visibility="Visible" MouseLeftButtonDown="gridLogo_MouseLeftButtonDown">
+            <Grid Name="gridLogo" Grid.Row="0" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -31,8 +31,12 @@
                     <ColumnDefinition Width="8*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image Name="iLogo" Grid.Column="1" Source="Images\kmrl.png" VerticalAlignment="Stretch"  Stretch="Uniform" HorizontalAlignment="Stretch" />
-                <Image Name="axisLogo" Grid.Column="3" Grid.Row="1" Source="Images\axisbank_logo.png" VerticalAlignment="Stretch"  Stretch="Uniform" HorizontalAlignment="Stretch"/>
+                <Grid Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MouseLeftButtonDown="gridLogo_MouseLeftButtonDown">
+                    <Image Name="iLogo"  Source="Images\kmrl.png" Stretch="Uniform"/>
+                </Grid>
+                <Grid x:Name="gridBankLogo" Grid.Column="3" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MouseLeftButtonDown="gridBankLogo_MouseLeftButtonDown">
+                    <Image Name="axisLogo"  Source="Images\axisbank_logo.png" Stretch="Uniform"/>
+                </Grid>                
             </Grid>
 
             <Grid Name="gridName" Grid.Row="0" Grid.Column="1" Visibility="Visible" MouseLeftButtonDown="gridDT_MouseLeftButtonDown">
@@ -52,7 +56,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Name="lDate" Grid.Row="1" Grid.Column="0" Content="Monday, 14th December 2015 09:14 PM" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="0,0,20,0" FontFamily="Titillium" FontSize="21" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}"  HorizontalAlignment="Stretch" />
+                <Label Name="lDate" Grid.Row="1" Grid.Column="0" Content="14th December 2015 09:14 AM" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="0,0,20,0" FontFamily="Titillium" FontSize="21" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}"  HorizontalAlignment="Stretch" />
             </Grid>
         </Grid>
         <Border Grid.Row="1" Grid.Column="0" Background="{StaticResource ViceColor}" />

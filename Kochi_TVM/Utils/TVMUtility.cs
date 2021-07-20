@@ -238,6 +238,28 @@ namespace Kochi_TVM.Utils
             System.Threading.Thread.Sleep(500);
             Process.Start(Environment.SystemDirectory + "\\..\\explorer.exe");
         }
+        public static void ShutDownSystem()
+        {
+            Process proccess = new Process();
+            proccess.StartInfo.FileName = "shutdown";
+            proccess.StartInfo.Arguments = "/s /f /t 000";
+            proccess.StartInfo.CreateNoWindow = true;
+            proccess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            proccess.EnableRaisingEvents = false;
+            proccess.Start();
+            proccess.WaitForExit();
+        }
+        public static void RestartSystem()
+        {
+            Process proccess = new Process();
+            proccess.StartInfo.FileName = "shutdown";
+            proccess.StartInfo.Arguments = "/r /f /t 000";
+            proccess.StartInfo.CreateNoWindow = true;
+            proccess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            proccess.EnableRaisingEvents = false;
+            proccess.Start();
+            proccess.WaitForExit();
+        }
         public static int BillTypeToBillValue(int billtype)
         {
             try

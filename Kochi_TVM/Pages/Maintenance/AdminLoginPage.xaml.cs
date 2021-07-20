@@ -38,7 +38,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            Constants.IsMaintenanceActive = false;
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)

@@ -82,24 +82,54 @@ namespace Kochi_TVM
                 log.Error("Error MainWindow -> DateTimeTimerAction() : " + ex.ToString());
             }
         }
+        
         int i = 0;
         private void gridLogo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (i == 2)
+            if (Constants.IsMaintenanceActive)
                 return;
+
+            if (i >= 1)
+                return;
+
             TVMUtility.PlayClick();
             i++;            
         }
 
         private void gridDT_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (Constants.IsMaintenanceActive)
+                return;
+
+            if (i == 0)
+                return;
+
+            if (i == 1)
+                return;
+
             TVMUtility.PlayClick();
             i++;
             if (i == 3)
             {
                 i = 0;
+                Constants.IsMaintenanceActive = true;
                 frameHomeMain.Navigate(new Pages.Maintenance.AdminLoginPage());
             }
+        }
+
+        private void gridBankLogo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Constants.IsMaintenanceActive)
+                return;
+
+            if (i == 0)
+                return;
+
+            if (i == 2)
+                return;          
+
+            TVMUtility.PlayClick();
+            i++;
         }
     }
 }

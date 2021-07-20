@@ -60,11 +60,6 @@
             <Button x:Name="btnSettings" Grid.Row="3" Grid.Column="3" Content="Settings" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnSettings_Click"/>
         </Grid>
 
-
-
-
-
-
         <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -103,6 +98,36 @@
             </Grid>
 
 
+        </Grid>
+
+        <Grid x:Name="outofservice" HorizontalAlignment="Stretch" Visibility="Collapsed" Grid.Column="0" Grid.Row="0" Grid.RowSpan="7" Grid.ColumnSpan="3" VerticalAlignment="Stretch" Background="Red">
+            <Grid.RowDefinitions>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Header -->
+                <RowDefinition Height="3*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Operation Area -->
+                <RowDefinition Height="24*"/>
+                <!--Top space -->
+                <RowDefinition Height="*"/>
+                <!--Navigate -->
+                <RowDefinition Height="3*"/>
+                <!--Bottom space -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!--Left space -->
+                <ColumnDefinition Width="*"/>
+                <!--Operation -->
+                <ColumnDefinition Width="19*"/>
+                <!--Right space -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Name="imgStationClosedMode" Grid.Row="3" Grid.Column="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Kochi_TVM;component/images/station_closed.jpg" />
+            <TextBlock Name="txtErrorMode" Grid.Row="1" Grid.Column="1" Text="OUT OF SERVICE" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontFamily="Titillium" FontSize="45" FontWeight="Bold" Foreground="{StaticResource WhiteFontColor}" />
+            <TextBlock Name="txtErrorCode" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" FontFamily="Titillium" FontSize="25" Foreground="{StaticResource WhiteFontColor}" />
         </Grid>
 
     </Grid>
