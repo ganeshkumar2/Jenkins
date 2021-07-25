@@ -183,7 +183,13 @@
     <system:String x:Key="Vyttila">Vyttila</system:String>
     <system:String x:Key="nobalance">Insufficient balance</system:String>
     <system:String x:Key="maxnotes">Maximum notes accepted</system:String>
-    <system:String x:Key="onedaypass">One Day Pass</system:String>
+    <system:String x:Key="onedaypass">Day Pass</system:String>
     <system:String x:Key="weekenddaypass">Weekend Pass</system:String>
     <system:String x:Key="RFIDPaper">RFID Paper Ticket</system:String>
+    <system:String x:Key="MaxNoteAccept">Maximum Note Acceptance :</system:String>
+    <system:String x:Key="PaymentSccess">Your Payment Was Successful</system:String>
+    <system:String x:Key="DispTicketType">Ticket Type</system:String>
+    <system:String x:Key="DispDestination">Destination</system:String>
+    <system:String x:Key="DispNoOfTickets">Number Of Tickets</system:String>
+    <system:String x:Key="DispAmount">Amount</system:String>
 </ResourceDictionary>

@@ -54,7 +54,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="btnCoinSetting" Grid.Row="1" Grid.Column="1" Content="Coin Settings" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnCoinSetting_Click" />
-            <Button x:Name="btnBNRSetting" Grid.Row="1" Grid.Column="3" Content="BNR Settings" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBNRSetting_Click" />
+            <Button x:Name="btnBNRSetting" Grid.Row="1" Grid.Column="3" Content="BNA Settings" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBNRSetting_Click" />
             <Button x:Name="btnPIDSetting" Grid.Row="3" Grid.Column="1" Content="PID Settings" Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnPIDSetting_Click" />
            </Grid>
 
@@ -70,8 +70,8 @@
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
-            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="3" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="3" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="1" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
             <Grid  Name="infoGrid" Grid.Column="2" Grid.Row="0"  Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

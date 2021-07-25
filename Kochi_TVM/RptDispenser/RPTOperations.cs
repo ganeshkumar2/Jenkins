@@ -133,6 +133,7 @@ namespace Kochi_TVM.RptDispenser
             }
             catch(Exception ex)
             {
+                log.Error("LogTypes.Error GiveRPTTicket() : " + ex.ToString());
                 return result;
             }            
         }

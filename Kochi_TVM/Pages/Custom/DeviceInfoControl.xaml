@@ -13,10 +13,10 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
-            <Label Name="deviceCaption" Grid.Row="0" Grid.Column="0" Content="" HorizontalContentAlignment="Right" Style="{StaticResource styleLabel2}"/>
-            <Label Content=":" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource styleLabel2}"/>
-            <Label Name="deviceValue" Grid.Row="0" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" FontFamily="Titillium"/>
+            <Border Name="borDisplay" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+            <Label Name="deviceCaption" Grid.Row="0" Grid.Column="0" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="20" FontFamily="Titillium" FontWeight="SemiBold"/>
+            <Label Name="lblSeperator" Content=":" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" FontFamily="Titillium" FontWeight="SemiBold"/>
+            <Label Name="deviceValue" Grid.Row="0" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20" FontFamily="Titillium" FontWeight="SemiBold"/>
         </Grid>
     </Grid>
 </UserControl>

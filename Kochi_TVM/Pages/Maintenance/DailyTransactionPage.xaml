@@ -40,14 +40,13 @@
 
         <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
@@ -56,47 +55,111 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Label Grid.Row="0" Grid.Column="0" Content="Type" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Grid.Row="0" Grid.Column="2" Content="Count" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Grid.Row="0" Grid.Column="4" Content="Amount" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
 
-            <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Label Grid.Row="1" Grid.Column="0" Content="QR - SJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRSJTCashCount" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRSJTCashAmount" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRSJTNonCashCount" Grid.Row="1" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRSJTNonCashAmount" Grid.Row="1" Grid.Column="8" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Grid  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+                <Label Grid.Row="0" Grid.Column="0" Content="Type" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Grid.Row="0" Grid.Column="2" Content="Count" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Grid.Row="0" Grid.Column="4" Content="Cash" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Grid.Row="0" Grid.Column="6" Content="Non Cash" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+            </Grid>
 
-            <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Label  Grid.Row="2" Grid.Column="0" Content="QR - RJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRRJTCashCount" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRRJTCashAmount" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRRJTNonCashCount" Grid.Row="2" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblQRRJTNonCashAmount" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="Collapsed" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Grid  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+                <Label  Grid.Row="0" Grid.Column="0" Content="QR - SJT" HorizontalAlignment="Left" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>                
+                <Label Name="lblQRSJTCashCount"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRSJTCashAmount"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRSJTNonCashCount" Grid.Row="0" Grid.Column="2" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRSJTNonCashAmount" Grid.Row="0" Grid.Column="4" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+            </Grid>
 
-            <Rectangle Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Label Grid.Row="3" Grid.Column="0" Content="RPT - SJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTQRSJTCashCount" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTQRSJTCashAmount" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+                <Label  Grid.Row="0" Grid.Column="0" Content="QR - RJT" HorizontalAlignment="Left" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRRJTCashCount"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRRJTCashAmount"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRRJTNonCashCount" Grid.Row="0" Grid.Column="2" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblQRRJTNonCashAmount" Grid.Row="0" Grid.Column="4" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+            </Grid>
 
-            <Rectangle Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Label Grid.Row="4" Grid.Column="0" Content="RPT - RJT" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTQRRJTCashCount" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTQRRJTCashAmount" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Grid  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+                <Label  Grid.Row="0" Grid.Column="0" Content="RPT - SJT" HorizontalAlignment="Left" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblRPTQRSJTCashCount"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblRPTQRSJTCashAmount"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+             </Grid>
+           
+            <Label Name="lblRPTQRRJTCashCount" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Stretch" Visibility="Collapsed" VerticalAlignment="Center"  Style="{StaticResource styleLabelComingSoon}"/>
+            <Label Name="lblRPTQRRJTCashAmount" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" Visibility="Collapsed" VerticalAlignment="Center"  Style="{StaticResource styleLabelComingSoon}"/>
 
-            <Rectangle Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" Fill="Transparent" Stroke="White" StrokeThickness="3"></Rectangle>
-            <Label Grid.Row="5" Grid.Column="0" Content="RPT - Day Pass" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTDayPassCashCount" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTDayPassCashAmount" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Grid  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+                <Label  Grid.Row="0" Grid.Column="0" Content="RPT - Day Pass" HorizontalAlignment="Left" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblRPTDayPassCashCount"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblRPTDayPassCashAmount"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+            </Grid>
 
-            <Label Grid.Row="6" Grid.Column="0" Content="RPT - Weeked Pass" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTWeekendCashCount" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
-            <Label Name="lblRPTWeekendCashAmount" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource styleLabelComingSoon}"/>
+            <Grid  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" BorderThickness="5" CornerRadius="20" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" />
+                <Label  Grid.Row="0" Grid.Column="0" Content="RPT - Weekend Pass" HorizontalAlignment="Left" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblRPTWeekendCashCount"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+                <Label Name="lblRPTWeekendCashAmount"  Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Black" FontSize="20" FontFamily="Titillium"/>
+            </Grid>
 
-
-            <Button x:Name="btnPrint" Grid.Row="7" Grid.Column="7"  Margin="0,10,0,0" Grid.ColumnSpan="2" Content="Print Page"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnPrint_Click" />
+            <Button x:Name="btnPrint" Grid.Row="6" Grid.Column="7"  Margin="0,10,0,0" Grid.ColumnSpan="2" Content="Print Page"  Style="{StaticResource styleLanguageBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnPrint_Click" />
         </Grid>
 
         <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">
@@ -111,8 +174,8 @@
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
-            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="3" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click" />
+            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="3" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="1" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click" />
             <Grid  Name="infoGrid" Grid.Column="2" Grid.Row="0"  Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

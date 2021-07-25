@@ -32,7 +32,7 @@ namespace Kochi_TVM.Pages.Maintenance
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+        {            
             LedOperations.Maintance();
         }
 
@@ -81,8 +81,7 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)
         {
-            TVMUtility.PlayClick();
-            TVMUtility.killExplorer();
+            TVMUtility.PlayClick();            
             NavigationService.Navigate(new Pages.MainPage());
         }
         public bool Login(string userName, string password, int stationId, ref bool notAuthorized)

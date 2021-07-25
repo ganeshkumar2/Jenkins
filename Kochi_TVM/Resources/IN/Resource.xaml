@@ -183,7 +183,13 @@
     <system:String x:Key="Vyttila">वैरिलि</system:String>
     <system:String x:Key="nobalance">अपर्याप्त शेषराशि</system:String>
     <system:String x:Key="maxnotes">अधिकतम नोट स्वीकार किए गए</system:String>
-    <system:String x:Key="onedaypass">एक दिन पास</system:String>
+    <system:String x:Key="onedaypass">दिन पास</system:String>
     <system:String x:Key="weekenddaypass">वीकेंड पास</system:String>
     <system:String x:Key="RFIDPaper">RFID पेपर टिकट</system:String>
+    <system:String x:Key="MaxNoteAccept">अधिकतम नोट स्वीकृति :</system:String>
+    <system:String x:Key="PaymentSccess">आपका भुगतान सफल रहा</system:String>
+    <system:String x:Key="DispTicketType">टिकिट का प्रकार</system:String>
+    <system:String x:Key="DispDestination">गंतव्य</system:String>
+    <system:String x:Key="DispNoOfTickets">टिकटों की संख्या</system:String>
+    <system:String x:Key="DispAmount">रकम</system:String>
 </ResourceDictionary>

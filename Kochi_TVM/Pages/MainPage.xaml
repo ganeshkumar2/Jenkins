@@ -83,7 +83,7 @@
 
             </Grid>
 
-            <Grid Name="languageGrid" Grid.Row="5" Grid.Column="1">         
+            <Grid Name="languageGrid" Grid.Row="5" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*" />
                     <ColumnDefinition Width="30" />
@@ -97,66 +97,7 @@
                 </StackPanel>
 
             </Grid>
-
-            <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoChangeMode" Visibility="Hidden">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.6*"/>
-                        <RowDefinition Height="0.2*"/>
-                        <RowDefinition Height="0.2*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.5*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Grid.Row="0" Source="..\Images\NoCoin.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="200"></Image>
-                    <Label Name="lblNoChange" Grid.Row="1" Content="NO CHANGE MODE" Style="{StaticResource styleLabelHeader1}"  />
-                    <Button x:Name="btnNoChangeExit" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnNoChangeExit_Click" />
-                    <Button x:Name="btnNoChangeYes" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnNoChangeYes_Click" />
-                    <StackPanel Name="stackCoin" Orientation="Horizontal" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
-                        <Label Name="lblAvailable"  Content="Available Coins : " Style="{StaticResource styleLabelHeader2}" />
-
-                        <Border Name="lbl5RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                            <Label  Content="₹5" Style="{StaticResource styleLabelHeader2}" />
-                        </Border>
-                        <Border Name="lbl2RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                            <Label  Content="₹2" Style="{StaticResource styleLabelHeader2}" />
-                        </Border>
-                        <Border Name="lbl1RS" Height="60" Width="60" BorderBrush="Black" BorderThickness="2" Margin="0,0,5,0" CornerRadius="40">
-                            <Label  Content="₹1" Style="{StaticResource styleLabelHeader2}" />
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-
-            <Grid Grid.Row="2" Grid.RowSpan="7" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource pageColor}" Name="grdNoReceiptPrinterMode" Visibility="Hidden">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.6*"/>
-                        <RowDefinition Height="0.2*"/>
-                        <RowDefinition Height="0.2*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.5*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Grid.Row="0" Source="..\Images\NoReceipt.png" VerticalAlignment="Center" HorizontalAlignment="Center" Height="300" Width="300"></Image>
-                    <Label Name="lblNoReceipt" Grid.Row="1" Content="NO RECEIPT MODE" Style="{StaticResource styleLabelHeader1}"  />
-                    <Button x:Name="btnReceiptCancel" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Exit"  Style="{StaticResource styleFinishBtn}" Click="btnReceiptCancel_Click" />
-                    <Button x:Name="btnReceiptOK" Grid.Row="2" Grid.Column="1" Width="200" Height="60" Margin="20,0,0,0" Content="Ok"  Style="{StaticResource styleOkBtn}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnReceiptOK_Click" />
-
-                </Grid>
-            </Grid>
+            
         </Grid>
         <Grid x:Name="outofservice" HorizontalAlignment="Stretch" Visibility="Collapsed" VerticalAlignment="Stretch" Background="Red">
             <Grid.RowDefinitions>

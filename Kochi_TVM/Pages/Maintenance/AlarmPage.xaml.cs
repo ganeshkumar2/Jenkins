@@ -8,11 +8,11 @@ using System.Windows.Navigation;
 namespace Kochi_TVM.Pages.Maintenance
 {
     /// <summary>
-    /// Interaction logic for AlearmPage.xaml
+    /// Interaction logic for AlarmPage.xaml
     /// </summary>
-    public partial class AlearmPage : Page
+    public partial class AlarmPage : Page
     {
-        public AlearmPage()
+        public AlarmPage()
         {
             InitializeComponent();
         }

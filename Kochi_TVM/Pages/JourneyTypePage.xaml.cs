@@ -29,7 +29,18 @@ namespace Kochi_TVM.Pages
             try
             {
                 initialTimer();
-
+                if (Ticket.language == Languages.English || Ticket.language == Languages.Hint)
+                {
+                    lblDestination.FontSize = 14;
+                    lblNoOfTickets.FontSize = 14;
+                    lblAmount.FontSize = 14;
+                }
+                else
+                {
+                    lblDestination.FontSize = 12;
+                    lblNoOfTickets.FontSize = 12;
+                    lblAmount.FontSize = 12;
+                }
                 btnBack.Content = MultiLanguage.GetText("back");
                 btnFinish.Content = MultiLanguage.GetText("cancel");
                 labelSJT.Content = MultiLanguage.GetText("sj");
@@ -38,7 +49,10 @@ namespace Kochi_TVM.Pages
                 lblOneDayPass.Content = MultiLanguage.GetText("onedaypass");
                 lblWeekendPass.Content = MultiLanguage.GetText("weekenddaypass");
                 lblHeader.Content = MultiLanguage.GetText("selectTicketType");
-                
+                lblType.Content = MultiLanguage.GetText("DispTicketType");
+                lblDestination.Content = MultiLanguage.GetText("DispDestination");
+                lblNoOfTickets.Content = MultiLanguage.GetText("DispNoOfTickets");
+                lblAmount.Content = MultiLanguage.GetText("DispAmount");
                 //lblGroup.Content
                 Message();
                 LedOperations.GreenText("SELECT TICKET TYPE");

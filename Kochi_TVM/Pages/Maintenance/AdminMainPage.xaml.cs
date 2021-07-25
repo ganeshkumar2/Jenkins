@@ -35,6 +35,9 @@ namespace Kochi_TVM.Pages.Maintenance
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            Constants.MaintenanceSeq = 0;
+            Constants.IsMaintenanceActive = true;
+
             KMY200DoorAlarm.Instance.SetAlarmClose();            
             if (Parameters.menuItems.Contains(Parameters.MenuStrings.QrRep) ||
              Parameters.menuItems.Contains(Parameters.MenuStrings.RptRep) ||
@@ -75,7 +78,8 @@ namespace Kochi_TVM.Pages.Maintenance
                 if(doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
                 {
                     KMY200DoorAlarm.Instance.SetAlarm();
-                    NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                    TVMUtility.killExplorer();
+                    NavigationService.Navigate(new Pages.MainPage());
                 }
                 else
                 {
@@ -98,7 +102,8 @@ namespace Kochi_TVM.Pages.Maintenance
                     if (doorStatus == Enums.DoorStatus.DOOR_ALL_CLOSE)
                     {
                         KMY200DoorAlarm.Instance.SetAlarm();
-                        NavigationService.Navigate(new Pages.Maintenance.AdminLoginPage());
+                        TVMUtility.killExplorer();
+                        NavigationService.Navigate(new Pages.MainPage());
                     }
                     else
                     {

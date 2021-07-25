@@ -43,5 +43,9 @@ namespace Kochi_TVM.Utils
 
         public static int SystemIdleTimeout = 1;
         public static bool IsMaintenanceActive = false;
+        public static int MaintenanceSeq = 0;
+        public static bool IsMapPageActive = false;
+
+        public static string CoinAvailable = "1,2,5,10,20";
     }
 }

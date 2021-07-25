@@ -134,7 +134,7 @@
                 <Label Name="lblRJT" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Return Journey" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
-            <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridGrp_MouseLeftButtonDown" Visibility="Collapsed">
+            <Grid x:Name="gridGrp" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridGrp_MouseLeftButtonDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="8*"/>
@@ -157,50 +157,60 @@
                 <Label Name="lblGroup" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Group Ticket" Style="{StaticResource styleLabelHeader4}" />
             </Grid>
 
-            <Grid x:Name="gridOnePass" Grid.Row="0" Grid.Column="4" MouseLeftButtonDown="gridOnePass_MouseLeftButtonDown">
+            <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" Width="610">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="8*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="0*"/>
-                    <RowDefinition Height="0*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
-                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="8*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
-                <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/dayPass.png"/>
-                <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label Name="lblOneDayPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="One Day Pass" Style="{StaticResource styleLabelHeader4}" />
-            </Grid>
+                <Grid x:Name="gridOnePass" Grid.Column="0" MouseLeftButtonDown="gridOnePass_MouseLeftButtonDown">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
+                    <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/dayPass.png"/>
+                    <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
+                    <Label Name="lblOneDayPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Day Pass" Style="{StaticResource styleLabelHeader4}" />
+                </Grid>
 
-            <Grid x:Name="gridWeekendPass" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="gridWeekendPass_MouseLeftButtonDown">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="8*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="0*"/>
-                    <RowDefinition Height="0*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="8*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="0.5*"/>
-                </Grid.ColumnDefinitions>
-                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
-                <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/weekendPass.png"/>
-                <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
-                <Label Name="lblWeekendPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Weekend Pass" Style="{StaticResource styleLabelHeader4}" />
+                <Grid x:Name="gridWeekendPass" Grid.Column="2" MouseLeftButtonDown="gridWeekendPass_MouseLeftButtonDown">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="5" Background="{StaticResource WhiteFontColor}" BorderBrush="{StaticResource ShadowColor}" CornerRadius="10" BorderThickness="3"/>
+                    <Image Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="Uniform" Source="/Images/weekendPass.png"/>
+                    <!--Image x:Name="imageBtn" Grid.Row="1" Grid.Column="2" Source="images/startHandIcon.png" HorizontalAlignment="Center" VerticalAlignment="Center"/-->
+                    <Label Name="lblWeekendPass" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Weekend Pass" Style="{StaticResource styleLabelHeader4}" />
+                </Grid>
             </Grid>
         </Grid>
 
@@ -215,10 +225,19 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-
-            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
-            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="3" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
-
+            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="3" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="1" Content="Cancel" Visibility="Collapsed" Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+            <Grid Grid.Row="0" Grid.Column="2" Margin="20,0,20,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Grid.Column="0" Name="lblType" Content="Ticket Type" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                    <Path Grid.Column="1"  Stroke="Black" Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="2" Name="lblDestination" Content="Destination" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                    <Path Grid.Column="3"  Stroke="Black" Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="4" Name="lblNoOfTickets" Content="No. Of Tickets" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                    <Path Grid.Column="5"  Stroke="Black" Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="6" Name="lblAmount" Content="Amount" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Grid>
         </Grid>
 
     </Grid>

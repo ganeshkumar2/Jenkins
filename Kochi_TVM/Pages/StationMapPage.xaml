@@ -14,19 +14,17 @@
     <Grid x:Name="mainGrid" Background="Transparent">
         <Grid.RowDefinitions>
             <!--Top space -->
-            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="5"/>
             <!--Header -->
-            <RowDefinition Height="2*"/>
-            <!--Top space -->
-            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="60"/>
             <!--Operation Area -->
-            <RowDefinition Height="32*"/>
+            <RowDefinition Height="26*"/>
             <!--Top space -->
-            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="8"/>
             <!--Navigate -->
-            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="3*"/>
             <!--Bottom space -->
-            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <!--Left space -->
@@ -38,9 +36,8 @@
         </Grid.ColumnDefinitions>
         <Label Name="lblHeader" Content="" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Style="{StaticResource styleLabelHeader2}"/>
         <Label Name="lblWarning" Content="" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Style="{StaticResource styleLabel4}"/>
-
-        <Grid Name="operationGrid" Grid.Column="1" Grid.Row="3" Height="550" Width="880">
-
+        
+        <Grid Name="operationGrid" Grid.Column="1" Grid.Row="2" Height="550" Width="800" Margin="0,-60,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -144,118 +141,127 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="8.8"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Image Name="imgMap" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="100" Grid.RowSpan="100" VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="Fill" Source=".\..\images\stationMap.png" />
             <Image Name="imgHere" Grid.Row="11" Grid.Column="6" Grid.ColumnSpan="5" Grid.RowSpan="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source=".\..\images\youAreHere.png" RenderTransformOrigin="-0.205,0.264" />
             <Button x:Name="btnStation1" Tag="1" Content="Aluva" Grid.Row="5" Grid.Column="4" Grid.RowSpan="8" Grid.ColumnSpan="25" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
+            <Button Tag="1" Grid.Row="8" Foreground="Transparent" Background="Transparent" Grid.Column="1" Width="25" Height="25" BorderBrush="Transparent" Grid.RowSpan="8" Grid.ColumnSpan="10" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnStation_Click" />
 
             <Image  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="27" Source="/Kochi_TVM;component/images/big_bus.png" />
             <Image  Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="27" Source="/Kochi_TVM;component/images/train.png"  />
 
             <Button x:Name="btnStation2" Tag="2" Content="Pulinchodu" Grid.Row="11" Grid.Column="9" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
+            <Button Tag="2" Grid.Row="13" Grid.Column="7" Foreground="Transparent" Background="Transparent" Width="25" Height="25" BorderBrush="Transparent" Grid.RowSpan="8" Grid.ColumnSpan="10" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnStation_Click" />
+            
             <Button x:Name="btnStation3" Tag="3" Content="Companypady" Grid.Row="16" Grid.Column="15" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
+            <Button Tag="3" Grid.Row="17" Grid.Column="13" Foreground="Transparent" Background="Transparent" Width="25" Height="25" BorderBrush="Transparent" Grid.RowSpan="8" Grid.ColumnSpan="10" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnStation_Click" />
+
             <Button x:Name="btnStation4" Tag="4" Content="Ambattukavu" Grid.Row="21" Grid.Column="22" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
+            <Button Tag="4" Grid.Row="22" Grid.Column="20" Foreground="Transparent" Background="Transparent" Width="25" Height="25" BorderBrush="Transparent" Grid.RowSpan="8" Grid.ColumnSpan="10" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnStation_Click" />
+
             <Button x:Name="btnStation5" Tag="5" Content="Muttom" Grid.Row="26" Grid.Column="28" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
+            <Button Tag="5" Grid.Row="26" Grid.Column="25" Foreground="Transparent" Background="Transparent" Width="25" Height="25" BorderBrush="Transparent" Grid.RowSpan="8" Grid.ColumnSpan="10" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnStation_Click" />
+
             <Button x:Name="btnStation6" Tag="6" Content="Kalamassery" Grid.Row="30" Grid.Column="34" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
             <Button x:Name="btnStation7" Tag="7"  Content="Cochin Universty" Grid.Row="34" Grid.Column="38" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
             <Button x:Name="btnStation8" Tag="8"  Content="Pathadipalam" Grid.Row="39" Grid.Column="44" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
@@ -294,15 +300,17 @@
 
             <Button x:Name="btnStation21" Tag="21"  Content="Thykoodam" Grid.Row="40" Grid.Column="83" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />
             <Image  Grid.Row="44" Grid.Column="95" Grid.ColumnSpan="4" Grid.RowSpan="6" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="27" Source="/Kochi_TVM;component/images/waterway-01.png" />
-            <Button x:Name="btnStation22" Tag="22"  Content="Petta" Grid.Row="28" Grid.Column="85" Grid.RowSpan="5" Grid.ColumnSpan="9" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" Margin="1,0.256,0,0.456" Width="77" />
+            <Button x:Name="btnStation22" Tag="22"  Content="Petta" Grid.Row="28" Grid.Column="88" Grid.RowSpan="5" Grid.ColumnSpan="9" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" Margin="1,0.256,0,0.456" Width="77" />
 
 
 
             <!--<Button x:Name="btnStation22" Tag="22"  Content="Petta" Grid.Row="27" Grid.Column="89" Grid.RowSpan="5" Grid.ColumnSpan="20" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource styleStationBtn}" Click="btnStation_Click" />-->
 
         </Grid>
+        <Button x:Name="btnStationList" Grid.Row="2" Grid.Column="1" Content="Show Station List" Margin="0,-60,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="55" Width="270"  Style="{StaticResource styleShowStationsBtn}" Click="btnStationList_Click" />
 
-        <Grid Name="borderGrid" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3">
+
+        <Grid Name="borderGrid" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="*"/>
@@ -314,24 +322,30 @@
             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource ViceColor}" />
         </Grid>
 
-        <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">
+        <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-
-            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
-            <Button x:Name="btnStationList" Grid.Row="0" Grid.Column="3" Content="Show Station List" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource styleShowStationsBtn}" Click="btnStationList_Click" />
-
-            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="5" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="3" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="1" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+            <Grid Grid.Row="0" Grid.Column="2" Margin="20,0,20,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Grid.Column="0" Name="lblType" Content="Ticket Type" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MainColor}"/>
+                    <Path Grid.Column="1"  Stroke="{StaticResource MainColor}" Fill="{StaticResource MainColor}" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="2" Name="lblDestination" Content="Destination" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                    <Path Grid.Column="3"  Stroke="Black" Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="4" Name="lblNoOfTickets" Content="No. Of Tickets" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                    <Path Grid.Column="5"  Stroke="Black" Fill="Black" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="6" Name="lblAmount" Content="Amount" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                </StackPanel>
+            </Grid>
         </Grid>
 
     </Grid>

@@ -32,13 +32,27 @@ namespace Kochi_TVM.Pages.Custom
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(val == "OK" || val == "Close" || val == "Connect")
-                deviceValue.Foreground = Brushes.Green;
+            if (val == "OK" || val == "Close" || val == "Connect")
+            {
+                borDisplay.Background = Brushes.Green;
+                deviceCaption.Foreground = Brushes.White;
+                lblSeperator.Foreground = Brushes.White;
+                deviceValue.Foreground = Brushes.White;
+            }
             else if (val == "ERROR" || val == "Open" || val == "Disconnect")
-                deviceValue.Foreground = Brushes.Red;
+            {
+                borDisplay.Background = Brushes.Red;
+                deviceCaption.Foreground = Brushes.White;
+                lblSeperator.Foreground = Brushes.White;
+                deviceValue.Foreground = Brushes.White;
+            }
             else if (val != "OK" && val != "Close" && val != "Connect" && val != "ERROR" && val != "Open" && val != "Disconnect")
+            {
+                borDisplay.Background = Brushes.White;
+                deviceCaption.Foreground = Brushes.Black;
+                lblSeperator.Foreground = Brushes.Black;
                 deviceValue.Foreground = Brushes.Black;
-
+            }
             deviceCaption.Content = cap;
             deviceValue.Content = val;
         }

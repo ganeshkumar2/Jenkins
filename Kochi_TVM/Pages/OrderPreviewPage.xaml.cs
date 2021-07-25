@@ -192,6 +192,11 @@ namespace Kochi_TVM.Pages
                         lblLine3Key.Content = MultiLanguage.GetText("numberOfTickets"); lblLine3Value.Content = Ticket.ticketCount;
                         lblLine4Key.Content = MultiLanguage.GetText("amount"); lblLine4Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
 
+                        lblType.Content = Ticket.journeyTypeText.ToString();
+                        lblDestination.Visibility = Visibility.Collapsed;
+                        arrorDest.Visibility = Visibility.Collapsed;
+                        lblNoOfTickets.Content = Ticket.ticketCount;
+                        lblAmount.Content = Conversion.MoneyFormat(Ticket.totalPrice);
                         break;
                     case JourneyType.Period_Pass:
                     case JourneyType.Trip_Pass:
@@ -222,6 +227,10 @@ namespace Kochi_TVM.Pages
                         lblLine4Key.Content = "Number Of Passenger : "; lblLine4Value.Content = Ticket.peopleCount;
                         lblLine5Key.Content = MultiLanguage.GetText("amount"); lblLine5Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
 
+                        lblType.Content = Ticket.journeyTypeText.ToString();
+                        lblDestination.Content = MultiLanguage.GetText(Ticket.endStation.name);
+                        lblNoOfTickets.Content = Ticket.ticketCount;
+                        lblAmount.Content = Conversion.MoneyFormat(Ticket.totalPrice);
                         break;
                     case JourneyType.RJT:
                     case JourneyType.SJT:                       
@@ -231,6 +240,10 @@ namespace Kochi_TVM.Pages
                         lblLine3Key.Content = MultiLanguage.GetText("numberOfTickets"); lblLine3Value.Content = Ticket.ticketCount;
                         lblLine4Key.Content = MultiLanguage.GetText("amount"); lblLine4Value.Content = Conversion.MoneyFormat(Ticket.totalPrice);
                         Constants.EnableBillNotes = TVMUtility.EnableBill(Ticket.totalPrice);
+                        lblType.Content = Ticket.journeyTypeText.ToString();
+                        lblDestination.Content = MultiLanguage.GetText(Ticket.endStation.name);
+                        lblNoOfTickets.Content = Ticket.ticketCount;
+                        lblAmount.Content = Conversion.MoneyFormat(Ticket.totalPrice);
                         break;
 
                     default:

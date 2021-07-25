@@ -38,13 +38,11 @@
         </Grid.ColumnDefinitions>
         <Label Name="lblHeader" Content="" Grid.Row="1" Grid.Column="1" Style="{StaticResource styleLabelHeader2}"/>
 
-        <Grid  Name="operationGrid" Grid.Column="1" Grid.Row="3" Margin="0,0,50,0" Grid.ColumnSpan="2" >
+        <Grid  Name="operationGrid" Grid.Column="1" Grid.Row="3">
             <Grid.RowDefinitions>
-                <RowDefinition Height="6.8*"/>
-                <RowDefinition Height="1.4*"/>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="3.5*"/>
-                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="5.0*"/>
+                <RowDefinition Height="1.0*"/>
+                <RowDefinition Height="4.0*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
@@ -54,7 +52,7 @@
                 <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Name="moneyInfoGrid" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5"  Background="Transparent">
+            <Grid Name="moneyInfoGrid" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.2*"/>
                     <ColumnDefinition Width="3*"/>
@@ -63,21 +61,19 @@
                     <ColumnDefinition Width="0.2*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-
                 </Grid.RowDefinitions>
-                <Label Name="lblLine1Key" Content="SINGLE JOURNEY TICKET" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}"/>
-                <Label Name="lblLine2Key" Content="Destination Station :" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
-                <Label Name="lblLine3Key" Content="Ticket Type :" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
-                <Label Name="lblLine4Key" Content="Number Of Tickets :" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
-                <Label Name="lblLine5Key" Content="Amount " Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
-                <Label Name="lblLine6Key" Content="Amount " Grid.Row="5" Grid.Column="1" Visibility="Hidden" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine1Key" Content="SINGLE JOURNEY TICKET" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine2Key" Content="Destination Station :" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine3Key" Content="Ticket Type :" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine4Key" Content="Number Of Tickets :" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine5Key" Content="Amount :" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
+                <Label Name="lblLine6Key" Content="Amount :" Grid.Row="5" Grid.Column="1" Visibility="Hidden" HorizontalAlignment="Right" Style="{StaticResource styleLabelHeader6}"/>
 
                 <!--<Label Name="lblLine1Value" Content=" Aluva" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>-->
                 <Label Name="lblLine2Value" Content=" Changampuzha Park" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Style="{StaticResource styleLabelHeader6}"/>
@@ -88,33 +84,29 @@
 
             </Grid>
 
-
-
             <!--<Label Name="lblInfo" Content="How would you like to pay?" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Style="{StaticResource styleLabelHeader3}"/>-->
-            <Label Name="lblInfo" Content="Start the payment process" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" VerticalAlignment="Top" Style="{StaticResource styleLabelHeader3}"/>
-            <Button x:Name="btnCash" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Content="Cash " Visibility="Collapsed" Style="{StaticResource styleCardTypeBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" FontSize="48" Click="btnCash_Click" />
-           
-            <Grid  Name="cashIconGrid" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="129,0,123,0" >
-                <Grid.RowDefinitions>
+            <Label Name="lblInfo" Content="Start the payment process" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource styleLabelHeader3}"/>
 
-
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="4*"/>
-                    <RowDefinition Height="*"/>
-
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="8*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="8*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="8*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-
-                <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/cashIcon.png" Grid.ColumnSpan="3" Margin="5,2" />
-            </Grid>
+            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <StackPanel>
+                    <Button x:Name="btnCash" Content="Cash " Visibility="Visible" Style="{StaticResource styleCardTypeBtn}" HorizontalAlignment="Center" Height="120" Width="350" Margin="0,0,100,20" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="48" Click="btnCash_Click" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Margin="0,0,100,0">
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/Rupi_10.jpg" Margin="0,0,10,0" Grid.ColumnSpan="3" />
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/Rupi_20.jpg" Margin="0,0,10,0" Grid.ColumnSpan="3" />
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/Rupi_50.jpg" Margin="0,0,10,0" Grid.ColumnSpan="3" />
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/Rupi_100.jpg" Margin="0,0,0,0" Grid.ColumnSpan="3" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Opacity="0.2">
+                    <Button x:Name="btnCard" Content="Card " Visibility="Visible" Style="{StaticResource styleCardTypeBtn}" HorizontalAlignment="Center" Height="120" Width="350" Margin="0,0,0,20" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="48" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/rupayIcon1.png" Margin="0,0,10,0" Grid.ColumnSpan="3" />
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/visaIcon.png" Margin="0,0,10,0" Grid.ColumnSpan="3" />
+                        <Image Grid.Row="1" Grid.Column="2" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Source="/Kochi_TVM;component/Images/masterIcon.png" Margin="0,0,0,0" Grid.ColumnSpan="3" />
+                    </StackPanel>                    
+                </StackPanel>                
+            </StackPanel>
+            
         </Grid>
 
         <Grid Name="navigationGrid" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3">
@@ -128,10 +120,19 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-
-            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
-            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="3" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
-
+            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="3" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="1" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+            <Grid Grid.Row="0" Grid.Column="2" Margin="20,0,20,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Grid.Column="0" Name="lblType" Content="Ticket Type" FontSize="14" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MainColor}"/>
+                    <Path Grid.Column="1"  Stroke="{StaticResource MainColor}" Fill="{StaticResource MainColor}" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="2" Name="lblDestination" Content="Destination" FontSize="14" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MainColor}"/>
+                    <Path Grid.Column="3" Name="arrorDest" Stroke="{StaticResource MainColor}" Fill="{StaticResource MainColor}" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="4" Name="lblNoOfTickets" Content="No. Of Tickets" FontSize="14" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MainColor}"/>
+                    <Path Grid.Column="5"  Stroke="{StaticResource MainColor}" Fill="{StaticResource MainColor}" Stretch="Uniform" HorizontalAlignment="Center" Height="20" Width="40" VerticalAlignment="Center" Data="M 10 0 L 16 4 L 10 8 M 0 4 L 16 4" />
+                    <Label Grid.Column="6" Name="lblAmount" Content="Amount" FontSize="14" FontFamily="Titillium" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MainColor}"/>
+                </StackPanel>
+            </Grid>
         </Grid>
 
     </Grid>

@@ -47,9 +47,9 @@ namespace Kochi_TVM.Pages.Maintenance
         }
         void loadValues()
         {
-            lblCoin1.Content = "₹ " + Constants.HopperAddress1Coin;
-            lblCoin2.Content = "₹ " + Constants.HopperAddress2Coin;
-            lblCoin5.Content = "₹ " + Constants.HopperAddress3Coin;
+            lblCoin1.Content = "₹" + Constants.HopperAddress1Coin;
+            lblCoin2.Content = "₹" + Constants.HopperAddress2Coin;
+            lblCoin5.Content = "₹" + Constants.HopperAddress3Coin;
 
             if (StockOperations.SelStockStatus())
             {
@@ -63,6 +63,10 @@ namespace Kochi_TVM.Pages.Maintenance
                 lblTypeCoin1.Text = Convert.ToString(0);
                 lblTypeCoin2.Text = Convert.ToString(0);
                 lblTypeCoin5.Text = Convert.ToString(0);
+
+                lblCoin1Count.Content = StockOperations.coin1.ToString();
+                lblCoin2Count.Content = StockOperations.coin2.ToString();
+                lblCoin5Count.Content = StockOperations.coin5.ToString();
 
                 lblCoin1Info.Content = "₹ " + Constants.HopperAddress1Coin + " Coin Count : " + StockOperations.coin1.ToString();
                 lblCoin2Info.Content = "₹ " + Constants.HopperAddress2Coin + " Coin Count : " + StockOperations.coin2.ToString();
@@ -328,7 +332,7 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
-                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                CCTalkManager.Instance.coinHopperEV4000_2.GetHighLowStatus();
                 //if (CCTalkManager.Instance.coinHopperEV4000_2.Manufacture == null)
                 //{
                 //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
@@ -385,7 +389,7 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
-                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                CCTalkManager.Instance.coinHopperEV4000_2.GetHighLowStatus();
                 //if (CCTalkManager.Instance.coinHopperEV4000_2.Manufacture == null)
                 //{
                 //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
@@ -473,7 +477,7 @@ namespace Kochi_TVM.Pages.Maintenance
             try
             {
                 TVMUtility.PlayClick();
-                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                CCTalkManager.Instance.coinHopperEV4000_3.GetHighLowStatus();
                 //if (CCTalkManager.Instance.coinHopperEV4000_3.Manufacture == null)
                 //{
                 //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
@@ -636,6 +640,161 @@ namespace Kochi_TVM.Pages.Maintenance
             numberpad.number = 0;
             numberpad.txtTypeNumber.Text = "0";
             grdUserControl.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnReduceCoin5_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_3.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_3.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
+                if (!coin3)
+                    return;
+                int count = Convert.ToInt32(lblTypeCoin5.Text);
+
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(lblTypeCoin5.Text) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (StockOperations.coin5 == 0)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
+                else if (count > StockOperations.coin5)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Reduce value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
+                else
+                {
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN5);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, count))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin5, (int)DeviceType.Hopper5, (int)UpdateType.Decrease, Convert.ToDecimal(count) * Constants.HopperAddress3Coin))
+                            if (StockOperations.SelStockStatus())
+                            {
+                                UpdValOnScr();
+                                MessageBoxOperations.ShowMessage("REDUCED COIN", "Reduced Type : ₹ " + Constants.HopperAddress3Coin + "\nReduced Count : " + count +
+                                                "\nReduced Amount : " + "₹ " + count * Constants.HopperAddress3Coin + "\n", MessageBoxButtonSet.OK);
+                            }
+                }
+                coin3 = false;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error CoinDispenserTestPage -> btnMinusCoin5_Click() : " + ex.ToString());
+            }
+        }
+
+        private void btnReduceCoin2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_2.GetHighLowStatus();
+                //if (CCTalkManager.Instance.coinHopperEV4000_2.Manufacture == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
+                if (!coin2)
+                    return;
+                int count = Convert.ToInt32(lblTypeCoin2.Text);
+
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(lblTypeCoin2.Text) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (StockOperations.coin2 == 0)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
+                else if (count > StockOperations.coin2)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Reduce value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
+                else
+                {
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN2);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, count))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin2, (int)DeviceType.Hopper2, (int)UpdateType.Decrease, Convert.ToDecimal(count) * Constants.HopperAddress2Coin))
+                            if (StockOperations.SelStockStatus())
+                            {
+                                UpdValOnScr();
+                                MessageBoxOperations.ShowMessage("REDUCED COIN", "Reduced Type : ₹ " + Constants.HopperAddress2Coin + "\nReduced Count : " + count +
+                                                "\nReduced Amount : " + "₹ " + count * Constants.HopperAddress2Coin + "\n", MessageBoxButtonSet.OK);
+                            }
+                }
+                coin2 = false;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error CoinDispenserTestPage -> btnMinusCoin2_Click() : " + ex.ToString());
+            }
+        }
+
+        private void btnReduceCoin1_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TVMUtility.PlayClick();
+                CCTalkManager.Instance.coinHopperEV4000_1.GetHighLowStatus();
+                //if ( == null)
+                //{
+                //    MessageBoxOperations.ShowMessage("ATTENTION!!", "Coin hopper error!", MessageBoxButtonSet.OKCancel);
+                //    return;
+                //}
+
+                if (!coin1)
+                    return;
+
+                int count = Convert.ToInt32(lblTypeCoin1.Text);
+
+                if (count == 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (Convert.ToInt32(lblTypeCoin1.Text) < 0)
+                {
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Please enter valid count", MessageBoxButtonSet.OKCancel);
+                    return;
+                }
+
+                if (StockOperations.coin1 == 0)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "There is no coin in the hopper!", MessageBoxButtonSet.OKCancel);
+                else if (count > StockOperations.coin1)
+                    MessageBoxOperations.ShowMessage("ATTENTION!!", "Reduce value cant be greater than total value!", MessageBoxButtonSet.OKCancel);
+                else
+                {
+                    decimal? trxId = TransactionInfo.SelTrxId((long)TransactionType.TT_REMOVE_COIN1);
+                    if (StockOperations.InsStock((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, count))
+                        if (MoneyOperations.InsMoney((Int64)trxId, (int)StockType.Coin1, (int)DeviceType.Hopper1, (int)UpdateType.Decrease, Convert.ToDecimal(count) * Constants.HopperAddress1Coin))
+                            if (StockOperations.SelStockStatus())
+                            {
+                                UpdValOnScr();
+                                MessageBoxOperations.ShowMessage("REDUCED COIN", "Reduced Type : ₹ " + Constants.HopperAddress1Coin + "\nReduced Count : " + count +
+                                                "\nReduced Amount : " + "₹ " + count * Constants.HopperAddress1Coin + "\n", MessageBoxButtonSet.OK);
+                            }
+                }
+                coin1 = false;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error CoinDispenserTestPage -> btnMinusCoin1_Click() : " + ex.ToString());
+            }
         }
     }
 }

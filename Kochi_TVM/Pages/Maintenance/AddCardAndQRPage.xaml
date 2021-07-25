@@ -89,7 +89,7 @@
                     <RowDefinition Height="0.8*"/>
                     <RowDefinition Height="60"/>
                 </Grid.RowDefinitions>
-                <uc:NumberPadUserControl Grid.Row="0" x:Name="numberpad" Height="400" Width="300"></uc:NumberPadUserControl>
+                <uc:NumberPadUserControl Grid.Row="0" x:Name="numberpad" Height="380" Width="300"></uc:NumberPadUserControl>
                 <Button x:Name="btnOK" Grid.Row="1" Content="OK"  Style="{StaticResource styleOkBtn}" Width="150" VerticalAlignment="Stretch" Click="btnOK_Click" />
 
             </Grid>
@@ -127,8 +127,8 @@
                 <Label Name="lblEquipmentID" Content="Equipment ID : 1001" Grid.Row="0" Grid.Column="8" Style="{StaticResource styleLabelHeader4}"/>
      
             </Grid>
-            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="1" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
-            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="3" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
+            <Button x:Name="btnBack" Grid.Row="0" Grid.Column="3" Content="Back"  Style="{StaticResource styleBackBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnBack_Click" />
+            <Button x:Name="btnFinish" Grid.Row="0" Grid.Column="1" Content="Cancel"  Style="{StaticResource styleFinishBtn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnFinish_Click"/>
         </Grid>
     </Grid>
 </Page>

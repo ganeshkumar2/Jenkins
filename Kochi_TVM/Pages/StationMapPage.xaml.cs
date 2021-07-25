@@ -34,7 +34,7 @@ namespace Kochi_TVM.Pages
         public StationMapPage()
         {            
             InitializeComponent();
-            if (Ticket.language == Languages.English)
+            if (Ticket.language == Languages.English || Ticket.language == Languages.Hint)
             {
                 btnStation1.FontSize = 14;
                 btnStation2.FontSize = 14;
@@ -58,6 +58,9 @@ namespace Kochi_TVM.Pages
                 btnStation20.FontSize = 14;
                 btnStation21.FontSize = 14;
                 btnStation22.FontSize = 14;
+                lblDestination.FontSize = 14;
+                lblNoOfTickets.FontSize = 14;
+                lblAmount.FontSize = 14;
             }
             else
             {
@@ -83,6 +86,9 @@ namespace Kochi_TVM.Pages
                 btnStation20.FontSize = 12;
                 btnStation21.FontSize = 12;
                 btnStation22.FontSize = 12;
+                lblDestination.FontSize = 12;
+                lblNoOfTickets.FontSize = 12;
+                lblAmount.FontSize = 12;
             }
         }
         void Message()
@@ -103,7 +109,7 @@ namespace Kochi_TVM.Pages
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
-            NavigationService.Navigate(new Pages.StationPage());
+            NavigationService.Navigate(new Pages.JourneyTypePage());
         }
 
         private void btnStationList_Click(object sender, RoutedEventArgs e)
@@ -139,10 +145,30 @@ namespace Kochi_TVM.Pages
                 btnBack.Content = MultiLanguage.GetText("back");
                 btnFinish.Content = MultiLanguage.GetText("cancel");
                 btnStationList.Content = MultiLanguage.GetText("showStationList");
+                lblDestination.Content = MultiLanguage.GetText("DispDestination");
+                lblNoOfTickets.Content = MultiLanguage.GetText("DispNoOfTickets");
+                lblAmount.Content = MultiLanguage.GetText("DispAmount");
                 SetHeaderText();
                 SetDefaultStatus();
                 ListStationsInGrid();
-                                
+                switch (Ticket.journeyType)
+                {
+                    case JourneyType.SJT:
+                        lblType.Content = MultiLanguage.GetText("SJT");
+                        break;
+                    case JourneyType.RJT:
+                        lblType.Content = MultiLanguage.GetText("RJT");
+                        break;
+                    case JourneyType.Group_Ticket:
+                        lblType.Content = MultiLanguage.GetText("GRO");
+                        break;
+                    case JourneyType.Day_Pass:
+                        lblType.Content = MultiLanguage.GetText("onedaypass");
+                        break;
+                    case JourneyType.Weekend_Pass:
+                        lblType.Content = MultiLanguage.GetText("weekenddaypass");
+                        break;
+                }
                 btnStation1.Content = MultiLanguage.GetText(Stations.GetStation(1).description);
                 btnStation2.Content = MultiLanguage.GetText(Stations.GetStation(2).description);
                 btnStation3.Content = MultiLanguage.GetText(Stations.GetStation(3).description);
@@ -266,6 +292,7 @@ namespace Kochi_TVM.Pages
                 Ticket.endStation = Stations.GetStation(selectedStationId);
                 Ticket.startStation = Stations.currentStation;
                 ElectronicJournal.DestinationSelected(Ticket.endStation.name.ToString());
+                Constants.IsMapPageActive = true;
                 NavigationService.Navigate(new Pages.TicketCountPage());
                 //PageControl.ShowPage(Pages.journeyPage);
             }

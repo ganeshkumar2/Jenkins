@@ -42,11 +42,46 @@ namespace Kochi_TVM.Pages
             {
                 initialTimer();
                 LedOperations.GreenText("Select Destination");
+                if (Ticket.language == Languages.English || Ticket.language == Languages.Hint)
+                {
+                    lblHeader.FontSize = 22;
+                    lblDestination.FontSize = 14;
+                    lblNoOfTickets.FontSize = 14;
+                    lblAmount.FontSize = 14;
+                }
+                else
+                {
+                    lblHeader.FontSize = 18;
+                    lblDestination.FontSize = 12;
+                    lblNoOfTickets.FontSize = 12;
+                    lblAmount.FontSize = 12;
+                }
                 Message();
                 btnBack.Content = MultiLanguage.GetText("back");
                 btnFinish.Content = MultiLanguage.GetText("cancel");
                 btnStationMap.Content = MultiLanguage.GetText("showStationMap");
+                lblDestination.Content = MultiLanguage.GetText("DispDestination");
+                lblNoOfTickets.Content = MultiLanguage.GetText("DispNoOfTickets");
+                lblAmount.Content = MultiLanguage.GetText("DispAmount");
                 Dictionary<int, Station> stations = Stations.stationList;
+                switch (Ticket.journeyType)
+                {
+                    case JourneyType.SJT:
+                        lblType.Content = MultiLanguage.GetText("SJT");
+                        break;
+                    case JourneyType.RJT:
+                        lblType.Content = MultiLanguage.GetText("RJT");
+                        break;
+                    case JourneyType.Group_Ticket:
+                        lblType.Content = MultiLanguage.GetText("GRO");
+                        break;
+                    case JourneyType.Day_Pass:
+                        lblType.Content = MultiLanguage.GetText("onedaypass");
+                        break;
+                    case JourneyType.Weekend_Pass:
+                        lblType.Content = MultiLanguage.GetText("weekenddaypass");
+                        break;
+                }
                 SetHeaderText();
                 bool isOk = CreateGridStations();
                 if (isOk)
@@ -176,7 +211,7 @@ namespace Kochi_TVM.Pages
             var b = 0;
             try
             {
-                var style = Application.Current.FindResource("styleSelectionBtn") as Style;
+                var style = Application.Current.FindResource("styleStationSelectionBtn") as Style;
                 for (var i = 1; i <= Stations.stationList.Count; i++)
                 {
 
@@ -187,7 +222,7 @@ namespace Kochi_TVM.Pages
                         Name = "btnStation" + i,
                         Tag = Stations.stationList[i].id,
                         Style = style,
-                        FontSize = Ticket.language == Languages.English ? 20 : 13,
+                        FontSize = Ticket.language == Languages.English || Ticket.language == Languages.Hint ? 20 : 13,
                         VerticalAlignment = VerticalAlignment.Stretch,
                         HorizontalAlignment = HorizontalAlignment.Stretch
                     };
@@ -217,6 +252,7 @@ namespace Kochi_TVM.Pages
             Ticket.endStation = Stations.GetStation(selectedStationId);
             Ticket.startStation = Stations.currentStation;
             ElectronicJournal.DestinationSelected(Ticket.endStation.name.ToString());
+            Constants.IsMapPageActive = false;
             NavigationService.Navigate(new Pages.TicketCountPage());
             //PageControl.ShowPage(Pages.journeyPage);
         }

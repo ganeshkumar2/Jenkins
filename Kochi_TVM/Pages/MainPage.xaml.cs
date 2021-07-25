@@ -37,8 +37,7 @@ namespace Kochi_TVM.Pages
         private readonly BackgroundWorker bwAfcStatus = null;
         private readonly BackgroundWorker bwSendSc = null;
         private readonly BackgroundWorker bwSendMonitoring = null;
-        private static Timer idleTimer;
-        private static TimerCallback idleTimerDelegate;
+       
         bool Check_Receiptprinter = false;
         bool Check_QRprinter = false;
         public MainPage()
@@ -78,6 +77,10 @@ namespace Kochi_TVM.Pages
 
                 btnLang1.IsEnabled = false;
                 btnLang1.Opacity = 0.5;
+
+                Constants.HopperAddress1Coin = Convert.ToInt16(CoinValues.getCoin1());
+                Constants.HopperAddress2Coin = Convert.ToInt16(CoinValues.getCoin2());
+                Constants.HopperAddress3Coin = Convert.ToInt16(CoinValues.getCoin3());
 
                 Ticket.Clear();
             }
@@ -799,10 +802,10 @@ namespace Kochi_TVM.Pages
 
                     if (Parameters.TvmMonitoringData.SpecialMode == "Normal")
                     {
-                        if (!((startDate <= DateTime.Now) && (endDate >= DateTime.Now)))
-                        {
-                            NavigationService.Navigate(new Pages.StationClosedPage());
-                        }
+                        //if (!((startDate <= DateTime.Now) && (endDate >= DateTime.Now)))
+                        //{
+                        //    NavigationService.Navigate(new Pages.StationClosedPage());
+                        //}
 
                         int status = KMY200DoorAlarm.Instance.GetStatus();
                         Enums.DoorStatus doorStatus = (Enums.DoorStatus)(status);
@@ -947,8 +950,7 @@ namespace Kochi_TVM.Pages
         {
             TVMUtility.PlayClick();            
             try
-            {
-                initialTimer();
+            {          
 
                 if (Parameters.TVMDynamic.GetAfcConnStatus())
                 {
@@ -967,50 +969,20 @@ namespace Kochi_TVM.Pages
                     btnSelectTicket.Opacity = 0.2;
                     return;
                 }
-
                 if ((Constants.Cassette1NoteCont <= Constants.NoChangeAvailable && Constants.Cassette2NoteCont <= Constants.NoChangeAvailable && Constants.Cassette3NoteCont <= Constants.NoChangeAvailable) || (StockOperations.coin1 <= Constants.NoChangeAvailable && StockOperations.coin2 <= Constants.NoChangeAvailable && StockOperations.coin1 <= Constants.NoChangeAvailable))
                 {
-                    bool isVisible = true;
-                    if (StockOperations.coin5 <= Constants.NoChangeAvailable)
+                    if (!Check_Receiptprinter)
                     {
-                        lbl5RS.Visibility = Visibility.Collapsed;
-                        isVisible = false;
+                        NavigationService.Navigate(new Pages.NoChangeOrReceiptPage(true, true));
                     }
                     else
                     {
-                        isVisible = true;
+                        NavigationService.Navigate(new Pages.NoChangeOrReceiptPage(true, false));
                     }
-
-                    if (StockOperations.coin2 <= Constants.NoChangeAvailable)
-                    {
-                        lbl2RS.Visibility = Visibility.Collapsed;
-                        isVisible = false;
-                    }
-                    else
-                    {
-                        isVisible = true;
-                    }
-
-                    if (StockOperations.coin1 <= Constants.NoChangeAvailable)
-                    {
-                        lbl1RS.Visibility = Visibility.Collapsed;
-                        isVisible = false;
-                    }
-                    else
-                    {
-                        isVisible = true;
-                    }
-
-                    if (isVisible)
-                        stackCoin.Visibility = Visibility.Visible;
-                    else
-                        stackCoin.Visibility = Visibility.Collapsed;
-
-                    grdNoChangeMode.Visibility = Visibility.Visible;
                 }
                 else if (!Check_Receiptprinter)
                 {
-                    grdNoReceiptPrinterMode.Visibility = Visibility.Visible;
+                    NavigationService.Navigate(new Pages.NoChangeOrReceiptPage(false, true));
                 }
                 else
                 {
@@ -1023,39 +995,8 @@ namespace Kochi_TVM.Pages
                 log.Error("Error MainPage -> btnSelectTicket_Click() : " + ex.ToString());
             }
         }
-        private void initialTimer()
-        {
-            try
-            {
-                idleTimerDelegate = new TimerCallback(NavigateAction);
-                idleTimer = new Timer(idleTimerDelegate, null, 0, 1000);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Error TicketTypePage -> initialTimer() : " + ex.ToString());
-            }
-        }
-        private void NavigateAction(object obj)
-        {
-            try
-            {
-                var idleTime = IdleTimeDetector.GetIdleTimeInfo();
-
-                if (idleTime.IdleTime.TotalMinutes >= Constants.SystemIdleTimeout)
-                {
-                    idleTimer.Dispose();
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        grdNoChangeMode.Visibility = Visibility.Collapsed;
-                        grdNoReceiptPrinterMode.Visibility = Visibility.Collapsed;
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error("Error TicketTypePage -> DateTimeTimerAction() : " + ex.ToString());
-            }
-        }
+        
+        
         private void btnSelectCard_Click(object sender, RoutedEventArgs e)
         {
 
@@ -1185,13 +1126,7 @@ namespace Kochi_TVM.Pages
             btnSelectCard.Content = MultiLanguage.GetText("k1card");
             lblComingSoon.Content = MultiLanguage.GetText("comingSoon");
             lblSelectLanguage.Content = MultiLanguage.GetText("selectLang");
-            lblNoChange.Content = MultiLanguage.GetText("NoChange");
-            lblAvailable.Content = MultiLanguage.GetText("AvailableCoin");
-            lblNoReceipt.Content = MultiLanguage.GetText("NoReceipt");
-            btnNoChangeExit.Content = MultiLanguage.GetText("Exit");
-            btnNoChangeYes.Content = MultiLanguage.GetText("Ok");
-            btnReceiptCancel.Content = MultiLanguage.GetText("Exit");
-            btnReceiptOK.Content = MultiLanguage.GetText("Ok");
+           
 
             if (Ticket.language == Languages.English)
             {
@@ -1233,19 +1168,6 @@ namespace Kochi_TVM.Pages
                 log.Error("Error MainPage -> Page_Loaded() : " + ex.ToString());
             }
         }
-        private void btnReceiptOK_Click(object sender, RoutedEventArgs e)
-        {
-            TVMUtility.PlayClick();
-            ElectronicJournal.OrderStarted();
-            NavigationService.Navigate(new Pages.JourneyTypePage());
-        }
-
-        private void btnReceiptCancel_Click(object sender, RoutedEventArgs e)
-        {
-            TVMUtility.PlayClick();
-            grdNoReceiptPrinterMode.Visibility = Visibility.Hidden;
-        }
-
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             try
@@ -1253,40 +1175,17 @@ namespace Kochi_TVM.Pages
                 if (checkDeviceTimer != null)
                     checkDeviceTimer.Dispose();
 
-                if (idleTimer != null)
-                    idleTimer.Dispose();
-
                 bwSendSc.DoWork -= bwSendSc_DoWork;
                 bwSendSc.CancelAsync();
 
                 bwSendMonitoring.DoWork -= bwSendMonitoring_DoWork;
                 bwSendMonitoring.CancelAsync();
-
+                Constants.MaintenanceSeq = 0;
                 Constants.IsMaintenanceActive = true;
             }
             catch (Exception ex)
             {
                 log.Error("Error MainPage -> Page_Loaded() : " + ex.ToString());
-            }
-        }
-        private void btnNoChangeExit_Click(object sender, RoutedEventArgs e)
-        {
-            TVMUtility.PlayClick();
-            grdNoChangeMode.Visibility = Visibility.Hidden;
-        }
-
-        private void btnNoChangeYes_Click(object sender, RoutedEventArgs e)
-        {
-            TVMUtility.PlayClick();
-            grdNoChangeMode.Visibility = Visibility.Hidden;
-            if (!Check_Receiptprinter)
-            {
-                grdNoReceiptPrinterMode.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ElectronicJournal.OrderStarted();
-                NavigationService.Navigate(new Pages.JourneyTypePage());
             }
         }
     }

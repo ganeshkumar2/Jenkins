@@ -198,7 +198,7 @@ namespace Kochi_TVM.Pages.Maintenance
         private void btnTestAlarm_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
-            NavigationService.Navigate(new Pages.Maintenance.AlearmPage());
+            NavigationService.Navigate(new Pages.Maintenance.AlarmPage());
         }
     }
 }

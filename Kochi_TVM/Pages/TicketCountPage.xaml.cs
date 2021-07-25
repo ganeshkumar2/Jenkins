@@ -31,7 +31,6 @@ namespace Kochi_TVM.Pages
         private static ILog log = LogManager.GetLogger(typeof(TicketCountPage).Name);
         private static Timer idleTimer;
         private static TimerCallback idleTimerDelegate;
-
         Grid TicketCountGrid = null;
         Grid PassengerCountGrid = null;
         public TicketCountPage()
@@ -41,6 +40,41 @@ namespace Kochi_TVM.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             initialTimer();
+            if (Ticket.language == Languages.English || Ticket.language == Languages.Hint)
+            {
+                lblType.FontSize = 12;
+                lblDestination.FontSize = 12;
+                lblNoOfTickets.FontSize = 12;
+                lblAmount.FontSize = 12;
+            }
+            else
+            {
+                lblType.FontSize = 10;
+                lblDestination.FontSize = 10;
+                lblNoOfTickets.FontSize = 10;
+                lblAmount.FontSize = 10;
+            }
+            switch (Ticket.journeyType)
+            {
+                case JourneyType.SJT:
+                    lblType.Content = MultiLanguage.GetText("SJT");
+                    break;
+                case JourneyType.RJT:
+                    lblType.Content = MultiLanguage.GetText("RJT");
+                    break;
+                case JourneyType.Group_Ticket:
+                    lblType.Content = MultiLanguage.GetText("GRO");
+                    break;
+                case JourneyType.Day_Pass:
+                    lblType.Content = MultiLanguage.GetText("onedaypass");
+                    break;
+                case JourneyType.Weekend_Pass:
+                    lblType.Content = MultiLanguage.GetText("weekenddaypass");
+                    break;
+            }
+            lblNoOfTickets.Content = MultiLanguage.GetText("DispNoOfTickets");
+            lblAmount.Content = MultiLanguage.GetText("DispAmount");
+            lblDestination.Content = MultiLanguage.GetText(Ticket.endStation.name);
             lblHeader.Content = MultiLanguage.GetText("selectTicketCount");
             btnBack.Content = MultiLanguage.GetText("back");
             btnFinish.Content = MultiLanguage.GetText("cancel");
@@ -113,6 +147,7 @@ namespace Kochi_TVM.Pages
                     gridGrp.Visibility = System.Windows.Visibility.Visible;
                     gridWeekendPass.Visibility = System.Windows.Visibility.Hidden;
                     gridDayPass.Visibility = System.Windows.Visibility.Hidden;
+                    lblDestination.Content = MultiLanguage.GetText(Ticket.endStation.name);
                     isOk = CreatePassengerCountGrid();
                     if (isOk)
                         ListPassengerCountInGrid();
@@ -123,6 +158,7 @@ namespace Kochi_TVM.Pages
                     gridGrp.Visibility = System.Windows.Visibility.Hidden;
                     gridWeekendPass.Visibility = System.Windows.Visibility.Hidden;
                     gridDayPass.Visibility = System.Windows.Visibility.Hidden;
+                    lblDestination.Content = MultiLanguage.GetText(Ticket.endStation.name);
                     isOk = CreateTicketCountGrid();
                     ListTicketCountInGrid();
                     break;
@@ -132,6 +168,7 @@ namespace Kochi_TVM.Pages
                     gridGrp.Visibility = System.Windows.Visibility.Hidden;
                     gridWeekendPass.Visibility = System.Windows.Visibility.Hidden;
                     gridDayPass.Visibility = System.Windows.Visibility.Hidden;
+                    lblDestination.Content = MultiLanguage.GetText(Ticket.endStation.name);
                     isOk = CreateTicketCountGrid();
                     ListTicketCountInGrid();
                     break;
@@ -141,6 +178,8 @@ namespace Kochi_TVM.Pages
                     gridGrp.Visibility = System.Windows.Visibility.Hidden;
                     gridWeekendPass.Visibility = System.Windows.Visibility.Hidden;
                     gridDayPass.Visibility = System.Windows.Visibility.Visible;
+                    lblDestination.Visibility = Visibility.Collapsed;
+                    arrorDest.Visibility = Visibility.Collapsed;
                     isOk = CreateTicketCountGrid();
                     ListTicketCountInGrid();
                     break;
@@ -150,6 +189,8 @@ namespace Kochi_TVM.Pages
                     gridGrp.Visibility = System.Windows.Visibility.Hidden;
                     gridDayPass.Visibility = System.Windows.Visibility.Hidden;
                     gridWeekendPass.Visibility = System.Windows.Visibility.Visible;
+                    lblDestination.Visibility = Visibility.Collapsed;
+                    arrorDest.Visibility = Visibility.Collapsed;
                     isOk = CreateTicketCountGrid();
                     ListTicketCountInGrid();
                     break;
@@ -384,7 +425,23 @@ namespace Kochi_TVM.Pages
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             TVMUtility.PlayClick();
-            NavigationService.Navigate(new Pages.StationPage());
+            switch (Ticket.journeyType)
+            {
+                case JourneyType.Group_Ticket:
+                case JourneyType.SJT:
+                case JourneyType.RJT:
+                    if (!Constants.IsMapPageActive)
+                        NavigationService.Navigate(new Pages.StationPage());
+                    else
+                        NavigationService.Navigate(new Pages.StationMapPage());
+                    break;
+                case JourneyType.Day_Pass:
+                case JourneyType.Weekend_Pass:
+                        NavigationService.Navigate(new Pages.JourneyTypePage());
+                    break;
+                default:
+                    break;
+            }           
         }
 
         private void btnFinish_Click(object sender, RoutedEventArgs e)

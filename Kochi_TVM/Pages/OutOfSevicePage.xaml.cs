@@ -1,6 +1,7 @@
 ﻿using Kochi_TVM.BNR;
 using Kochi_TVM.CCTalk;
 using Kochi_TVM.PID;
+using Kochi_TVM.Printers;
 using Kochi_TVM.RptDispenser;
 using Kochi_TVM.Sensors;
 using Kochi_TVM.Utils;
@@ -79,14 +80,14 @@ namespace Kochi_TVM.Pages
                         CCTalkManager.Instance.coinHopperEV4000_1.EnableHopper();
                         outOfServiceLbl.Content = "Coin Hopper One :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "OK";
                     }
                 }
                 catch (Exception ex)
                 {
                     outOfServiceLbl.Content = "Coin Hopper One :";
-                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                     outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                     outOfServiceRedLbl.Content = "Not OK";
                     log.Error("Error OutOfSevicePage -> CoinHopper1() :" + ex.ToString());
@@ -105,14 +106,14 @@ namespace Kochi_TVM.Pages
                         CCTalkManager.Instance.coinHopperEV4000_2.EnableHopper();
                         outOfServiceLbl.Content = "Coin Hopper Two :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "OK";
                     }
                 }
                 catch (Exception ex)
                 {
                     outOfServiceLbl.Content = "Coin Hopper Two :";
-                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                     outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                     outOfServiceRedLbl.Content = "Not OK";
                     log.Error("Error OutOfSevicePage -> CoinHopper2() :" + ex.ToString());
@@ -131,14 +132,14 @@ namespace Kochi_TVM.Pages
                         CCTalkManager.Instance.coinHopperEV4000_3.EnableHopper();
                         outOfServiceLbl.Content = "Coin Hopper Three :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "OK";
                     }
                 }
                 catch (Exception ex)
                 {
                     outOfServiceLbl.Content = "Coin Hopper Three :";
-                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                     outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                     outOfServiceRedLbl.Content = "Not OK";
                     log.Error("Error OutOfSevicePage -> CoinHopper2() :" + ex.ToString());
@@ -169,13 +170,13 @@ namespace Kochi_TVM.Pages
                     {
                         outOfServiceLbl.Content = "Dispenser Status :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "OK";
                     }
                     else if (rptstatus == 0)
                     {
                         outOfServiceLbl.Content = "Dispenser Status :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "Not OK";
                     }
@@ -207,7 +208,7 @@ namespace Kochi_TVM.Pages
                     Constants.BNRStatus = Enum.GetName(typeof(BNRState), state);
                     outOfServiceLbl.Content = "BNR Status :";
                     outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                     outOfServiceGreenLbl.Content = Constants.BNRStatus;
                     if (state == BNRState.DISABLED)
                     {
@@ -217,7 +218,7 @@ namespace Kochi_TVM.Pages
                 catch (Exception ex)
                 {
                     outOfServiceLbl.Content = "BNR Status :";
-                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                     outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                     outOfServiceRedLbl.Content = "Not OK";
                     log.Error("Error PayByCashOrCoinPage -> BNRManager_BNRStateInputEvent :" + ex.ToString());
@@ -252,10 +253,42 @@ namespace Kochi_TVM.Pages
                     UpdDevStat();
                     await Task.Delay(8000);
 
+                    PRINTER_STATE QRStatus = QRPrinter.Instance.CheckQrPrinterStatus();//CustomKPM150HPrinter.Instance.getStatusWithUsb();
+                    if (QRStatus == PRINTER_STATE.OK)
+                    {
+                        outOfServiceLbl.Content = "QRPrinter Status :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
+                        outOfServiceGreenLbl.Content = "OK";
+                    }
+                    else
+                    {
+                        outOfServiceLbl.Content = "QRPrinter Status :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceGreenLbl.Content = "Not OK";
+                    }
+                    await Task.Delay(1000);
+                    PRINTER_STATE ReceiptPrinter = CustomTL60Printer.Instance.getStatusWithUsb();
+                    if (ReceiptPrinter == PRINTER_STATE.OK)
+                    {
+                        outOfServiceLbl.Content = "Receipt Printer Status :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
+                        outOfServiceGreenLbl.Content = "OK";
+                    }
+                    else
+                    {
+                        outOfServiceLbl.Content = "Receipt Printer Status :";
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
+                        outOfServiceGreenLbl.Content = "Not OK";
+                    }
+                    await Task.Delay(1000);
                     KMY200DoorAlarm.Instance.SetAlarm();
                     outOfServiceLbl.Content = "Alarm Activated :";
                     outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                    outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                     outOfServiceGreenLbl.Content = "OK";
                     await Task.Delay(2000);
                     NavigationService.Navigate(new Pages.MainPage());
@@ -281,22 +314,22 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);                        
                     }
@@ -305,22 +338,22 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                        
@@ -330,22 +363,22 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         
@@ -355,21 +388,21 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Open";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -378,23 +411,23 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right Door:";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
@@ -403,22 +436,22 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
@@ -427,21 +460,21 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -450,23 +483,23 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
@@ -475,21 +508,21 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -498,23 +531,23 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
@@ -523,21 +556,21 @@ namespace Kochi_TVM.Pages
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -546,22 +579,22 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -570,22 +603,22 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -594,22 +627,22 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
@@ -618,23 +651,23 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
                         outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Visible;
-                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceRedLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceGreenLbl.Content = "CLOSE";
                         await Task.Delay(1000);
                     }
@@ -642,22 +675,22 @@ namespace Kochi_TVM.Pages
                     {
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Front Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Hopper Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Door :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);
                         outOfServiceLbl.Content = "Back Left Right :";
-                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Hidden;
+                        outOfServiceGreenLbl.Visibility = System.Windows.Visibility.Collapsed;
                         outOfServiceRedLbl.Visibility = System.Windows.Visibility.Visible;
                         outOfServiceRedLbl.Content = "OPEN";
                         await Task.Delay(1000);

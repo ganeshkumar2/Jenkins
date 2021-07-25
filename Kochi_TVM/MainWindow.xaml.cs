@@ -21,6 +21,9 @@ namespace Kochi_TVM
 
         private static Timer dateTimeTimer;
         private static TimerCallback dateTimeTimerDelegate;
+
+        private static Timer maintanceTimeTimer;
+        private static TimerCallback maintanceTimerDelegate;
         public MainWindow()
         {
             InitializeComponent();           
@@ -83,17 +86,20 @@ namespace Kochi_TVM
             }
         }
         
-        int i = 0;
         private void gridLogo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (Constants.IsMaintenanceActive)
                 return;
 
-            if (i >= 1)
+            if (Constants.MaintenanceSeq >= 1)
                 return;
 
             TVMUtility.PlayClick();
-            i++;            
+
+            maintanceTimerDelegate = new TimerCallback(maintanceTimerAction);
+            maintanceTimeTimer = new Timer(maintanceTimerDelegate, null, 2000, 0);
+
+            Constants.MaintenanceSeq++;            
         }
 
         private void gridDT_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -101,17 +107,18 @@ namespace Kochi_TVM
             if (Constants.IsMaintenanceActive)
                 return;
 
-            if (i == 0)
+            if (Constants.MaintenanceSeq == 0)
                 return;
 
-            if (i == 1)
+            if (Constants.MaintenanceSeq == 1)
                 return;
 
             TVMUtility.PlayClick();
-            i++;
-            if (i == 3)
+            Constants.MaintenanceSeq++;
+            if (Constants.MaintenanceSeq == 3)
             {
-                i = 0;
+                maintanceTimeTimer.Dispose();
+                Constants.MaintenanceSeq = 0;
                 Constants.IsMaintenanceActive = true;
                 frameHomeMain.Navigate(new Pages.Maintenance.AdminLoginPage());
             }
@@ -122,14 +129,26 @@ namespace Kochi_TVM
             if (Constants.IsMaintenanceActive)
                 return;
 
-            if (i == 0)
+            if (Constants.MaintenanceSeq == 0)
                 return;
 
-            if (i == 2)
+            if (Constants.MaintenanceSeq == 2)
                 return;          
 
             TVMUtility.PlayClick();
-            i++;
+            Constants.MaintenanceSeq++;
+        }
+        private void maintanceTimerAction(object obj)
+        {
+            try
+            {
+                maintanceTimeTimer.Dispose();
+                Constants.MaintenanceSeq = 0;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error MainWindow -> maintanceTimerAction() : " + ex.ToString());
+            }
         }
     }
 }
